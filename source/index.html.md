@@ -1,17 +1,20 @@
 ---
-title: API Reference
+title: CTO Registry API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
+  - shell: cURL
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
 
 includes:
+  - Admin
+  - Committee
+  - Institution
+  - Security
+  - Study
+  - System
+  - User
+  - Visitor
   - errors
 
 search: true
@@ -19,221 +22,93 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+This documentation describes the various requests that can be made through the API, who can access them, and what they are expected to do.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+## Request Categories
 
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+The requests are broken down into logical categories, which make up the menu on the right side of the screen.
+These categories are just for organization. For instance, the "User" category contains all the requests that relate
+to managing one existing user, like adding a new institution, or updating the user's confidentiality agreement.
 
-# Authentication
+## Request Parameters
 
-> To authorize, use this code:
+Request URLs can contain parameters.  These are usually used to pass in the relevant ID for an operation.  When
+requests have parameters in the URL, they will always be in the format of `:requestParam`,
 
-```ruby
-require 'kittn'
+i.e. for the URL `/user/:userId` a request of `/user/123` would try to access the user with the system ID of `123`
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+## System Security
 
-```python
-import kittn
+Most of the requests contained in the CTO Registry API require authentication (logging in) and some form of authorization.
 
-api = kittn.authorize('meowmeowmeow')
-```
+### Authentication
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
+Authentication is simply the act of the user logging in to their account using their username and password.  To do this
+simply use the <strong>Security - Authentication</strong> request.
 
-```javascript
-const kittn = require('kittn');
+This request will return a JSON Web Token (JWT) "token" that will be used for subsequent requests. To use this token to authenticate when performing a request,
+set an HTTP Authorization header in the request with the format of "Bearer [TOKEN]".
 
-let api = kittn.authorize('meowmeowmeow');
-```
+For more information on JSON Web Tokens, visit [https://jwt.io/](https://jwt.io/)
 
-> Make sure to replace `meowmeowmeow` with your API key.
+### Authorization
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+After checking the users authentication, requests will generally check for further authorization.  To do this the system
+uses a set of "privileges" that describe conditions that a user must meet.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+### Privileges
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+Privileges are stored on each user's account and are maintained by the CTO Administrators and background processes in the system.
+The following table describes the privileges that exist in the system:
 
-# Kittens
+ Scope      | Role       | Target      | Description
+------------|------------|-------------|-------
+self| N/A | N/A| This simply means the user can request their own data.
+system| admin| N/A | A CTO system adminstrator.  This user will generally have full access to all data
+institution|member|[institutionId]| Every user that is listed at an institution will have this privilege for each of their institutions
+institution|admin|[institutionId]| An Institution administrator.  Similar to the CTO system administrator but with access only extending to users and data related to the specified institution
+study|participant|[studyId]| A system controlled privilege.  Instead of storing a specific privilege on the user account, the study data itself is used to determine if the user is a participant or not.  A study participant is any user that has any specific association to a study.
+committee|member|[committeeId]| A system controlled privilege.  This privilege is granted to a user when they are listed as a member of the specific committee in the committee data.
 
-## Get All Kittens
 
-```ruby
-require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+Each request contains a table with the following format that describes what privileges a user must have on their account to access it:
 
-```python
-import kittn
+ Scope      | Role       | Auth Source
+------------|------------|-------------
+system| admin| N/A
+institution|admin|institution
+study|participant|study
+committee|member|study
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+This table lists the different privileges that the user would need to have to access the request.  The user must have one
+or more of these privileges, or the request is denied and a <strong><em>403 - UNAUTHORIZED</em></strong> response is returned. The scope and role are combined to find the
+privilege in the user's account, and the auth source is used to determine how the privilege target should be resolved.
 
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
+<aside class="notice">Sometimes there are extra restrictions on the data the request will return. These will be documented on the specific request
+The privileges listed in the Authorization tables simply list what is required to access the request as a whole.</aside>
 
-```javascript
-const kittn = require('kittn');
 
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
+### Authorization Example
 
-> The above command returns JSON structured like this:
+The way these roles work is best described using an example. Consider the following request URL and the authorization
+restriction in the following table:
 
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
+`GET /user/:userId`
 
-This endpoint retrieves all kittens.
+ Scope      | Role       | Auth Source
+------------|------------|-------------
+institution|admin|user
 
-### HTTP Request
+This can be read as thus:
 
-`GET http://example.com/api/kittens`
+- the requesting user MUST have the <strong>institution:admin</strong> privilege
 
-### Query Parameters
+- The Auth Source tells us to look for associations based on the "user" being requested
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+- So the <strong>institution:admin</strong> privilege must target an institution that the user being requested is also part of
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
 
-## Get a Specific Kitten
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
 
