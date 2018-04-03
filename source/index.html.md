@@ -68,7 +68,7 @@ self| N/A | N/A| This simply means the user can request their own data.
 system| admin| N/A | A CTO system adminstrator.  This user will generally have full access to all data
 institution|member|[institutionId]| Every user that is listed at an institution will have this privilege for each of their institutions
 institution|admin|[institutionId]| An Institution administrator.  Similar to the CTO system administrator but with access only extending to users and data related to the specified institution
-study|participant|[studyId]| A system controlled privilege.  Instead of storing a specific privilege on the user account, the study data itself is used to determine if the user is a participant or not.  A study participant is any user that has any specific association to a study.
+study|applicant|[studyId]| A system controlled privilege.  Instead of storing a specific privilege on the user account, the study data itself is used to determine if the user is an applicant or not.  A study applicant is any user that has any specific association to a study.
 committee|member|[committeeId]| A system controlled privilege.  This privilege is granted to a user when they are listed as a member of the specific committee in the committee data.
 
 
@@ -79,7 +79,7 @@ Each request contains a table with the following format that describes what priv
 ------------|------------|-------------
 system| admin| N/A
 institution|admin|institution
-study|participant|study
+study|applicant|study
 committee|member|study
 
 This table lists the different privileges that the user would need to have to access the request.  The user must have one
