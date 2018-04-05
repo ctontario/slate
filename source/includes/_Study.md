@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/study/"  
+curl "https://ctoregistry.com/api/v1/study/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -123,7 +123,7 @@ committee | member | N/A|Study REB is set to the target of the privilege.
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/study/:studyId"  
+curl "https://ctoregistry.com/api/v1/study/:studyId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```

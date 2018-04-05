@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/committee/unique-code/:code/:committeeId?"  
+curl "https://ctoregistry.com/api/v1/committee/unique-code/:code/:committeeId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -56,7 +56,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/committee/unique-name/:name/:committeeId?"  
+curl "https://ctoregistry.com/api/v1/committee/unique-name/:name/:committeeId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -106,7 +106,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/committee/unique-short-name/:shortName/:committeeId?"  
+curl "https://ctoregistry.com/api/v1/committee/unique-short-name/:shortName/:committeeId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -156,7 +156,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/committee/unique-stream-name/:streamName/:committeeId?"  
+curl "https://ctoregistry.com/api/v1/committee/unique-stream-name/:streamName/:committeeId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -206,7 +206,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/committee/"  
+curl -X POST "https://ctoregistry.com/api/v1/committee/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -281,7 +281,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/dictionary/committee"  
+curl "https://ctoregistry.com/api/v1/dictionary/committee"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -330,7 +330,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/committee/"  
+curl "https://ctoregistry.com/api/v1/committee/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -421,7 +421,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/committee/user/:userId"  
+curl "https://ctoregistry.com/api/v1/committee/user/:userId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -514,7 +514,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/committee/:committeeId/members/add"  
+curl -X POST "https://ctoregistry.com/api/v1/committee/:committeeId/members/add"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -591,7 +591,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/committee/:committeeId/members/edit"  
+curl -X POST "https://ctoregistry.com/api/v1/committee/:committeeId/members/edit"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -672,7 +672,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/committee/:committeeId/members"  
+curl "https://ctoregistry.com/api/v1/committee/:committeeId/members"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -759,7 +759,7 @@ committee | member | committee|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/committee/:committeeId"  
+curl "https://ctoregistry.com/api/v1/committee/:committeeId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -845,7 +845,7 @@ committee | member | committee|N/A
 
 
 ```shell
-curl -X PUT "https://www.ctoregistry.com/api/v1/committee/:committeeId"  
+curl -X PUT "https://ctoregistry.com/api/v1/committee/:committeeId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```

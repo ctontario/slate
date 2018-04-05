@@ -6,7 +6,7 @@
 
 
 ```shell
-curl -X PUT "https://www.ctoregistry.com/api/v1/user/:userId/confidentiality"  
+curl -X PUT "https://ctoregistry.com/api/v1/user/:userId/confidentiality"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -61,7 +61,7 @@ self | N/A | N/A|N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/user/"  
+curl -X POST "https://ctoregistry.com/api/v1/user/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -200,7 +200,7 @@ institution | admin | N/A|If the institution specified in the request matches th
 
 
 ```shell
-curl -X DELETE "https://www.ctoregistry.com/api/v1/user/:userId/document/:documentId"  
+curl -X DELETE "https://ctoregistry.com/api/v1/user/:userId/document/:documentId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -257,7 +257,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/download/user/:userId/document/:documentId"  
+curl "https://ctoregistry.com/api/v1/download/user/:userId/document/:documentId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -305,7 +305,7 @@ committee | member | user|N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/upload/user/:userId"  
+curl -X POST "https://ctoregistry.com/api/v1/upload/user/:userId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -393,7 +393,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/user/:userId/institution"  
+curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -519,7 +519,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/user/:userId/institution/:institutionId"  
+curl "https://ctoregistry.com/api/v1/user/:userId/institution/:institutionId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -639,7 +639,7 @@ committee | member | user|The user has a role on a study, and the study is assig
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/user/:userId/institution/:institutionId/role"  
+curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:institutionId/role"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -711,7 +711,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl -X DELETE "https://www.ctoregistry.com/api/v1/user/:userId/institution/:institutionId/role/:roleId"  
+curl -X DELETE "https://ctoregistry.com/api/v1/user/:userId/institution/:institutionId/role/:roleId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -772,7 +772,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/user/:userId/institution/:institutionId/update"  
+curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:institutionId/update"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -885,7 +885,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/user/"  
+curl "https://ctoregistry.com/api/v1/user/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -1015,7 +1015,7 @@ committee | member | N/A|The user has a role on a study, and the study is assign
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/user/password/update"  
+curl -X POST "https://ctoregistry.com/api/v1/user/password/update"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -1075,7 +1075,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/user/:userId/privileges"  
+curl -X POST "https://ctoregistry.com/api/v1/user/:userId/privileges"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -1148,7 +1148,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl -X DELETE "https://www.ctoregistry.com/api/v1/user/:userId/privileges/:privilegeId"  
+curl -X DELETE "https://ctoregistry.com/api/v1/user/:userId/privileges/:privilegeId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -1203,7 +1203,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/user/:userId/privileges"  
+curl "https://ctoregistry.com/api/v1/user/:userId/privileges"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -1271,7 +1271,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/user/:userId"  
+curl "https://ctoregistry.com/api/v1/user/:userId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -1478,7 +1478,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl -X PUT "https://www.ctoregistry.com/api/v1/user/:userId/profile"  
+curl -X PUT "https://ctoregistry.com/api/v1/user/:userId/profile"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -1551,7 +1551,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/user/:userId/study"  
+curl "https://ctoregistry.com/api/v1/user/:userId/study"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```

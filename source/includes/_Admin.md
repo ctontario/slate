@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/admin/moderation/user"  
+curl "https://ctoregistry.com/api/v1/admin/moderation/user"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -152,7 +152,7 @@ institution | admin | N/A|User is a member at, or their request involves the tar
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/admin/moderation/user/institution"  
+curl -X POST "https://ctoregistry.com/api/v1/admin/moderation/user/institution"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -220,7 +220,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl -X PUT "https://www.ctoregistry.com/api/v1/admin/moderation/user/:userId/institution/:userInstitutionId/role/:roleId/status/:status"  
+curl -X PUT "https://ctoregistry.com/api/v1/admin/moderation/user/:userId/institution/:userInstitutionId/role/:roleId/status/:status"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```

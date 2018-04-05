@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/institution/unique-code/:code/:institutionId?"  
+curl "https://ctoregistry.com/api/v1/institution/unique-code/:code/:institutionId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -57,7 +57,7 @@ institution | admin | N/A|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/institution/unique-name/:name/:institutionId?"  
+curl "https://ctoregistry.com/api/v1/institution/unique-name/:name/:institutionId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -108,7 +108,7 @@ institution | admin | N/A|N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/institution/"  
+curl -X POST "https://ctoregistry.com/api/v1/institution/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -216,7 +216,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/dictionary/institution"  
+curl "https://ctoregistry.com/api/v1/dictionary/institution"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -270,7 +270,7 @@ N/A
 
 
 ```shell
-curl -X DELETE "https://www.ctoregistry.com/api/v1/institution/:institutionId/documents/:documentId"  
+curl -X DELETE "https://ctoregistry.com/api/v1/institution/:institutionId/documents/:documentId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -326,7 +326,7 @@ institution | admin | institution|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/download/institution/:institutionId/document/:documentId"  
+curl "https://ctoregistry.com/api/v1/download/institution/:institutionId/document/:documentId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -373,7 +373,7 @@ institution | member | institution|N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/upload/institution/:institutionId"  
+curl -X POST "https://ctoregistry.com/api/v1/upload/institution/:institutionId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -445,7 +445,7 @@ institution | admin | institution|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/institution/:institutionId/documents"  
+curl "https://ctoregistry.com/api/v1/institution/:institutionId/documents"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -513,7 +513,7 @@ institution | member | institution|N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/institution/"  
+curl "https://ctoregistry.com/api/v1/institution/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -597,7 +597,7 @@ institution | admin | N/A|The data is filtered to only include records that matc
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/institution/:institutionId"  
+curl "https://ctoregistry.com/api/v1/institution/:institutionId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -734,7 +734,7 @@ N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/institution/:institutionId/role"  
+curl "https://ctoregistry.com/api/v1/institution/:institutionId/role"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -794,7 +794,7 @@ institution | member | institution|N/A
 
 
 ```shell
-curl -X PUT "https://www.ctoregistry.com/api/v1/institution/:institutionId"  
+curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```

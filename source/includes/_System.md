@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/system/documentation"  
+curl "https://ctoregistry.com/api/v1/system/documentation"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -38,7 +38,7 @@ N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/system/version"  
+curl "https://ctoregistry.com/api/v1/system/version"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```

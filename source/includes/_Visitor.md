@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/visitor/email/unique/:email"  
+curl "https://ctoregistry.com/api/v1/visitor/email/unique/:email"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -58,7 +58,7 @@ N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/visitor/email/unique/:email/:userId"  
+curl "https://ctoregistry.com/api/v1/visitor/email/unique/:email/:userId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -110,7 +110,7 @@ N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/validation/email/:token"  
+curl "https://ctoregistry.com/api/v1/validation/email/:token"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -167,7 +167,7 @@ N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/validation/resend/:userId/:institutionId"  
+curl "https://ctoregistry.com/api/v1/validation/resend/:userId/:institutionId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -223,7 +223,7 @@ N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/dictionary/institution/:searchString"  
+curl "https://ctoregistry.com/api/v1/dictionary/institution/:searchString"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -301,7 +301,7 @@ N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/visitor/password/reset/request"  
+curl -X POST "https://ctoregistry.com/api/v1/visitor/password/reset/request"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -358,7 +358,7 @@ N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/visitor/password/reset"  
+curl -X POST "https://ctoregistry.com/api/v1/visitor/password/reset"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -415,7 +415,7 @@ N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/visitor/"  
+curl -X POST "https://ctoregistry.com/api/v1/visitor/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -556,7 +556,7 @@ N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/visitor/username/unique/:username"  
+curl "https://ctoregistry.com/api/v1/visitor/username/unique/:username"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -608,7 +608,7 @@ N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/visitor/username/unique/:username/:currentUsername"  
+curl "https://ctoregistry.com/api/v1/visitor/username/unique/:username/:currentUsername"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```

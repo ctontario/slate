@@ -6,7 +6,7 @@
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/security/authentication"  
+curl -X POST "https://ctoregistry.com/api/v1/security/authentication"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -61,7 +61,7 @@ N/A
 
 
 ```shell
-curl -X POST "https://www.ctoregistry.com/api/v1/security/token"  
+curl -X POST "https://ctoregistry.com/api/v1/security/token"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -112,7 +112,7 @@ N/A
 
 
 ```shell
-curl "https://www.ctoregistry.com/api/v1/security/privilegeToken"  
+curl "https://ctoregistry.com/api/v1/security/privilegeToken"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
