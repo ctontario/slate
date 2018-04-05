@@ -11,13 +11,27 @@ curl "https://cto.local:9000/api/v1/visitor/email/unique/:email"
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/UserUniqueEmail",
+    "type": "object",
+    "properties": {"email": {"type": "string"}, "userId": {"type": "string"}},
+    "required": ["email"]
+  }
+}
+```
+
+
+> Response Schema
 
 ```json
 {
   "id": "/CheckExistsResponse",
   "type": "object",
-  "properties": {"exists": {"type": "boolean", "description": ""}},
+  "properties": {"exists": {"type": "boolean"}},
   "required": ["exists"]
 }
 ```
@@ -49,13 +63,27 @@ curl "https://cto.local:9000/api/v1/visitor/email/unique/:email/:userId"
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/UserUniqueEmail",
+    "type": "object",
+    "properties": {"email": {"type": "string"}, "userId": {"type": "string"}},
+    "required": ["email"]
+  }
+}
+```
+
+
+> Response Schema
 
 ```json
 {
   "id": "/CheckExistsResponse",
   "type": "object",
-  "properties": {"exists": {"type": "boolean", "description": ""}},
+  "properties": {"exists": {"type": "boolean"}},
   "required": ["exists"]
 }
 ```
@@ -87,17 +115,31 @@ curl "https://cto.local:9000/api/v1/validation/email/:token"
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/EmailValidation",
+    "type": "object",
+    "properties": {"token": {"type": "string"}},
+    "required": ["token"]
+  }
+}
+```
+
+
+> Response Schema
 
 ```json
 {
   "id": "/ActionResponse",
   "type": "object",
   "properties": {
-    "status": {"type": "string", "description": ""},
-    "action": {"type": "string", "description": ""},
-    "id": {"type": "object|null", "description": ""},
-    "result": {"type": "object|array|string", "description": ""}
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": "object|null"},
+    "result": {"type": "object|array|string"}
   },
   "required": ["status", "action", "id"]
 }
@@ -130,17 +172,34 @@ curl "https://cto.local:9000/api/v1/validation/resend/:userId/:institutionId"
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/EmailValidationResend",
+    "type": "object",
+    "properties": {
+      "userId": {"type": "string"},
+      "institutionId": {"type": "string"}
+    },
+    "required": ["userId", "institutionId"]
+  }
+}
+```
+
+
+> Response Schema
 
 ```json
 {
   "id": "/ActionResponse",
   "type": "object",
   "properties": {
-    "status": {"type": "string", "description": ""},
-    "action": {"type": "string", "description": ""},
-    "id": {"type": "object|null", "description": ""},
-    "result": {"type": "object|array|string", "description": ""}
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": "object|null"},
+    "result": {"type": "object|array|string"}
   },
   "required": ["status", "action", "id"]
 }
@@ -167,12 +226,26 @@ N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/search/institution/:searchString"  
+curl "https://cto.local:9000/api/v1/dictionary/institution/:searchString"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/Search",
+    "type": "object",
+    "properties": {"searchString": {"type": "string"}},
+    "required": ["searchString"]
+  }
+}
+```
+
+
+> Response Schema
 
 ```json
 {
@@ -185,20 +258,20 @@ curl "https://cto.local:9000/api/v1/search/institution/:searchString"
         "id": "/InstitutionShortProfile",
         "type": "object",
         "properties": {
-          "id": {"type": "object", "description": ""},
-          "code": {"type": "string", "description": ""},
-          "name": {"type": "string", "description": ""},
-          "type": {"type": "string", "description": ""},
+          "id": {"type": "object"},
+          "code": {"type": "string"},
+          "name": {"type": "string"},
+          "type": {"type": "string"},
           "address": {
             "id": "/Address",
             "type": "object",
             "properties": {
-              "streetAddress": {"type": "string", "description": ""},
-              "locality": {"type": "string", "description": ""},
-              "region": {"type": "string", "description": ""},
-              "postalCode": {"type": "string", "description": ""},
+              "streetAddress": {"type": "string"},
+              "locality": {"type": "string"},
+              "region": {"type": "string"},
+              "postalCode": {"type": "string"},
               "extendedAddress": {"type": "array", "items": {"type": "string"}},
-              "countryName": {"type": "string", "description": ""}
+              "countryName": {"type": "string"}
             },
             "required": ["streetAddress", "locality", "region", "postalCode"]
           }
@@ -219,65 +292,7 @@ Searchs for institutions whose name matches the search string.
 
 ### HTTP Request
 
-`GET /search/institution/:searchString`
-
-
-
-### Authorization
- 
-N/A
-
-## PasswordReset - <em>Reset user's password with a token</em>
-
-
-```shell
-curl -X POST "https://cto.local:9000/api/v1/visitor/password/reset"  
-  -H "Authorization: {{_JWT_TOKEN_}}"  
-  -H "Content-Type: application/json"
-```
-
-> Request Body Schema
-
-```json
-{
-  "id": "/PasswordResetToken",
-  "type": "object",
-  "properties": {
-    "password": {"type": "string", "description": "Password"},
-    "token": {"type": "string", "description": "Token"}
-  },
-  "required": ["password", "token"]
-}
-```
-
-
-> Response Body Schema
-
-```json
-{
-  "id": "/ActionResponse",
-  "type": "object",
-  "properties": {
-    "status": {"type": "string", "description": ""},
-    "action": {"type": "string", "description": ""},
-    "id": {"type": "object|null", "description": ""},
-    "result": {"type": "object|array|string", "description": ""}
-  },
-  "required": ["status", "action", "id"]
-}
-```
-
-
-
-<aside class="notice">This route is public and does not require authentication</aside>
-
-
-Reset the password of a user using a token embedded in a link send to the email provided 
-        during the reset password request
-
-### HTTP Request
-
-`POST /visitor/password/reset`
+`GET /dictionary/institution/:searchString`
 
 
 
@@ -294,29 +309,31 @@ curl -X POST "https://cto.local:9000/api/v1/visitor/password/reset/request"
   -H "Content-Type: application/json"
 ```
 
-> Request Body Schema
+> Request Schema
 
 ```json
 {
-  "id": "/PasswordResetRequest",
-  "type": "object",
-  "properties": {"email": {"type": "string", "description": "Email"}},
-  "required": ["email"]
+  "body": {
+    "id": "/PasswordResetRequest",
+    "type": "object",
+    "properties": {"email": {"type": "string"}},
+    "required": ["email"]
+  }
 }
 ```
 
 
-> Response Body Schema
+> Response Schema
 
 ```json
 {
   "id": "/ActionResponse",
   "type": "object",
   "properties": {
-    "status": {"type": "string", "description": ""},
-    "action": {"type": "string", "description": ""},
-    "id": {"type": "object|null", "description": ""},
-    "result": {"type": "object|array|string", "description": ""}
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": "object|null"},
+    "result": {"type": "object|array|string"}
   },
   "required": ["status", "action", "id"]
 }
@@ -340,6 +357,63 @@ Request a password change for a user that forgot his password. A link will be se
  
 N/A
 
+## PasswordResetToken - <em>Reset user's password with a token</em>
+
+
+```shell
+curl -X POST "https://cto.local:9000/api/v1/visitor/password/reset"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "body": {
+    "id": "/PasswordResetToken",
+    "type": "object",
+    "properties": {"password": {"type": "string"}, "token": {"type": "string"}},
+    "required": ["password", "token"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": "object|null"},
+    "result": {"type": "object|array|string"}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+
+<aside class="notice">This route is public and does not require authentication</aside>
+
+
+Reset the password of a user using a token embedded in a link send to the email provided 
+        during the reset password request
+
+### HTTP Request
+
+`POST /visitor/password/reset`
+
+
+
+### Authorization
+ 
+N/A
+
 ## UserCreationByVisitor - <em>Create a new user account</em>
 
 
@@ -349,102 +423,145 @@ curl -X POST "https://cto.local:9000/api/v1/visitor/"
   -H "Content-Type: application/json"
 ```
 
-> Request Body Schema
+> Request Schema
 
 ```json
 {
-  "id": "/UserVisitor",
-  "type": "object",
-  "properties": {
-    "username": {"type": "string", "description": "User ID"},
-    "firstName": {"type": "string", "description": "First name"},
-    "middleName": {"type": "string", "description": "Middle name"},
-    "lastName": {"type": "string", "description": "Last Name"},
-    "title": {
-      "type": "string",
-      "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"],
-      "description": "Title"
-    },
-    "institution": {
-      "id": "/UserInstitution",
-      "type": "object",
-      "properties": {
-        "code": {"type": "string", "description": "The institution code"},
-        "name": {"type": "string", "maxLength": 200, "description": "The institution name"},
-        "isInvestigator": {
-          "type": "boolean",
-          "description": "Whether the user was indicated as an investigator or not"
-        },
-        "address": {
-          "id": "/Address",
-          "properties": {
-            "streetAddress": {"type": "string", "description": "Street address"},
-            "extendedAddress": {
-              "type": "array",
-              "items": {"type": "string"},
-              "minItems": 0,
-              "maxItems": 5
-            },
-            "postalCode": {"type": "string", "maxLength": 10},
-            "locality": {"type": "string"},
-            "region": {"type": "string"},
-            "countryName": {"type": "string"}
+  "body": {
+    "id": "/UserCreationByVisitor",
+    "type": "object",
+    "properties": {
+      "username": {"type": "string", "description": "User ID"},
+      "firstName": {"type": "string", "description": "First name"},
+      "middleName": {"type": "string", "description": "Middle name"},
+      "lastName": {"type": "string", "description": "Last Name"},
+      "title": {
+        "type": "string",
+        "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"],
+        "description": "Title"
+      },
+      "institution": {
+        "id": "/UserInstitution",
+        "type": "object",
+        "properties": {
+          "code": {"type": "string", "description": "The institution code"},
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "The institution name"
           },
-          "required": ["streetAddress", "postalCode", "locality", "region", "countryName"]
-        },
-        "email": {"type": "string", "format": "email", "description": "Email"},
-        "phones": {
-          "type": "array",
-          "items": {
-            "id": "/Phone",
+          "isInvestigator": {
+            "type": "boolean",
+            "description": "Whether the user was indicated as an investigator or not"
+          },
+          "address": {
+            "id": "/Address",
             "type": "object",
             "properties": {
-              "number": {"type": "string", "description": "Phone number"},
-              "extension": {"type": "string", "description": "The extension"},
-              "type": {
+              "streetAddress": {
                 "type": "string",
-                "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"],
-                "description": "Phone number type"
-              }
+                "description": "Street address"
+              },
+              "extendedAddress": {
+                "type": "array",
+                "items": {"type": "string"},
+                "minItems": 0,
+                "maxItems": 5
+              },
+              "postalCode": {"type": "string", "maxLength": 10},
+              "locality": {"type": "string"},
+              "region": {"type": "string"},
+              "countryName": {"type": "string"}
             },
-            "required": ["number"]
+            "required": [
+              "streetAddress",
+              "postalCode",
+              "locality",
+              "region",
+              "countryName"
+            ]
           },
-          "minItems": 1,
-          "maxItems": 5
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email"
+          },
+          "phones": {
+            "type": "array",
+            "items": {
+              "id": "/Phone",
+              "type": "object",
+              "properties": {
+                "number": {"type": "string", "description": "Phone number"},
+                "extension": {"type": "string", "description": "The extension"},
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    null,
+                    "home",
+                    "msg",
+                    "work",
+                    "pref",
+                    "fax",
+                    "cell",
+                    "pager"
+                  ],
+                  "description": "Phone number type"
+                }
+              },
+              "required": ["number"]
+            },
+            "minItems": 1,
+            "maxItems": 5
+          },
+          "privacy": {
+            "type": "string",
+            "enum": ["public", "private", "institution", "members"]
+          }
         },
-        "privacy": {"type": "string", "enum": ["public", "private", "institution", "members"]}
+        "anyOf": [{"required": ["name"]}, {"required": ["code"]}],
+        "required": ["address", "email", "phones", "isInvestigator"]
       },
-      "anyOf": [{"required": ["name"]}, {"required": ["code"]}],
-      "required": ["address", "email", "phones", "isInvestigator"]
+      "confidentiality": {
+        "type": "boolean",
+        "description": "Whether the user agreed to the confidentiality agreement"
+      },
+      "password": {
+        "type": "string",
+        "minLength": 7,
+        "description": "The user's password"
+      }
     },
-    "confidentiality": {
-      "type": "boolean",
-      "description": "Whether the user agreed to the confidentiality agreement"
-    },
-    "password": {"type": "string", "minLength": 7, "description": "The user's password"}
-  },
-  "required": 6
+    "required": [
+      "username",
+      "firstName",
+      "lastName",
+      "title",
+      "institution",
+      "password"
+    ]
+  }
 }
 ```
 
 
-> Response Body Schema
+> Response Schema
 
 ```json
 {
-  "id": "/RegisterResponse",
+  "id": "/UserCreationResponse",
   "type": "object",
   "properties": {
     "user": {
       "type": "object",
       "properties": {
-        "id": {"type": "object", "description": ""},
-        "username": {"type": "string", "description": ""},
-        "userInstitutionId": {"type": "object", "description": ""},
-        "institutionId": {"type": "object|null", "description": ""},
-        "isAccessEmailSent": {"type": "boolean", "description": ""},
-        "isAccountModerated": {"type": "boolean", "description": ""},
-        "moderationResults": {"type": "object", "description": ""}
+        "id": {"type": "object"},
+        "username": {"type": "string"},
+        "userInstitutionId": {"type": "object"},
+        "institutionId": {"type": "object|null"},
+        "isAccessEmailSent": {"type": "boolean"},
+        "isAccountModerated": {"type": "boolean"},
+        "moderationResults": {"type": "object"}
       },
       "required": [
         "id",
@@ -454,7 +571,7 @@ curl -X POST "https://cto.local:9000/api/v1/visitor/"
         "isAccountModerated"
       ]
     },
-    "validationEmail": {"type": "object", "description": ""},
+    "validationEmail": {"type": "object"},
     "comments": {"type": "array"}
   }
 }
@@ -487,13 +604,30 @@ curl "https://cto.local:9000/api/v1/visitor/username/unique/:username"
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/UserUniqueUsername",
+    "type": "object",
+    "properties": {
+      "username": {"type": "string"},
+      "currentUsername": {"type": "string"}
+    },
+    "required": ["username"]
+  }
+}
+```
+
+
+> Response Schema
 
 ```json
 {
   "id": "/CheckExistsResponse",
   "type": "object",
-  "properties": {"exists": {"type": "boolean", "description": ""}},
+  "properties": {"exists": {"type": "boolean"}},
   "required": ["exists"]
 }
 ```
@@ -525,13 +659,30 @@ curl "https://cto.local:9000/api/v1/visitor/username/unique/:username/:currentUs
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/UserUniqueUsername",
+    "type": "object",
+    "properties": {
+      "username": {"type": "string"},
+      "currentUsername": {"type": "string"}
+    },
+    "required": ["username"]
+  }
+}
+```
+
+
+> Response Schema
 
 ```json
 {
   "id": "/CheckExistsResponse",
   "type": "object",
-  "properties": {"exists": {"type": "boolean", "description": ""}},
+  "properties": {"exists": {"type": "boolean"}},
   "required": ["exists"]
 }
 ```

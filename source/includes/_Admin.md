@@ -2,132 +2,7 @@
 # Admin
 
 
-## ModerateUser - <em>Admin User Institution Moderation</em>
-
-
-```shell
-curl -X POST "https://cto.local:9000/api/v1/admin/moderation/user/institution"  
-  -H "Authorization: {{_JWT_TOKEN_}}"  
-  -H "Content-Type: application/json"
-```
-
-> Request Body Schema
-
-```json
-{
-  "id": "/UserInstitutionModeration",
-  "type": "object",
-  "properties": {
-    "userId": {"type": "string", "description": "User ID"},
-    "userInstitutionId": {
-      "type": "string",
-      "description": "The ID of the user institution to moderate",
-      "default": false
-    },
-    "assignRoles": {"type": "array", "items": {"type": "string"}},
-    "removeRoles": {"type": "array", "items": {"type": "string"}},
-    "status": {"type": "string", "description": "set the status of the user institution"}
-  },
-  "required": ["userId", "userInstitutionId"]
-}
-```
-
-
-> Response Body Schema
-
-```json
-{
-  "id": "/ActionResponse",
-  "type": "object",
-  "properties": {
-    "status": {"type": "string", "description": ""},
-    "action": {"type": "string", "description": ""},
-    "id": {"type": "object|null", "description": ""},
-    "result": {"type": "object|array|string", "description": ""}
-  },
-  "required": ["status", "action", "id"]
-}
-```
-
-
-
-        Lets an admin moderate a users institution request.  As all new registrations must come with an institution,
-        new registrations are considered "institution requests" in the system and our moderated using the same feature
-        as moderating a new institution request for an existing user.
-        
-        - if the user has the <strong>system:admin</strong> role, then they can process moderations for all users
-        
-        - if the user has the <strong>institution:admin</strong> role, they can only process moderations for users at their
-        institution(s)
-        
-        
-
-### HTTP Request
-
-`POST /admin/moderation/user/institution`
-
-
-
-### Authorization
- 
-    
- Scope      | Role       | Auth Source
-------------|------------|-------------
-system | admin | N/A
-institution | admin | user
-
-## ModerateUserRole - <em>Admin User Institution Role Moderation</em>
-
-
-```shell
-curl -X PUT "https://cto.local:9000/api/v1/admin/moderation/user/:userId/institution/:userInstitutionId/role/:roleId/status/:status"  
-  -H "Authorization: {{_JWT_TOKEN_}}"  
-  -H "Content-Type: application/json"
-```
-
-> Response Body Schema
-
-```json
-{
-  "id": "/ActionResponse",
-  "type": "object",
-  "properties": {
-    "status": {"type": "string", "description": ""},
-    "action": {"type": "string", "description": ""},
-    "id": {"type": "object|null", "description": ""},
-    "result": {"type": "object|array|string", "description": ""}
-  },
-  "required": ["status", "action", "id"]
-}
-```
-
-
-
-        
-        Lets an admin moderate a users role request at a specified institution
-        
-        - if the user has the <strong>system:admin</strong> role, then they can process role moderations for all users
-        
-        - if the user has the <strong>institution:admin</strong> role, they can only process role moderations for users at their
-        institution(s)
-        
-        
-
-### HTTP Request
-
-`PUT /admin/moderation/user/:userId/institution/:userInstitutionId/role/:roleId/status/:status`
-
-
-
-### Authorization
- 
-    
- Scope      | Role       | Auth Source
-------------|------------|-------------
-system | admin | N/A
-institution | admin | user
-
-## ModerationList - <em>Admin User Moderation List</em>
+## AdminModerationList - <em>Admin User Moderation List</em>
 
 
 ```shell
@@ -136,19 +11,44 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Request Schema
 
 ```json
 {
-  "id": "/AdminModerationRequestListResponse",
+  "query": {
+    "id": "/ListQuery",
+    "type": "object",
+    "properties": {
+      "count": {"type": "string"},
+      "offset": {"type": "string"},
+      "limit": {"type": "string"},
+      "sortby": {"type": "string"},
+      "order": {"type": "string"},
+      "search": {"type": "string"},
+      "status": {"type": "string"},
+      "institutions": {
+        "type": ["string", "array"],
+        "description": "an array of institution IDs"
+      }
+    }
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/AdminUserModerationListResponse",
   "type": "object",
   "properties": {
     "meta": {
       "id": "/ListMeta",
       "properties": {
-        "count": {"type": "number", "description": ""},
-        "limit": {"type": "number", "description": ""},
-        "offset": {"type": "number", "description": ""}
+        "count": {"type": "number"},
+        "limit": {"type": "number"},
+        "offset": {"type": "number"}
       },
       "required": ["count", "limit", "offset"]
     },
@@ -157,20 +57,20 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
       "items": {
         "type": "object",
         "properties": {
-          "id": {"type": "object", "description": ""},
+          "id": {"type": "object"},
           "account": {
             "type": "object",
             "properties": {
-              "status": {"type": "string", "description": ""},
-              "isNewAccount": {"type": "boolean", "description": ""}
+              "status": {"type": "string"},
+              "isNewAccount": {"type": "boolean"}
             },
             "required": ["status", "isNewAccount"]
           },
-          "username": {"type": "string", "description": ""},
-          "title": {"type": "string", "description": ""},
-          "firstName": {"type": "string", "description": ""},
-          "middleName": {"type": "string", "description": ""},
-          "lastName": {"type": "string", "description": ""},
+          "username": {"type": "string"},
+          "title": {"type": "string"},
+          "firstName": {"type": "string"},
+          "middleName": {"type": "string"},
+          "lastName": {"type": "string"},
           "moderation": {"type": "array", "items": {"type": "object"}},
           "institutions": {
             "type": "array",
@@ -181,40 +81,54 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
                   "id": "/Address",
                   "type": "object",
                   "properties": {
-                    "streetAddress": {"type": "string", "description": ""},
-                    "locality": {"type": "string", "description": ""},
-                    "region": {"type": "string", "description": ""},
-                    "postalCode": {"type": "string", "description": ""},
-                    "extendedAddress": {"type": "array", "items": {"type": "string"}},
-                    "countryName": {"type": "string", "description": ""}
+                    "streetAddress": {"type": "string"},
+                    "locality": {"type": "string"},
+                    "region": {"type": "string"},
+                    "postalCode": {"type": "string"},
+                    "extendedAddress": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    },
+                    "countryName": {"type": "string"}
                   },
-                  "required": ["streetAddress", "locality", "region", "postalCode"]
+                  "required": [
+                    "streetAddress",
+                    "locality",
+                    "region",
+                    "postalCode"
+                  ]
                 },
-                "id": {"type": "object", "description": ""},
-                "institutionId": {"type": "object", "description": ""},
-                "suggestedId": {"type": "object", "description": ""},
-                "status": {"type": "string", "description": ""},
-                "requiresModeration": {"type": "boolean", "description": ""},
-                "isInvestigator": {"type": "boolean", "description": ""},
-                "email": {"type": "email", "description": ""},
-                "emailValidationToken": {"type": "string", "description": ""},
-                "isNewInstitution": {"type": "boolean", "description": ""},
-                "nextAction": {"type": "string", "description": ""},
-                "institutionNameSuggested": {"type": "string", "description": ""},
-                "code": {"type": "string", "description": ""},
-                "name": {"type": "string", "description": ""},
+                "id": {"type": "object"},
+                "institutionId": {"type": "object"},
+                "suggestedId": {"type": "object"},
+                "status": {"type": "string"},
+                "requiresModeration": {"type": "boolean"},
+                "isInvestigator": {"type": "boolean"},
+                "email": {"type": "email"},
+                "emailValidationToken": {"type": "string"},
+                "isNewInstitution": {"type": "boolean"},
+                "nextAction": {"type": "string"},
+                "institutionNameSuggested": {"type": "string"},
+                "code": {"type": "string"},
+                "name": {"type": "string"},
                 "roles": {
                   "type": "array",
                   "items": {
                     "type": "object",
                     "properties": {
-                      "id": {"type": "object", "description": ""},
-                      "code": {"type": "string", "description": ""},
-                      "status": {"type": "string", "description": ""},
-                      "requiresModeration": {"type": "boolean", "description": ""},
-                      "label": {"type": "string", "description": ""}
+                      "id": {"type": "object"},
+                      "code": {"type": "string"},
+                      "status": {"type": "string"},
+                      "requiresModeration": {"type": "boolean"},
+                      "label": {"type": "string"}
                     },
-                    "required": ["id", "code", "status", "requiresModeration", "label"]
+                    "required": [
+                      "id",
+                      "code",
+                      "status",
+                      "requiresModeration",
+                      "label"
+                    ]
                   }
                 }
               },
@@ -228,9 +142,17 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
               ]
             }
           },
-          "nextAction": {"type": "string", "description": ""}
+          "nextAction": {"type": "string"}
         },
-        "required": ["id", "account", "username", "title", "firstName", "lastName", "nextAction"]
+        "required": [
+          "id",
+          "account",
+          "username",
+          "title",
+          "firstName",
+          "lastName",
+          "nextAction"
+        ]
       }
     }
   }
@@ -238,17 +160,7 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
 ```
 
 
-
-        
-        Gets the list of users that the authenticated user can moderate.  This will include new accounts, institutions
-        added to accounts, and roles added to users at institutions.
-        
-        
-        - If the user has the <strong>system:admin</strong> role, then they will get the full list of users to be moderated in the system  
-        
-        - If the user has the <strong>institution:admin</strong> role, they will get the list of users to be moderated for their specific institution(s)
-        
-        
+Gets the list of users that the authenticated user can moderate.  This will include new accounts, institutions added to accounts, and roles added to users at institutions.
 
 ### HTTP Request
 
@@ -259,7 +171,139 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
 ### Authorization
  
     
- Scope      | Role       | Auth Source
-------------|------------|-------------
-system | admin | N/A
-institution | admin | N/A
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+institution | admin | N/A|User is a member at, or their request involves the target institution of the privilege.
+
+## AdminUserModeration - <em>Admin User Institution Moderation</em>
+
+
+```shell
+curl -X POST "https://cto.local:9000/api/v1/admin/moderation/user/institution"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "body": {
+    "id": "/UserInstitutionModeration",
+    "type": "object",
+    "properties": {
+      "userId": {"type": "string", "description": "User ID"},
+      "userInstitutionId": {
+        "type": "string",
+        "description": "The ID of the user institution to moderate"
+      },
+      "assignRoles": {"type": "array", "items": {"type": "string"}},
+      "removeRoles": {"type": "array", "items": {"type": "string"}},
+      "status": {
+        "type": "string",
+        "description": "set the status of the user institution"
+      }
+    },
+    "required": ["userId", "userInstitutionId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": "object|null"},
+    "result": {"type": "object|array|string"}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Lets an admin moderate a users institution request.  
+        As all new registrations must come with an institution,
+        new registrations are considered "institution requests" in the system and our moderated using the same feature
+        as moderating a new institution request for an existing user.
+
+### HTTP Request
+
+`POST /admin/moderation/user/institution`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+institution | admin | user|N/A
+
+## AdminUserRoleModeration - <em>Admin User Institution Role Moderation</em>
+
+
+```shell
+curl -X PUT "https://cto.local:9000/api/v1/admin/moderation/user/:userId/institution/:userInstitutionId/role/:roleId/status/:status"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/AdminUserRoleModeration",
+    "type": "object",
+    "properties": {
+      "userId": {"type": "string"},
+      "userInstitutionId": {"type": "string"},
+      "roleId": {"type": "string"},
+      "status": {"type": "string"}
+    },
+    "required": ["userId", "userInstitutionId", "roleId", "status"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": "object|null"},
+    "result": {"type": "object|array|string"}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Lets an admin moderate a users role request at a specified institution
+
+### HTTP Request
+
+`PUT /admin/moderation/user/:userId/institution/:userInstitutionId/role/:roleId/status/:status`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+institution | admin | user|N/A

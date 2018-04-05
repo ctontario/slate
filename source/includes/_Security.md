@@ -11,29 +11,33 @@ curl -X POST "https://cto.local:9000/api/v1/security/authentication"
   -H "Content-Type: application/json"
 ```
 
-> Request Body Schema
+> Request Schema
 
 ```json
 {
-  "id": "/Authentication",
-  "properties": {
-    "username": {"type": "string", "required": true, "description": ""},
-    "password": {"type": "string", "required": true, "description": ""}
+  "body": {
+    "id": "/Authentication",
+    "type": "object",
+    "properties": {
+      "username": {"type": "string"},
+      "password": {"type": "string"}
+    },
+    "required": ["username", "password"]
   }
 }
 ```
 
 
-> Response Body Schema
+> Response Schema
 
 ```json
 {
   "id": "/AuthenticationResponse",
   "type": "object",
   "properties": {
-    "id": {"type": "object", "description": ""},
-    "token": {"type": "string", "description": ""},
-    "privilege": {"type": "string", "description": ""}
+    "id": {"type": "object"},
+    "token": {"type": "string"},
+    "privilege": {"type": "string"}
   },
   "required": ["id", "token", "privilege"]
 }
@@ -44,7 +48,7 @@ curl -X POST "https://cto.local:9000/api/v1/security/authentication"
 <aside class="notice">This route is public and does not require authentication</aside>
 
 
-Tests a users credentials, and if successful grants access to the system
+Tests a users credentials, and if successful returns a token to access the system
 
 ### HTTP Request
 
@@ -65,27 +69,28 @@ curl -X POST "https://cto.local:9000/api/v1/security/token"
   -H "Content-Type: application/json"
 ```
 
-> Request Body Schema
+> Request Schema
 
 ```json
 {
-  "id": "/CheckToken",
-  "properties": {
-    "token": {"type": "string", "required": true, "description": ""},
-    "service": {"type": "string", "required": true, "description": ""}
+  "body": {
+    "id": "/CheckToken",
+    "type": "object",
+    "properties": {"token": {"type": "string"}, "service": {"type": "string"}},
+    "required": ["token", "service"]
   }
 }
 ```
 
 
-> Response Body Schema
+> Response Schema
 
 ```json
 {
   "id": "/CheckTokenResponse",
   "type": "object",
   "properties": {
-    "tokenStatus": {"type": "string", "description": "", "enum": ["invalid", "valid"]}
+    "tokenStatus": {"type": "string", "enum": ["invalid", "valid"]}
   },
   "required": ["tokenStatus"]
 }
@@ -96,7 +101,7 @@ curl -X POST "https://cto.local:9000/api/v1/security/token"
 <aside class="notice">This route is public and does not require authentication</aside>
 
 
-Validates a token
+Validates an authentication token
 
 ### HTTP Request
 
@@ -117,19 +122,19 @@ curl "https://cto.local:9000/api/v1/security/privilegeToken"
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Response Schema
 
 ```json
 {
   "id": "/PrivilegeTokenResponse",
   "type": "object",
-  "properties": {"privilege": {"type": "string", "description": ""}},
+  "properties": {"privilege": {"type": "string"}},
   "required": ["privilege"]
 }
 ```
 
 
-Gets the users privilege token
+Gets the currently authenticated users privilege token
 
 ### HTTP Request
 

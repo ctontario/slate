@@ -11,7 +11,7 @@ curl "https://cto.local:9000/api/v1/system/documentation"
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Response Schema
 
 ```json
 undefined
@@ -43,7 +43,7 @@ curl "https://cto.local:9000/api/v1/system/version"
   -H "Content-Type: application/json"
 ```
 
-> Response Body Schema
+> Response Schema
 
 ```json
 {
@@ -53,14 +53,21 @@ curl "https://cto.local:9000/api/v1/system/version"
     "version": {
       "type": "object",
       "properties": {
-        "apiVersion": {"type": "number", "description": ""},
-        "major": {"type": "number", "description": ""},
-        "minor": {"type": "number", "description": ""},
-        "dot": {"type": "number", "description": ""},
-        "codeName": {"type": "string", "description": ""},
-        "releaseDate": {"type": "date-time", "description": ""}
+        "apiVersion": {"type": "number"},
+        "major": {"type": "number"},
+        "minor": {"type": "number"},
+        "dot": {"type": "number"},
+        "codeName": {"type": "string"},
+        "releaseDate": {"type": "date-time"}
       },
-      "required": ["apiVersion", "major", "minor", "dot", "codeName", "releaseDate"]
+      "required": [
+        "apiVersion",
+        "major",
+        "minor",
+        "dot",
+        "codeName",
+        "releaseDate"
+      ]
     }
   }
 }
