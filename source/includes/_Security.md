@@ -6,7 +6,7 @@
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/security/authentication"  
+curl -X POST "https://www.ctoregistry.com/api/v1/security/authentication"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -18,10 +18,7 @@ curl -X POST "https://cto.local:9000/api/v1/security/authentication"
   "body": {
     "id": "/Authentication",
     "type": "object",
-    "properties": {
-      "username": {"type": "string"},
-      "password": {"type": "string"}
-    },
+    "properties": {"username": {"type": "string"}, "password": {"type": "string"}},
     "required": ["username", "password"]
   }
 }
@@ -64,7 +61,7 @@ N/A
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/security/token"  
+curl -X POST "https://www.ctoregistry.com/api/v1/security/token"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -89,9 +86,7 @@ curl -X POST "https://cto.local:9000/api/v1/security/token"
 {
   "id": "/CheckTokenResponse",
   "type": "object",
-  "properties": {
-    "tokenStatus": {"type": "string", "enum": ["invalid", "valid"]}
-  },
+  "properties": {"tokenStatus": {"type": "string", "enum": ["invalid", "valid"]}},
   "required": ["tokenStatus"]
 }
 ```
@@ -117,7 +112,7 @@ N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/security/privilegeToken"  
+curl "https://www.ctoregistry.com/api/v1/security/privilegeToken"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```

@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/institution/unique-code/:code/:institutionId?"  
+curl "https://www.ctoregistry.com/api/v1/institution/unique-code/:code/:institutionId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -18,10 +18,7 @@ curl "https://cto.local:9000/api/v1/institution/unique-code/:code/:institutionId
   "params": {
     "id": "/InstitutionUniqueCodeParams",
     "type": "object",
-    "properties": {
-      "code": {"type": "string"},
-      "institutionId": {"type": "string"}
-    },
+    "properties": {"code": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["code"]
   }
 }
@@ -60,7 +57,7 @@ institution | admin | N/A|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/institution/unique-name/:name/:institutionId?"  
+curl "https://www.ctoregistry.com/api/v1/institution/unique-name/:name/:institutionId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -72,10 +69,7 @@ curl "https://cto.local:9000/api/v1/institution/unique-name/:name/:institutionId
   "params": {
     "id": "/InstitutionUniqueNameParams",
     "type": "object",
-    "properties": {
-      "name": {"type": "string"},
-      "institutionId": {"type": "string"}
-    },
+    "properties": {"name": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["name"]
   }
 }
@@ -114,7 +108,7 @@ institution | admin | N/A|N/A
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/institution/"  
+curl -X POST "https://www.ctoregistry.com/api/v1/institution/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -127,21 +121,10 @@ curl -X POST "https://cto.local:9000/api/v1/institution/"
     "id": "/Institution",
     "type": "object",
     "properties": {
-      "name": {
-        "type": "string",
-        "maxLength": 200,
-        "description": "Institution name"
-      },
+      "name": {"type": "string", "maxLength": 200, "description": "Institution name"},
       "code": {"type": "string", "maxLength": 25, "description": "Code name"},
-      "type": {
-        "type": "string",
-        "maxLength": 15,
-        "description": "The institution type"
-      },
-      "status": {
-        "type": "string",
-        "enum": ["pending", "active", "deleted", "suspended"]
-      },
+      "type": {"type": "string", "maxLength": 15, "description": "The institution type"},
+      "status": {"type": "string", "enum": ["pending", "active", "deleted", "suspended"]},
       "statusEffectiveChangeDt": {
         "type": "string",
         "description": "The effective date of a change of status"
@@ -168,13 +151,7 @@ curl -X POST "https://cto.local:9000/api/v1/institution/"
           "region": {"type": "string"},
           "countryName": {"type": "string"}
         },
-        "required": [
-          "streetAddress",
-          "postalCode",
-          "locality",
-          "region",
-          "countryName"
-        ]
+        "required": ["streetAddress", "postalCode", "locality", "region", "countryName"]
       },
       "phones": {
         "type": "array",
@@ -186,16 +163,7 @@ curl -X POST "https://cto.local:9000/api/v1/institution/"
             "extension": {"type": "string", "description": "The extension"},
             "type": {
               "type": "string",
-              "enum": [
-                null,
-                "home",
-                "msg",
-                "work",
-                "pref",
-                "fax",
-                "cell",
-                "pager"
-              ],
+              "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"],
               "description": "Phone number type"
             }
           },
@@ -248,7 +216,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/dictionary/institution"  
+curl "https://www.ctoregistry.com/api/v1/dictionary/institution"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -274,16 +242,7 @@ curl "https://cto.local:9000/api/v1/dictionary/institution"
           "region": {"type": "string"},
           "country": {"type": "string"}
         },
-        "required": [
-          "id",
-          "code",
-          "name",
-          "type",
-          "typeLabel",
-          "locality",
-          "region",
-          "country"
-        ]
+        "required": ["id", "code", "name", "type", "typeLabel", "locality", "region", "country"]
       }
     }
   }
@@ -311,7 +270,7 @@ N/A
 
 
 ```shell
-curl -X DELETE "https://cto.local:9000/api/v1/institution/:institutionId/documents/:documentId"  
+curl -X DELETE "https://www.ctoregistry.com/api/v1/institution/:institutionId/documents/:documentId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -323,10 +282,7 @@ curl -X DELETE "https://cto.local:9000/api/v1/institution/:institutionId/documen
   "params": {
     "id": "/InstitutionDocumentDelete",
     "type": "object",
-    "properties": {
-      "institutionId": {"type": "string"},
-      "documentId": {"type": "string"}
-    },
+    "properties": {"institutionId": {"type": "string"}, "documentId": {"type": "string"}},
     "required": ["institutionId", "documentId"]
   }
 }
@@ -370,7 +326,7 @@ institution | admin | institution|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/download/institution/:institutionId/document/:documentId"  
+curl "https://www.ctoregistry.com/api/v1/download/institution/:institutionId/document/:documentId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -382,10 +338,7 @@ curl "https://cto.local:9000/api/v1/download/institution/:institutionId/document
   "params": {
     "id": "/InstitutionDocumentDownload",
     "type": "object",
-    "properties": {
-      "institutionId": {"type": "string"},
-      "documentId": {"type": "string"}
-    },
+    "properties": {"institutionId": {"type": "string"}, "documentId": {"type": "string"}},
     "required": ["institutionId", "documentId"]
   }
 }
@@ -420,7 +373,7 @@ institution | member | institution|N/A
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/upload/institution/:institutionId"  
+curl -X POST "https://www.ctoregistry.com/api/v1/upload/institution/:institutionId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -435,10 +388,7 @@ curl -X POST "https://cto.local:9000/api/v1/upload/institution/:institutionId"
     "properties": {
       "name": {"type": "string", "description": "The document name"},
       "completeDt": {"type": "date"},
-      "description": {
-        "type": "string",
-        "description": "The document description"
-      }
+      "description": {"type": "string", "description": "The document description"}
     },
     "required": ["name"]
   },
@@ -495,7 +445,7 @@ institution | admin | institution|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/institution/:institutionId/documents"  
+curl "https://www.ctoregistry.com/api/v1/institution/:institutionId/documents"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -534,14 +484,7 @@ curl "https://cto.local:9000/api/v1/institution/:institutionId/documents"
           "uploadDt": {"type": "date"},
           "completeDt": {"type": "date"}
         },
-        "required": [
-          "id",
-          "name",
-          "filename",
-          "originalFilename",
-          "uploadDt",
-          "completeDt"
-        ]
+        "required": ["id", "name", "filename", "originalFilename", "uploadDt", "completeDt"]
       }
     }
   }
@@ -570,7 +513,7 @@ institution | member | institution|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/institution/"  
+curl "https://www.ctoregistry.com/api/v1/institution/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -654,7 +597,7 @@ institution | admin | N/A|The data is filtered to only include records that matc
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/institution/:institutionId"  
+curl "https://www.ctoregistry.com/api/v1/institution/:institutionId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -707,18 +650,10 @@ curl "https://cto.local:9000/api/v1/institution/:institutionId"
                   "locality": {"type": "string"},
                   "region": {"type": "string"},
                   "postalCode": {"type": "string"},
-                  "extendedAddress": {
-                    "type": "array",
-                    "items": {"type": "string"}
-                  },
+                  "extendedAddress": {"type": "array", "items": {"type": "string"}},
                   "countryName": {"type": "string"}
                 },
-                "required": [
-                  "streetAddress",
-                  "locality",
-                  "region",
-                  "postalCode"
-                ]
+                "required": ["streetAddress", "locality", "region", "postalCode"]
               },
               "phones": {
                 "type": "array",
@@ -730,16 +665,7 @@ curl "https://cto.local:9000/api/v1/institution/:institutionId"
                     "extension": {"type": "string|null"},
                     "type": {
                       "type": "string|null",
-                      "enum": [
-                        null,
-                        "home",
-                        "msg",
-                        "work",
-                        "pref",
-                        "fax",
-                        "cell",
-                        "pager"
-                      ]
+                      "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"]
                     }
                   },
                   "required": ["number", "extension", "type"]
@@ -808,7 +734,7 @@ N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/institution/:institutionId/role"  
+curl "https://www.ctoregistry.com/api/v1/institution/:institutionId/role"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -868,7 +794,7 @@ institution | member | institution|N/A
 
 
 ```shell
-curl -X PUT "https://cto.local:9000/api/v1/institution/:institutionId"  
+curl -X PUT "https://www.ctoregistry.com/api/v1/institution/:institutionId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -881,21 +807,10 @@ curl -X PUT "https://cto.local:9000/api/v1/institution/:institutionId"
     "id": "/InstitutionUpdate",
     "type": "object",
     "properties": {
-      "name": {
-        "type": "string",
-        "maxLength": 200,
-        "description": "Institution name"
-      },
+      "name": {"type": "string", "maxLength": 200, "description": "Institution name"},
       "code": {"type": "string", "maxLength": 25, "description": "Code name"},
-      "type": {
-        "type": "string",
-        "maxLength": 15,
-        "description": "The institution type"
-      },
-      "status": {
-        "type": "string",
-        "enum": ["pending", "active", "deleted", "suspended"]
-      },
+      "type": {"type": "string", "maxLength": 15, "description": "The institution type"},
+      "status": {"type": "string", "enum": ["pending", "active", "deleted", "suspended"]},
       "statusEffectiveChangeDt": {
         "type": "string",
         "description": "The effective date of a change of status"
@@ -922,13 +837,7 @@ curl -X PUT "https://cto.local:9000/api/v1/institution/:institutionId"
           "region": {"type": "string"},
           "countryName": {"type": "string"}
         },
-        "required": [
-          "streetAddress",
-          "postalCode",
-          "locality",
-          "region",
-          "countryName"
-        ]
+        "required": ["streetAddress", "postalCode", "locality", "region", "countryName"]
       },
       "phones": {
         "type": "array",
@@ -940,16 +849,7 @@ curl -X PUT "https://cto.local:9000/api/v1/institution/:institutionId"
             "extension": {"type": "string", "description": "The extension"},
             "type": {
               "type": "string",
-              "enum": [
-                null,
-                "home",
-                "msg",
-                "work",
-                "pref",
-                "fax",
-                "cell",
-                "pager"
-              ],
+              "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"],
               "description": "Phone number type"
             }
           },

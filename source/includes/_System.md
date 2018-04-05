@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/system/documentation"  
+curl "https://www.ctoregistry.com/api/v1/system/documentation"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -38,7 +38,7 @@ N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/system/version"  
+curl "https://www.ctoregistry.com/api/v1/system/version"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -60,14 +60,7 @@ curl "https://cto.local:9000/api/v1/system/version"
         "codeName": {"type": "string"},
         "releaseDate": {"type": "date-time"}
       },
-      "required": [
-        "apiVersion",
-        "major",
-        "minor",
-        "dot",
-        "codeName",
-        "releaseDate"
-      ]
+      "required": ["apiVersion", "major", "minor", "dot", "codeName", "releaseDate"]
     }
   }
 }

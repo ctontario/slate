@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/visitor/email/unique/:email"  
+curl "https://www.ctoregistry.com/api/v1/visitor/email/unique/:email"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -58,7 +58,7 @@ N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/visitor/email/unique/:email/:userId"  
+curl "https://www.ctoregistry.com/api/v1/visitor/email/unique/:email/:userId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -110,7 +110,7 @@ N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/validation/email/:token"  
+curl "https://www.ctoregistry.com/api/v1/validation/email/:token"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -167,7 +167,7 @@ N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/validation/resend/:userId/:institutionId"  
+curl "https://www.ctoregistry.com/api/v1/validation/resend/:userId/:institutionId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -179,10 +179,7 @@ curl "https://cto.local:9000/api/v1/validation/resend/:userId/:institutionId"
   "params": {
     "id": "/EmailValidationResend",
     "type": "object",
-    "properties": {
-      "userId": {"type": "string"},
-      "institutionId": {"type": "string"}
-    },
+    "properties": {"userId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["userId", "institutionId"]
   }
 }
@@ -226,7 +223,7 @@ N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/dictionary/institution/:searchString"  
+curl "https://www.ctoregistry.com/api/v1/dictionary/institution/:searchString"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -304,7 +301,7 @@ N/A
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/visitor/password/reset/request"  
+curl -X POST "https://www.ctoregistry.com/api/v1/visitor/password/reset/request"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -361,7 +358,7 @@ N/A
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/visitor/password/reset"  
+curl -X POST "https://www.ctoregistry.com/api/v1/visitor/password/reset"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -418,7 +415,7 @@ N/A
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/visitor/"  
+curl -X POST "https://www.ctoregistry.com/api/v1/visitor/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -445,11 +442,7 @@ curl -X POST "https://cto.local:9000/api/v1/visitor/"
         "type": "object",
         "properties": {
           "code": {"type": "string", "description": "The institution code"},
-          "name": {
-            "type": "string",
-            "maxLength": 200,
-            "description": "The institution name"
-          },
+          "name": {"type": "string", "maxLength": 200, "description": "The institution name"},
           "isInvestigator": {
             "type": "boolean",
             "description": "Whether the user was indicated as an investigator or not"
@@ -458,10 +451,7 @@ curl -X POST "https://cto.local:9000/api/v1/visitor/"
             "id": "/Address",
             "type": "object",
             "properties": {
-              "streetAddress": {
-                "type": "string",
-                "description": "Street address"
-              },
+              "streetAddress": {"type": "string", "description": "Street address"},
               "extendedAddress": {
                 "type": "array",
                 "items": {"type": "string"},
@@ -473,19 +463,9 @@ curl -X POST "https://cto.local:9000/api/v1/visitor/"
               "region": {"type": "string"},
               "countryName": {"type": "string"}
             },
-            "required": [
-              "streetAddress",
-              "postalCode",
-              "locality",
-              "region",
-              "countryName"
-            ]
+            "required": ["streetAddress", "postalCode", "locality", "region", "countryName"]
           },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "Email"
-          },
+          "email": {"type": "string", "format": "email", "description": "Email"},
           "phones": {
             "type": "array",
             "items": {
@@ -496,16 +476,7 @@ curl -X POST "https://cto.local:9000/api/v1/visitor/"
                 "extension": {"type": "string", "description": "The extension"},
                 "type": {
                   "type": "string",
-                  "enum": [
-                    null,
-                    "home",
-                    "msg",
-                    "work",
-                    "pref",
-                    "fax",
-                    "cell",
-                    "pager"
-                  ],
+                  "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"],
                   "description": "Phone number type"
                 }
               },
@@ -514,10 +485,7 @@ curl -X POST "https://cto.local:9000/api/v1/visitor/"
             "minItems": 1,
             "maxItems": 5
           },
-          "privacy": {
-            "type": "string",
-            "enum": ["public", "private", "institution", "members"]
-          }
+          "privacy": {"type": "string", "enum": ["public", "private", "institution", "members"]}
         },
         "anyOf": [{"required": ["name"]}, {"required": ["code"]}],
         "required": ["address", "email", "phones", "isInvestigator"]
@@ -526,20 +494,9 @@ curl -X POST "https://cto.local:9000/api/v1/visitor/"
         "type": "boolean",
         "description": "Whether the user agreed to the confidentiality agreement"
       },
-      "password": {
-        "type": "string",
-        "minLength": 7,
-        "description": "The user's password"
-      }
+      "password": {"type": "string", "minLength": 7, "description": "The user's password"}
     },
-    "required": [
-      "username",
-      "firstName",
-      "lastName",
-      "title",
-      "institution",
-      "password"
-    ]
+    "required": ["username", "firstName", "lastName", "title", "institution", "password"]
   }
 }
 ```
@@ -599,7 +556,7 @@ N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/visitor/username/unique/:username"  
+curl "https://www.ctoregistry.com/api/v1/visitor/username/unique/:username"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -611,10 +568,7 @@ curl "https://cto.local:9000/api/v1/visitor/username/unique/:username"
   "params": {
     "id": "/UserUniqueUsername",
     "type": "object",
-    "properties": {
-      "username": {"type": "string"},
-      "currentUsername": {"type": "string"}
-    },
+    "properties": {"username": {"type": "string"}, "currentUsername": {"type": "string"}},
     "required": ["username"]
   }
 }
@@ -654,7 +608,7 @@ N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/visitor/username/unique/:username/:currentUsername"  
+curl "https://www.ctoregistry.com/api/v1/visitor/username/unique/:username/:currentUsername"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -666,10 +620,7 @@ curl "https://cto.local:9000/api/v1/visitor/username/unique/:username/:currentUs
   "params": {
     "id": "/UserUniqueUsername",
     "type": "object",
-    "properties": {
-      "username": {"type": "string"},
-      "currentUsername": {"type": "string"}
-    },
+    "properties": {"username": {"type": "string"}, "currentUsername": {"type": "string"}},
     "required": ["username"]
   }
 }

@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/admin/moderation/user"  
+curl "https://www.ctoregistry.com/api/v1/admin/moderation/user"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -26,10 +26,7 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
       "order": {"type": "string"},
       "search": {"type": "string"},
       "status": {"type": "string"},
-      "institutions": {
-        "type": ["string", "array"],
-        "description": "an array of institution IDs"
-      }
+      "institutions": {"type": ["string", "array"], "description": "an array of institution IDs"}
     }
   }
 }
@@ -60,10 +57,7 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
           "id": {"type": "object"},
           "account": {
             "type": "object",
-            "properties": {
-              "status": {"type": "string"},
-              "isNewAccount": {"type": "boolean"}
-            },
+            "properties": {"status": {"type": "string"}, "isNewAccount": {"type": "boolean"}},
             "required": ["status", "isNewAccount"]
           },
           "username": {"type": "string"},
@@ -85,18 +79,10 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
                     "locality": {"type": "string"},
                     "region": {"type": "string"},
                     "postalCode": {"type": "string"},
-                    "extendedAddress": {
-                      "type": "array",
-                      "items": {"type": "string"}
-                    },
+                    "extendedAddress": {"type": "array", "items": {"type": "string"}},
                     "countryName": {"type": "string"}
                   },
-                  "required": [
-                    "streetAddress",
-                    "locality",
-                    "region",
-                    "postalCode"
-                  ]
+                  "required": ["streetAddress", "locality", "region", "postalCode"]
                 },
                 "id": {"type": "object"},
                 "institutionId": {"type": "object"},
@@ -122,13 +108,7 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
                       "requiresModeration": {"type": "boolean"},
                       "label": {"type": "string"}
                     },
-                    "required": [
-                      "id",
-                      "code",
-                      "status",
-                      "requiresModeration",
-                      "label"
-                    ]
+                    "required": ["id", "code", "status", "requiresModeration", "label"]
                   }
                 }
               },
@@ -144,15 +124,7 @@ curl "https://cto.local:9000/api/v1/admin/moderation/user"
           },
           "nextAction": {"type": "string"}
         },
-        "required": [
-          "id",
-          "account",
-          "username",
-          "title",
-          "firstName",
-          "lastName",
-          "nextAction"
-        ]
+        "required": ["id", "account", "username", "title", "firstName", "lastName", "nextAction"]
       }
     }
   }
@@ -180,7 +152,7 @@ institution | admin | N/A|User is a member at, or their request involves the tar
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/admin/moderation/user/institution"  
+curl -X POST "https://www.ctoregistry.com/api/v1/admin/moderation/user/institution"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -200,10 +172,7 @@ curl -X POST "https://cto.local:9000/api/v1/admin/moderation/user/institution"
       },
       "assignRoles": {"type": "array", "items": {"type": "string"}},
       "removeRoles": {"type": "array", "items": {"type": "string"}},
-      "status": {
-        "type": "string",
-        "description": "set the status of the user institution"
-      }
+      "status": {"type": "string", "description": "set the status of the user institution"}
     },
     "required": ["userId", "userInstitutionId"]
   }
@@ -251,7 +220,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl -X PUT "https://cto.local:9000/api/v1/admin/moderation/user/:userId/institution/:userInstitutionId/role/:roleId/status/:status"  
+curl -X PUT "https://www.ctoregistry.com/api/v1/admin/moderation/user/:userId/institution/:userInstitutionId/role/:roleId/status/:status"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```

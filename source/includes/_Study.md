@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/study/"  
+curl "https://www.ctoregistry.com/api/v1/study/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -69,10 +69,7 @@ curl "https://cto.local:9000/api/v1/study/"
           "applicantLink": {"type": "string"},
           "reb": {
             "type": "object",
-            "properties": {
-              "id": {"type": "object"},
-              "name": {"type": "string"}
-            },
+            "properties": {"id": {"type": "object"}, "name": {"type": "string"}},
             "required": ["name"]
           },
           "projectIdNumber": {"type": "number"},
@@ -126,7 +123,7 @@ committee | member | N/A|Study REB is set to the target of the privilege.
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/study/:studyId"  
+curl "https://www.ctoregistry.com/api/v1/study/:studyId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -163,10 +160,7 @@ curl "https://cto.local:9000/api/v1/study/:studyId"
         "ctaita": {"type": "boolean"},
         "ctaitaTypes": {
           "type": "array",
-          "items": {
-            "type": "string",
-            "enum": ["ctaFda", "ctaNhp", "itaMedDevices"]
-          },
+          "items": {"type": "string", "enum": ["ctaFda", "ctaNhp", "itaMedDevices"]},
           "description": "Dictionary: Clinical Trial CTA/ITA Types"
         },
         "ohrp": {"type": "boolean"},
@@ -191,15 +185,7 @@ curl "https://cto.local:9000/api/v1/study/:studyId"
           "type": "array",
           "items": {
             "type": "string",
-            "enum": [
-              "drugs",
-              "health",
-              "devices",
-              "specimen",
-              "radiation",
-              "surveys",
-              "other"
-            ]
+            "enum": ["drugs", "health", "devices", "specimen", "radiation", "surveys", "other"]
           },
           "description": "Dictionary: Clinical Trial Interventions"
         },
@@ -280,15 +266,7 @@ curl "https://cto.local:9000/api/v1/study/:studyId"
                     "lastName": {"type": "string"},
                     "title": {
                       "type": "string",
-                      "enum": [
-                        "Dr.",
-                        "Prof.",
-                        "Miss",
-                        "Mrs.",
-                        "Ms.",
-                        "Mr.",
-                        "Mx"
-                      ]
+                      "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
                     }
                   },
                   "required": ["id", "firstName", "lastName", "title"]
@@ -310,15 +288,7 @@ curl "https://cto.local:9000/api/v1/study/:studyId"
                     "lastName": {"type": "string"},
                     "title": {
                       "type": "string",
-                      "enum": [
-                        "Dr.",
-                        "Prof.",
-                        "Miss",
-                        "Mrs.",
-                        "Ms.",
-                        "Mr.",
-                        "Mx"
-                      ]
+                      "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
                     }
                   },
                   "required": ["id", "firstName", "lastName", "title"]
@@ -340,15 +310,7 @@ curl "https://cto.local:9000/api/v1/study/:studyId"
                     "lastName": {"type": "string"},
                     "title": {
                       "type": "string",
-                      "enum": [
-                        "Dr.",
-                        "Prof.",
-                        "Miss",
-                        "Mrs.",
-                        "Ms.",
-                        "Mr.",
-                        "Mx"
-                      ]
+                      "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
                     }
                   },
                   "required": ["id", "firstName", "lastName", "title"]
@@ -387,15 +349,7 @@ curl "https://cto.local:9000/api/v1/study/:studyId"
                       "lastName": {"type": "string"},
                       "title": {
                         "type": "string",
-                        "enum": [
-                          "Dr.",
-                          "Prof.",
-                          "Miss",
-                          "Mrs.",
-                          "Ms.",
-                          "Mr.",
-                          "Mx"
-                        ]
+                        "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
                       }
                     },
                     "required": ["id", "firstName", "lastName", "title"]
@@ -417,15 +371,7 @@ curl "https://cto.local:9000/api/v1/study/:studyId"
                       "lastName": {"type": "string"},
                       "title": {
                         "type": "string",
-                        "enum": [
-                          "Dr.",
-                          "Prof.",
-                          "Miss",
-                          "Mrs.",
-                          "Ms.",
-                          "Mr.",
-                          "Mx"
-                        ]
+                        "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
                       }
                     },
                     "required": ["id", "firstName", "lastName", "title"]
@@ -447,15 +393,7 @@ curl "https://cto.local:9000/api/v1/study/:studyId"
                       "lastName": {"type": "string"},
                       "title": {
                         "type": "string",
-                        "enum": [
-                          "Dr.",
-                          "Prof.",
-                          "Miss",
-                          "Mrs.",
-                          "Ms.",
-                          "Mr.",
-                          "Mx"
-                        ]
+                        "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
                       }
                     },
                     "required": ["id", "firstName", "lastName", "title"]

@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/committee/unique-code/:code/:committeeId?"  
+curl "https://www.ctoregistry.com/api/v1/committee/unique-code/:code/:committeeId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -18,10 +18,7 @@ curl "https://cto.local:9000/api/v1/committee/unique-code/:code/:committeeId?"
   "params": {
     "id": "/CommitteeUniqueCodeParams",
     "type": "object",
-    "properties": {
-      "code": {"type": "string"},
-      "committeeId": {"type": "string"}
-    },
+    "properties": {"code": {"type": "string"}, "committeeId": {"type": "string"}},
     "required": ["code"]
   }
 }
@@ -59,7 +56,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/committee/unique-name/:name/:committeeId?"  
+curl "https://www.ctoregistry.com/api/v1/committee/unique-name/:name/:committeeId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -71,10 +68,7 @@ curl "https://cto.local:9000/api/v1/committee/unique-name/:name/:committeeId?"
   "params": {
     "id": "/CommitteeUniqueName",
     "type": "object",
-    "properties": {
-      "name": {"type": "string"},
-      "committeeId": {"type": "string"}
-    },
+    "properties": {"name": {"type": "string"}, "committeeId": {"type": "string"}},
     "required": ["name"]
   }
 }
@@ -112,7 +106,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/committee/unique-short-name/:shortName/:committeeId?"  
+curl "https://www.ctoregistry.com/api/v1/committee/unique-short-name/:shortName/:committeeId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -124,10 +118,7 @@ curl "https://cto.local:9000/api/v1/committee/unique-short-name/:shortName/:comm
   "params": {
     "id": "/CommitteeUniqueShortName",
     "type": "object",
-    "properties": {
-      "shortName": {"type": "string"},
-      "committeeId": {"type": "string"}
-    },
+    "properties": {"shortName": {"type": "string"}, "committeeId": {"type": "string"}},
     "required": ["shortName"]
   }
 }
@@ -165,7 +156,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/committee/unique-stream-name/:streamName/:committeeId?"  
+curl "https://www.ctoregistry.com/api/v1/committee/unique-stream-name/:streamName/:committeeId?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -177,10 +168,7 @@ curl "https://cto.local:9000/api/v1/committee/unique-stream-name/:streamName/:co
   "params": {
     "id": "/CommitteeUniqueStreamName",
     "type": "object",
-    "properties": {
-      "streamName": {"type": "string"},
-      "committeeId": {"type": "string"}
-    },
+    "properties": {"streamName": {"type": "string"}, "committeeId": {"type": "string"}},
     "required": ["streamName"]
   }
 }
@@ -218,7 +206,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/committee/"  
+curl -X POST "https://www.ctoregistry.com/api/v1/committee/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -233,14 +221,8 @@ curl -X POST "https://cto.local:9000/api/v1/committee/"
     "properties": {
       "code": {"type": "string", "description": "The committee's code"},
       "name": {"type": "string", "description": "The name of the committee"},
-      "shortName": {
-        "type": "string",
-        "description": "The short name of the committee"
-      },
-      "streamName": {
-        "type": "string",
-        "description": "The name of the committee in CTO Stream"
-      },
+      "shortName": {"type": "string", "description": "The short name of the committee"},
+      "streamName": {"type": "string", "description": "The name of the committee in CTO Stream"},
       "type": {
         "type": "string",
         "description": "The type of committee",
@@ -255,10 +237,7 @@ curl -X POST "https://cto.local:9000/api/v1/committee/"
         "type": "string",
         "description": "The effective date of a change of status"
       },
-      "parentInstitutionId": {
-        "type": "string",
-        "description": "The ID of the parent institution"
-      }
+      "parentInstitutionId": {"type": "string", "description": "The ID of the parent institution"}
     },
     "required": ["name", "code", "type", "status", "parentInstitutionId"]
   }
@@ -302,7 +281,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/dictionary/committee"  
+curl "https://www.ctoregistry.com/api/v1/dictionary/committee"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -351,7 +330,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/committee/"  
+curl "https://www.ctoregistry.com/api/v1/committee/"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -415,16 +394,7 @@ curl "https://cto.local:9000/api/v1/committee/"
           "createDt": {"type": "date"},
           "updateDt": {"type": "date"}
         },
-        "required": [
-          "id",
-          "code",
-          "name",
-          "type",
-          "status",
-          "institution",
-          "createDt",
-          "updateDt"
-        ]
+        "required": ["id", "code", "name", "type", "status", "institution", "createDt", "updateDt"]
       }
     }
   }
@@ -451,7 +421,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/committee/user/:userId"  
+curl "https://www.ctoregistry.com/api/v1/committee/user/:userId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -506,10 +476,7 @@ curl "https://cto.local:9000/api/v1/committee/user/:userId"
         "properties": {
           "committee": {
             "type": "object",
-            "properties": {
-              "id": {"type": "object"},
-              "name": {"type": "string"}
-            },
+            "properties": {"id": {"type": "object"}, "name": {"type": "string"}},
             "required": ["id", "name"]
           },
           "id": {"type": "object"},
@@ -547,7 +514,7 @@ institution | admin | user|N/A
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/committee/:committeeId/members/add"  
+curl -X POST "https://www.ctoregistry.com/api/v1/committee/:committeeId/members/add"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -580,10 +547,7 @@ curl -X POST "https://cto.local:9000/api/v1/committee/:committeeId/members/add"
         "description": "The status of the member",
         "enum": ["pending", "active", "suspended", "ended"]
       },
-      "joinDt": {
-        "type": "string",
-        "description": "The date the member joined the committee"
-      }
+      "joinDt": {"type": "string", "description": "The date the member joined the committee"}
     },
     "required": ["userId", "role", "status"]
   }
@@ -627,7 +591,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl -X POST "https://cto.local:9000/api/v1/committee/:committeeId/members/edit"  
+curl -X POST "https://www.ctoregistry.com/api/v1/committee/:committeeId/members/edit"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -660,10 +624,7 @@ curl -X POST "https://cto.local:9000/api/v1/committee/:committeeId/members/edit"
         "description": "The status of the member",
         "enum": ["pending", "active", "suspended", "ended"]
       },
-      "joinDt": {
-        "type": "string",
-        "description": "The date the member joined the committee"
-      },
+      "joinDt": {"type": "string", "description": "The date the member joined the committee"},
       "memberId": {
         "type": "string",
         "description": "The userId of the user's account to add as a committee member"
@@ -711,7 +672,7 @@ system | admin | N/A|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/committee/:committeeId/members"  
+curl "https://www.ctoregistry.com/api/v1/committee/:committeeId/members"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -798,7 +759,7 @@ committee | member | committee|N/A
 
 
 ```shell
-curl "https://cto.local:9000/api/v1/committee/:committeeId"  
+curl "https://www.ctoregistry.com/api/v1/committee/:committeeId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -884,7 +845,7 @@ committee | member | committee|N/A
 
 
 ```shell
-curl -X PUT "https://cto.local:9000/api/v1/committee/:committeeId"  
+curl -X PUT "https://www.ctoregistry.com/api/v1/committee/:committeeId"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -899,14 +860,8 @@ curl -X PUT "https://cto.local:9000/api/v1/committee/:committeeId"
     "properties": {
       "code": {"type": "string", "description": "The committee's code"},
       "name": {"type": "string", "description": "The name of the committee"},
-      "shortName": {
-        "type": "string",
-        "description": "The short name of the committee"
-      },
-      "streamName": {
-        "type": "string",
-        "description": "The name of the committee in CTO Stream"
-      },
+      "shortName": {"type": "string", "description": "The short name of the committee"},
+      "streamName": {"type": "string", "description": "The name of the committee in CTO Stream"},
       "type": {
         "type": "string",
         "description": "The type of committee",
@@ -921,10 +876,7 @@ curl -X PUT "https://cto.local:9000/api/v1/committee/:committeeId"
         "type": "string",
         "description": "The effective date of a change of status"
       },
-      "parentInstitutionId": {
-        "type": "string",
-        "description": "The ID of the parent institution"
-      }
+      "parentInstitutionId": {"type": "string", "description": "The ID of the parent institution"}
     },
     "required": ["name", "type"]
   },
