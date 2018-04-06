@@ -101,7 +101,10 @@ curl "https://ctoregistry.com/api/v1/study/"
 ```
 
 
-Gets a list of all the studies in the system that the currently authenticated user can access.
+
+        Gets a list of all the studies in the system that the currently authenticated user can access. 
+        Uses list pagination to limit the results.
+        
 
 ### HTTP Request
 
@@ -443,7 +446,10 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
 ```
 
 
-Get the data record of one study.  Some sections of the data will only be available depending on the authenticated users privileges and participation.
+
+        Gets the data record of one study.  Some sections of the data will only be available depending on the authenticated users privileges and participation.
+        Refer to the restrictions listed for each authorization privilege.
+        
 
 ### HTTP Request
 
