@@ -34,13 +34,13 @@ through the API, who can access them, and what they are expected to do.
 ## Request Categories
 
 The requests are broken down into logical categories.
-These categories are just for organization. For instance, the "User" category contains all the requests that relate
-to managing one existing user, like adding a new institution, or updating the user's confidentiality agreement.
+These categories are just for organization. For instance, the **_User_** category contains all the requests that relate
+to managing one existing user, like adding a new institution, or updating the user's profile information.
 
 
 ## JSON Schemas
 
-Each request where applicable will include a "Request Schema" and a "Response Schema".  These schemas are JSON schema
+Each request where applicable will include a **_Request Schema_** and a **_Response Schema_**.  These schemas are JSON schema
 objects that are used to validate the data being sent and retrieved through the API.  These schemas indicate which fields
 are required and describe the possible values for dictionary type fields.
 
@@ -49,19 +49,19 @@ For more information on JSON Schema, please review the documenation: [http://jso
 
 ## Request Schemas
 
-Where applicable each request will list a "Request Schema" which describes what data can be sent to the API along with
-the request.  The Request Schema will be a JSON Schema with up to 3 top level objects, "query", "params" and "body".
+Where applicable each request will list a **_Request Schema_** which describes what data can be sent to the API along with
+the request.  The Request Schema will be a JSON Schema with up to 3 top level objects, **_query_**, **_params_** and **_body_**.
 
 
 ### Request Query
 
-Request query fields are passed in at the end of the URI as regular HTML query variables.
+Request query fields are appended to the end of the URI as regular HTML query variables.
 
 
 ### Request Parameters
 
 Request URLs can contain parameters.  These are usually used to pass in the relevant ID for an operation.  When
-requests have parameters in the URI, they will always be in the format of `:requestParam`.  In addition to be listed
+requests have parameters in the URI, they will always be in the format of `:requestParam`.  In addition to being listed
 in the Request Schema, the request parameters are also displayed in the URI itself.
 
 i.e. for the URL `/user/:userId` a request of `/user/123` would try to access the user with the system ID of `123`
@@ -85,10 +85,10 @@ Most of the requests contained in the CTO Registry API require authentication (l
 ### Authentication
 
 Authentication is simply the act of the user logging in to their account using their username and password.  To do this
-simply use the <strong>Security - Authentication</strong> request.
+simply use the **_Security - Authentication_** request.
 
 This request will return a JSON Web Token (JWT) "token" that will be used for subsequent requests. To use this token to authenticate when performing a request,
-set an HTTP Authorization header in the request with the format of "Bearer [TOKEN]".
+set an HTTP Authorization header in the request with the format of `Bearer [TOKEN]``.
 
 For more information on JSON Web Tokens, visit [https://jwt.io/](https://jwt.io/)
 
@@ -96,12 +96,12 @@ For more information on JSON Web Tokens, visit [https://jwt.io/](https://jwt.io/
 ### Authorization
 
 After checking the users authentication, requests will generally check for further authorization.  To do this the system
-uses a set of "privileges" that describe conditions that a user must meet.
+uses a set of **_privileges_** that describe conditions that a user must meet.
 
 
 ### Privileges
 
-Privileges are stored on each user's account and are maintained by the CTO Administrators and background processes in the system.
+Privileges are stored in each user's account and are maintained by the CTO Administrators and background processes in the system.
 The following table describes the privileges that exist in the system:
 
  Scope      | Role       | Target      | Description
@@ -111,8 +111,8 @@ system| admin| N/A | A CTO system adminstrator.  This user will generally have f
 institution|member|[institutionId]| Every user that is listed at an institution will have this privilege for each of their institutions
 institution|admin|[institutionId]| An Institution administrator.  Similar to the CTO system administrator but with access only extending to users and data related to the specified institution
 study|applicant|[studyId]| A system controlled privilege.  Instead of storing a specific privilege on the user account, the study data itself is used to determine if the user is an applicant or not.  A study applicant is any user that has any specific association to a study.
-committee|member|[committeeId]| A system controlled privilege.  This privilege is granted to a user when they are listed as a member of the specific committee in the committee data.
-
+committee|member|[committeeId]| A system controlled privilege.  This privilege is granted to a user when they are listed as an REB Chair or REB Member of the specific committee in the CTO Stream.
+committee|admin|[committeeId]| A system controlled privilege.  This privilege is granted to a user when they are listed as an REB Staff or REB Director/Manager of the specific committee in CTO Stream.
 
 
 Each request contains a table with the following format that describes what privileges a user must have on their account to access it:
