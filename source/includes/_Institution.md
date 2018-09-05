@@ -133,7 +133,14 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
         "type": "boolean",
         "description": "Whether to load users from stream or not"
       },
-      "legal": {"type": "string"},
+      "legalEntityId": {
+        "type": "string",
+        "description": "The ID of the legal entity institution, used if the institution is grouped under one legal entity"
+      },
+      "committeeId": {
+        "type": "string",
+        "description": "The ID of the committee associated with this institution."
+      },
       "website": {"type": "string"},
       "address": {
         "id": "/Address",
@@ -169,7 +176,7 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
           },
           "required": ["number"]
         },
-        "minItems": 1,
+        "minItems": 0,
         "maxItems": 5
       },
       "test": {"type": "boolean"}
@@ -189,8 +196,8 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -298,8 +305,8 @@ curl -X DELETE "https://ctoregistry.com/api/v1/institution/:institutionId/docume
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -523,16 +530,16 @@ curl "https://ctoregistry.com/api/v1/institution/"
 ```json
 {
   "query": {
-    "id": "/ListQuery",
+    "id": "/InstitutionListQuery",
     "type": "object",
     "properties": {
-      "count": {"type": "string"},
-      "offset": {"type": "string"},
-      "limit": {"type": "string"},
+      "offset": {"type": "integer", "minimum": 0, "default": 0},
+      "limit": {"type": "integer", "minimum": 0, "default": 20},
       "sortby": {"type": "string"},
       "order": {"type": "string"},
       "search": {"type": "string"},
-      "status": {"type": "string"}
+      "status": {"type": "string"},
+      "types": {"type": ["string", "array"], "items": {"type": "string"}}
     }
   }
 }
@@ -558,17 +565,30 @@ curl "https://ctoregistry.com/api/v1/institution/"
     "data": {
       "type": "array",
       "items": {
+        "id": "/InstitutionShortProfile",
         "type": "object",
         "properties": {
           "id": {"type": "object"},
           "code": {"type": "string"},
           "name": {"type": "string"},
           "type": {"type": "string"},
+          "committeeId": {"type": "object", "description": "the associated committee ID"},
           "status": {"type": "string"},
-          "createDt": {"type": "date"},
-          "updateDt": {"type": "date"}
+          "address": {
+            "id": "/Address",
+            "type": "object",
+            "properties": {
+              "streetAddress": {"type": "string"},
+              "locality": {"type": "string"},
+              "region": {"type": "string"},
+              "postalCode": {"type": "string"},
+              "extendedAddress": {"type": "array", "items": {"type": "string"}},
+              "countryName": {"type": "string"}
+            },
+            "required": ["streetAddress", "locality", "region", "postalCode"]
+          }
         },
-        "required": ["id", "code", "name", "status", "createDt", "updateDt"]
+        "required": ["id", "code", "name", "type", "status", "address"]
       }
     }
   }
@@ -636,6 +656,7 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
         "createDt": {"type": "date"},
         "updateDt": {"type": "date"},
         "loadStreamUsers": {"type": "boolean"},
+        "committeeId": {"type": "object", "description": "The ID of the associated committee"},
         "sites": {
           "type": "array",
           "items": {
@@ -662,9 +683,9 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
                   "type": "object",
                   "properties": {
                     "number": {"type": "string"},
-                    "extension": {"type": "string|null"},
+                    "extension": {"type": ["string", "null"]},
                     "type": {
-                      "type": "string|null",
+                      "type": ["string", "null"],
                       "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"]
                     }
                   },
@@ -696,6 +717,8 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
         "code": {"type": "string"},
         "name": {"type": "string"},
         "type": {"type": "string"},
+        "committeeId": {"type": "object", "description": "the associated committee ID"},
+        "status": {"type": "string"},
         "address": {
           "id": "/Address",
           "type": "object",
@@ -710,7 +733,17 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
           "required": ["streetAddress", "locality", "region", "postalCode"]
         }
       },
-      "required": ["id", "code", "name", "type", "address"]
+      "required": ["id", "code", "name", "type", "status", "address"]
+    },
+    "committee": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "object"},
+        "code": {"type": "string"},
+        "name": {"type": "string"},
+        "shortName": {"type": "string"}
+      },
+      "required": ["id", "name", "shortName"]
     }
   },
   "required": ["institution"]
@@ -790,6 +823,86 @@ system | admin | N/A|N/A
 institution | admin | institution|N/A
 institution | member | institution|N/A
 
+## InstitutionSearch - <em>Search Institutions</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/dictionary/institution/:searchString"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/Search",
+    "type": "object",
+    "properties": {"searchString": {"type": "string"}},
+    "required": ["searchString"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/InstitutionSearchResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "id": "/InstitutionShortProfile",
+        "type": "object",
+        "properties": {
+          "id": {"type": "object"},
+          "code": {"type": "string"},
+          "name": {"type": "string"},
+          "type": {"type": "string"},
+          "committeeId": {"type": "object", "description": "the associated committee ID"},
+          "status": {"type": "string"},
+          "address": {
+            "id": "/Address",
+            "type": "object",
+            "properties": {
+              "streetAddress": {"type": "string"},
+              "locality": {"type": "string"},
+              "region": {"type": "string"},
+              "postalCode": {"type": "string"},
+              "extendedAddress": {"type": "array", "items": {"type": "string"}},
+              "countryName": {"type": "string"}
+            },
+            "required": ["streetAddress", "locality", "region", "postalCode"]
+          }
+        },
+        "required": ["id", "code", "name", "type", "status", "address"]
+      }
+    }
+  }
+}
+```
+
+
+
+<aside class="notice">This route is public and does not require authentication</aside>
+
+
+Searches for institutions whose name matches the search string.
+
+### HTTP Request
+
+`GET /dictionary/institution/:searchString`
+
+
+
+### Authorization
+ 
+N/A
+
 ## InstitutionUpdate - <em>Update Institution</em>
 
 
@@ -819,7 +932,14 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
         "type": "boolean",
         "description": "Whether to load users from stream or not"
       },
-      "legal": {"type": "string"},
+      "legalEntityId": {
+        "type": "string",
+        "description": "The ID of the legal entity institution, used if the institution is grouped under one legal entity"
+      },
+      "committeeId": {
+        "type": "string",
+        "description": "The ID of the committee associated with this institution."
+      },
       "website": {"type": "string"},
       "address": {
         "id": "/Address",
@@ -855,7 +975,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
           },
           "required": ["number"]
         },
-        "minItems": 1,
+        "minItems": 0,
         "maxItems": 5
       },
       "test": {"type": "boolean"}
@@ -881,8 +1001,8 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }

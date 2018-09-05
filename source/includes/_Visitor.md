@@ -138,8 +138,8 @@ curl "https://ctoregistry.com/api/v1/validation/email/:token"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -195,8 +195,8 @@ curl "https://ctoregistry.com/api/v1/validation/resend/:userId/:institutionId"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -219,11 +219,11 @@ Re-sends a validation email to an existing email address for an existing user ac
  
 N/A
 
-## InstitutionSearch - <em>Search Institutions</em>
+## EmailValidationResendByUsername - <em>Resend Email Validation By Username</em>
 
 
 ```shell
-curl "https://ctoregistry.com/api/v1/dictionary/institution/:searchString"  
+curl "https://ctoregistry.com/api/v1/validation/resend/:username"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -233,10 +233,10 @@ curl "https://ctoregistry.com/api/v1/dictionary/institution/:searchString"
 ```json
 {
   "params": {
-    "id": "/Search",
+    "id": "/EmailValidationResendByUsername",
     "type": "object",
-    "properties": {"searchString": {"type": "string"}},
-    "required": ["searchString"]
+    "properties": {"username": {"type": "string"}},
+    "required": ["username"]
   }
 }
 ```
@@ -246,37 +246,15 @@ curl "https://ctoregistry.com/api/v1/dictionary/institution/:searchString"
 
 ```json
 {
-  "id": "/InstitutionSearchResponse",
+  "id": "/ActionResponse",
   "type": "object",
   "properties": {
-    "data": {
-      "type": "array",
-      "items": {
-        "id": "/InstitutionShortProfile",
-        "type": "object",
-        "properties": {
-          "id": {"type": "object"},
-          "code": {"type": "string"},
-          "name": {"type": "string"},
-          "type": {"type": "string"},
-          "address": {
-            "id": "/Address",
-            "type": "object",
-            "properties": {
-              "streetAddress": {"type": "string"},
-              "locality": {"type": "string"},
-              "region": {"type": "string"},
-              "postalCode": {"type": "string"},
-              "extendedAddress": {"type": "array", "items": {"type": "string"}},
-              "countryName": {"type": "string"}
-            },
-            "required": ["streetAddress", "locality", "region", "postalCode"]
-          }
-        },
-        "required": ["id", "code", "name", "type", "address"]
-      }
-    }
-  }
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
 }
 ```
 
@@ -285,11 +263,11 @@ curl "https://ctoregistry.com/api/v1/dictionary/institution/:searchString"
 <aside class="notice">This route is public and does not require authentication</aside>
 
 
-Searchs for institutions whose name matches the search string.
+Re-sends a validation email to an existing email address for an existing user account using the username to find the associated account
 
 ### HTTP Request
 
-`GET /dictionary/institution/:searchString`
+`GET /validation/resend/:username`
 
 
 
@@ -329,8 +307,8 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/password/reset/request"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -386,8 +364,8 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/password/reset"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -515,7 +493,7 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/"
         "id": {"type": "object"},
         "username": {"type": "string"},
         "userInstitutionId": {"type": "object"},
-        "institutionId": {"type": "object|null"},
+        "institutionId": {"type": ["object", "null"]},
         "isAccessEmailSent": {"type": "boolean"},
         "isAccountModerated": {"type": "boolean"},
         "moderationResults": {"type": "object"}

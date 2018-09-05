@@ -237,7 +237,11 @@ curl -X POST "https://ctoregistry.com/api/v1/committee/"
         "type": "string",
         "description": "The effective date of a change of status"
       },
-      "parentInstitutionId": {"type": "string", "description": "The ID of the parent institution"}
+      "parentInstitutionId": {"type": "string", "description": "The ID of the parent institution"},
+      "parentCommitteeId": {
+        "type": ["string", "null"],
+        "description": "The ID of the parent committee, optional, null can be passed to remove an existing value."
+      }
     },
     "required": ["name", "code", "type", "status", "parentInstitutionId"]
   }
@@ -254,8 +258,8 @@ curl -X POST "https://ctoregistry.com/api/v1/committee/"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -340,16 +344,17 @@ curl "https://ctoregistry.com/api/v1/committee/"
 ```json
 {
   "query": {
-    "id": "/ListQuery",
+    "id": "/CommitteeListQuery",
     "type": "object",
     "properties": {
-      "count": {"type": "string"},
-      "offset": {"type": "string"},
-      "limit": {"type": "string"},
+      "offset": {"type": "integer", "minimum": 0, "default": 0},
+      "limit": {"type": "integer", "minimum": 0, "default": 20},
       "sortby": {"type": "string"},
       "order": {"type": "string"},
       "search": {"type": "string"},
-      "status": {"type": "string"}
+      "status": {"type": "string"},
+      "institutionIds": {"type": ["string", "array"], "description": "an array of institution IDs"},
+      "committeeIds": {"type": ["string", "array"], "description": "an array of committee IDs"}
     }
   }
 }
@@ -375,6 +380,7 @@ curl "https://ctoregistry.com/api/v1/committee/"
     "data": {
       "type": "array",
       "items": {
+        "id": "/CommitteeShortProfile",
         "type": "object",
         "properties": {
           "id": {"type": "object"},
@@ -391,10 +397,9 @@ curl "https://ctoregistry.com/api/v1/committee/"
             },
             "required": ["id", "code", "name"]
           },
-          "createDt": {"type": "date"},
-          "updateDt": {"type": "date"}
+          "parentCommitteeId": {"type": "object"}
         },
-        "required": ["id", "code", "name", "type", "status", "institution", "createDt", "updateDt"]
+        "required": ["id", "code", "name", "type", "status"]
       }
     }
   }
@@ -472,6 +477,7 @@ curl "https://ctoregistry.com/api/v1/committee/user/:userId"
     "data": {
       "type": "array",
       "items": {
+        "id": "/UserCommittee",
         "type": "object",
         "properties": {
           "committee": {
@@ -564,8 +570,8 @@ curl -X POST "https://ctoregistry.com/api/v1/committee/:committeeId/members/add"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -645,8 +651,8 @@ curl -X POST "https://ctoregistry.com/api/v1/committee/:committeeId/members/edit
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -791,11 +797,20 @@ curl "https://ctoregistry.com/api/v1/committee/:committeeId"
         "id": {"type": "object"},
         "code": {"type": "string"},
         "name": {"type": "string"},
-        "type": {"type": "string"},
-        "status": {"type": "string"},
+        "type": {"type": "string", "enum": ["reb", "steering"]},
+        "status": {"type": "string", "enum": ["pending", "active", "deleted", "suspended"]},
         "shortName": {"type": "string"},
         "streamName": {"type": "string"},
         "institution": {
+          "type": "object",
+          "properties": {
+            "id": {"type": "object"},
+            "code": {"type": "string"},
+            "name": {"type": "string"}
+          },
+          "required": ["id", "code", "name"]
+        },
+        "parentCommittee": {
           "type": "object",
           "properties": {
             "id": {"type": "object"},
@@ -841,6 +856,81 @@ Gets the data associated to one committee.
 system | admin | N/A|N/A
 committee | member | committee|N/A
 
+## CommitteeSearch - <em>Search Committees</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/dictionary/committee/:searchString"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/Search",
+    "type": "object",
+    "properties": {"searchString": {"type": "string"}},
+    "required": ["searchString"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/CommitteeSearchResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "id": "/CommitteeShortProfile",
+        "type": "object",
+        "properties": {
+          "id": {"type": "object"},
+          "code": {"type": "string"},
+          "name": {"type": "string"},
+          "type": {"type": "string"},
+          "status": {"type": "string"},
+          "institution": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "object"},
+              "code": {"type": "string"},
+              "name": {"type": "string"}
+            },
+            "required": ["id", "code", "name"]
+          },
+          "parentCommitteeId": {"type": "object"}
+        },
+        "required": ["id", "code", "name", "type", "status"]
+      }
+    }
+  }
+}
+```
+
+
+Searches for committees whose name matches the search string.
+
+### HTTP Request
+
+`GET /dictionary/committee/:searchString`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+
 ## CommitteeUpdate - <em>Update Committee</em>
 
 
@@ -876,7 +966,11 @@ curl -X PUT "https://ctoregistry.com/api/v1/committee/:committeeId"
         "type": "string",
         "description": "The effective date of a change of status"
       },
-      "parentInstitutionId": {"type": "string", "description": "The ID of the parent institution"}
+      "parentInstitutionId": {"type": "string", "description": "The ID of the parent institution"},
+      "parentCommitteeId": {
+        "type": ["string", "null"],
+        "description": "The ID of the parent committee, optional, null can be passed to remove an existing value."
+      }
     },
     "required": ["name", "type"]
   },
@@ -899,8 +993,8 @@ curl -X PUT "https://ctoregistry.com/api/v1/committee/:committeeId"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }

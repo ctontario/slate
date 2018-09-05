@@ -16,17 +16,19 @@ curl "https://ctoregistry.com/api/v1/admin/moderation/user"
 ```json
 {
   "query": {
-    "id": "/ListQuery",
+    "id": "/ModerationListQuery",
     "type": "object",
     "properties": {
-      "count": {"type": "string"},
-      "offset": {"type": "string"},
-      "limit": {"type": "string"},
+      "offset": {"type": "integer", "minimum": 0, "default": 0},
+      "limit": {"type": "integer", "minimum": 0, "default": 20},
       "sortby": {"type": "string"},
       "order": {"type": "string"},
       "search": {"type": "string"},
       "status": {"type": "string"},
-      "institutions": {"type": ["string", "array"], "description": "an array of institution IDs"}
+      "institutionIds": {
+        "type": ["string", "array"],
+        "description": "an array of institution IDs to find users to moderate at"
+      }
     }
   }
 }
@@ -52,6 +54,7 @@ curl "https://ctoregistry.com/api/v1/admin/moderation/user"
     "data": {
       "type": "array",
       "items": {
+        "id": "/AdminUserModeration",
         "type": "object",
         "properties": {
           "id": {"type": "object"},
@@ -189,8 +192,8 @@ curl -X POST "https://ctoregistry.com/api/v1/admin/moderation/user/institution"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -253,8 +256,8 @@ curl -X PUT "https://ctoregistry.com/api/v1/admin/moderation/user/:userId/instit
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -276,3 +279,234 @@ Lets an admin moderate a users role request at a specified institution
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
 institution | admin | user|N/A
+
+## GetTaskLogIssues - <em>Task Log Issues</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId/issues"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/TaskLogIssuesRequest",
+    "type": "object",
+    "properties": {"taskName": {"type": "string"}},
+    "required": ["taskName"]
+  },
+  "query": {
+    "id": "/TaskLogIssuesQuery",
+    "type": "object",
+    "properties": {
+      "offset": {"type": "integer", "minimum": 0, "default": 0},
+      "limit": {"type": "integer", "minimum": 0, "default": 20},
+      "sortby": {"type": "string"},
+      "order": {"type": "string"},
+      "search": {"type": "string"},
+      "status": {"type": "string"}
+    }
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/TaskLogIssuesResponse",
+  "type": "object",
+  "properties": {
+    "taskLog": {
+      "id": "/TaskLog",
+      "properties": {
+        "id": {"type": "object"},
+        "taskName": {"type": "string"},
+        "runDt": {"type": "date"},
+        "issues": {
+          "type": "object",
+          "properties": {"total": {"type": "integer"}, "resolved": {"type": "integer"}},
+          "required": ["total", "resolved"]
+        },
+        "results": {
+          "type": "object",
+          "properties": {"total": {"type": "integer"}, "errors": {"type": "integer"}},
+          "required": ["total", "errors"]
+        },
+        "error": {"type": ["object", "any"]}
+      },
+      "required": ["id", "taskName", "runDt", "issues", "results"]
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "id": "/TaskLogIssue",
+        "properties": {
+          "id": {"type": "object"},
+          "taskLogId": {"type": "object"},
+          "rownum": {"type": "string"},
+          "issueType": {"type": "string"},
+          "issue": {"type": ["string"]},
+          "isResolved": {"type": "boolean"},
+          "data": {"type": ["object", "string"]}
+        },
+        "required": ["id", "taskLogId", "issueType", "isResolved"]
+      }
+    }
+  },
+  "required": ["taskLog", "data"]
+}
+```
+
+
+Gets the issues related to the last run of the specified taskName
+
+### HTTP Request
+
+`GET /admin/sync/taskLogs/:taskLogId/issues`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+
+## GetTaskLogs - <em>Task Logs</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/TaskLogsRequest",
+    "type": "object",
+    "properties": {"taskName": {"type": "string"}},
+    "required": []
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/TaskLogsResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "id": "/TaskLog",
+        "properties": {
+          "id": {"type": "object"},
+          "taskName": {"type": "string"},
+          "runDt": {"type": "date"},
+          "issues": {
+            "type": "object",
+            "properties": {"total": {"type": "integer"}, "resolved": {"type": "integer"}},
+            "required": ["total", "resolved"]
+          },
+          "results": {
+            "type": "object",
+            "properties": {"total": {"type": "integer"}, "errors": {"type": "integer"}},
+            "required": ["total", "errors"]
+          },
+          "error": {"type": ["object", "any"]}
+        },
+        "required": ["id", "taskName", "runDt", "issues", "results"]
+      }
+    }
+  }
+}
+```
+
+
+Lets an admin review the logs from the last round of synchronization
+If taskName is passed then only that task log is returned, or an error if not found.  If no task
+name is passed in then all tasks from the previous run will be included
+        
+
+
+### HTTP Request
+
+`GET /admin/sync/taskLogs`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+
+## TaskLogIssueMarkResolved - <em>Update Task Log Issue</em>
+
+
+```shell
+curl -X PUT "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId/issues/:issueId/:resolved"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/TaskLogIssueUpdateRequest",
+    "type": "object",
+    "properties": {"issueId": {"type": "string"}, "isResolved": {"type": "string"}},
+    "required": ["issueId", "isResolved"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Updates the issues with the new isResolved value
+
+### HTTP Request
+
+`PUT /admin/sync/taskLogs/:taskLogId/issues/:issueId/:resolved`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A

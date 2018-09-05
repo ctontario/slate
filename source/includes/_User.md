@@ -34,8 +34,8 @@ curl -X PUT "https://ctoregistry.com/api/v1/user/:userId/confidentiality"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -160,7 +160,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/"
         "id": {"type": "object"},
         "username": {"type": "string"},
         "userInstitutionId": {"type": "object"},
-        "institutionId": {"type": "object|null"},
+        "institutionId": {"type": ["object", "null"]},
         "isAccessEmailSent": {"type": "boolean"},
         "isAccountModerated": {"type": "boolean"},
         "moderationResults": {"type": "object"}
@@ -228,8 +228,8 @@ curl -X DELETE "https://ctoregistry.com/api/v1/user/:userId/document/:documentId
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -357,15 +357,7 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/user/:userId"
         "originalFilename": {"type": "string"},
         "filename": {"type": "string"}
       },
-      "required": [
-        "id",
-        "type",
-        "expiryDt",
-        "uploadDt",
-        "completeDt",
-        "originalFilename",
-        "filename"
-      ]
+      "required": ["id", "type", "uploadDt", "completeDt", "originalFilename", "filename"]
     }
   }
 }
@@ -478,7 +470,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution"
         "id": {"type": "object"},
         "username": {"type": "string"},
         "userInstitutionId": {"type": "object"},
-        "institutionId": {"type": "object|null"},
+        "institutionId": {"type": ["object", "null"]},
         "isAccessEmailSent": {"type": "boolean"},
         "isAccountModerated": {"type": "boolean"},
         "moderationResults": {"type": "object"}
@@ -577,9 +569,9 @@ curl "https://ctoregistry.com/api/v1/user/:userId/institution/:institutionId"
             "type": "object",
             "properties": {
               "number": {"type": "string"},
-              "extension": {"type": "string|null"},
+              "extension": {"type": ["string", "null"]},
               "type": {
-                "type": "string|null",
+                "type": ["string", "null"],
                 "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"]
               }
             },
@@ -682,8 +674,8 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:instituti
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -743,8 +735,8 @@ curl -X DELETE "https://ctoregistry.com/api/v1/user/:userId/institution/:institu
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -793,10 +785,6 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:instituti
     "properties": {
       "code": {"type": "string", "description": "The institution code"},
       "name": {"type": "string", "maxLength": 200, "description": "The institution name"},
-      "isInvestigator": {
-        "type": "boolean",
-        "description": "Whether the user was indicated as an investigator or not"
-      },
       "address": {
         "id": "/Address",
         "type": "object",
@@ -838,7 +826,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:instituti
       "privacy": {"type": "string", "enum": ["public", "private", "institution", "members"]}
     },
     "anyOf": [{"required": ["name"]}, {"required": ["code"]}],
-    "required": ["address", "email", "phones", "isInvestigator"]
+    "required": []
   }
 }
 ```
@@ -853,8 +841,8 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:instituti
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -895,16 +883,17 @@ curl "https://ctoregistry.com/api/v1/user/"
 ```json
 {
   "query": {
-    "id": "/ListQuery",
+    "id": "/UserListQuery",
     "type": "object",
     "properties": {
-      "count": {"type": "string"},
-      "offset": {"type": "string"},
-      "limit": {"type": "string"},
+      "offset": {"type": "integer", "minimum": 0, "default": 0},
+      "limit": {"type": "integer", "minimum": 0, "default": 20},
       "sortby": {"type": "string"},
       "order": {"type": "string"},
       "search": {"type": "string"},
-      "status": {"type": "string"}
+      "status": {"type": "string"},
+      "institutionIds": {"type": ["string", "array"], "description": "an array of institution IDs"},
+      "committeeIds": {"type": ["string", "array"], "description": "an array of committee IDs"}
     }
   }
 }
@@ -957,7 +946,7 @@ curl "https://ctoregistry.com/api/v1/user/"
                 "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
               },
               "firstName": {"type": "string"},
-              "middleName": {"type": "string|null"},
+              "middleName": {"type": ["string", "null"]},
               "lastName": {"type": "string"},
               "privacy": {
                 "type": "string",
@@ -971,7 +960,11 @@ curl "https://ctoregistry.com/api/v1/user/"
             "type": "array",
             "items": {
               "type": "object",
-              "properties": {"agreeDt": {"type": "date"}, "version": {"type": "string"}},
+              "properties": {
+                "agreeDt": {"type": "date"},
+                "version": {"type": "string"},
+                "isCurrent": {"type": "boolean"}
+              },
               "required": ["agreeDt", "version"]
             }
           },
@@ -1047,8 +1040,8 @@ curl -X POST "https://ctoregistry.com/api/v1/user/password/update"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -1121,8 +1114,8 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/privileges"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -1176,8 +1169,8 @@ curl -X DELETE "https://ctoregistry.com/api/v1/user/:userId/privileges/:privileg
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -1234,11 +1227,11 @@ curl "https://ctoregistry.com/api/v1/user/:userId/privileges"
       "items": {
         "type": "object",
         "properties": {
-          "id": {"type": "object|null"},
+          "id": {"type": ["object", "null"]},
           "scope": {"type": "string"},
           "role": {"type": "string"},
-          "target": {"type": "object|null"},
-          "targetName": {"type": "string|null"},
+          "target": {"type": ["string", "null"]},
+          "targetName": {"type": ["string", "null"]},
           "createDt": {"type": "date"},
           "updateDt": {"type": "date"}
         },
@@ -1325,7 +1318,7 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
               "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
             },
             "firstName": {"type": "string"},
-            "middleName": {"type": "string|null"},
+            "middleName": {"type": ["string", "null"]},
             "lastName": {"type": "string"},
             "privacy": {"type": "string", "enum": ["public", "private", "institution", "members"]},
             "isDraft": {"type": "boolean"}
@@ -1336,7 +1329,11 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
           "type": "array",
           "items": {
             "type": "object",
-            "properties": {"agreeDt": {"type": "date"}, "version": {"type": "string"}},
+            "properties": {
+              "agreeDt": {"type": "date"},
+              "version": {"type": "string"},
+              "isCurrent": {"type": "boolean"}
+            },
             "required": ["agreeDt", "version"]
           }
         },
@@ -1376,9 +1373,9 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
                   "type": "object",
                   "properties": {
                     "number": {"type": "string"},
-                    "extension": {"type": "string|null"},
+                    "extension": {"type": ["string", "null"]},
                     "type": {
-                      "type": "string|null",
+                      "type": ["string", "null"],
                       "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"]
                     }
                   },
@@ -1425,7 +1422,10 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
                   "subCode": {"type": "string"},
                   "expiryDt": {"type": "date"},
                   "value": {"type": "string"},
-                  "vendor": {"type": "string"},
+                  "vendor": {
+                    "type": "Object",
+                    "properties": {"code": {"type": "string"}, "name": {"type": "string"}}
+                  },
                   "vendorOther": {"type": "string"},
                   "completeDt": {"type": "date"},
                   "originalFilename": {"type": "string"},
@@ -1522,8 +1522,8 @@ curl -X PUT "https://ctoregistry.com/api/v1/user/:userId/profile"
   "properties": {
     "status": {"type": "string"},
     "action": {"type": "string"},
-    "id": {"type": "object|null"},
-    "result": {"type": "object|array|string"}
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
   },
   "required": ["status", "action", "id"]
 }
@@ -1607,15 +1607,35 @@ curl "https://ctoregistry.com/api/v1/user/:userId/study"
         "properties": {
           "id": {"type": "object"},
           "isInvestigatorInitiatedStudy": {"type": "boolean"},
-          "sponsor": {"type": "string|null"},
-          "sponsorId": {"type": "object"},
+          "sponsor": {
+            "type": ["string", "null"],
+            "description": "@Deprecated: Use studySponsor.name instead."
+          },
+          "studySponsor": {
+            "type": "object",
+            "properties": {"id": {"type": "object"}, "name": {"type": ["string", "null"]}},
+            "required": ["name"]
+          },
           "ohrp": {"type": "boolean"},
           "fda": {"type": "boolean"},
           "observational": {"type": "boolean"},
-          "provincialStatus": {"type": "string"},
-          "expiryDt": {"type": "date|null"},
+          "provincialStatus": {
+            "type": "string",
+            "enum": [
+              "Active",
+              "Completed",
+              "Expired",
+              "None",
+              "Not Approved",
+              "Pending",
+              "Suspended",
+              "Terminated",
+              "Withdrawn"
+            ]
+          },
+          "expiryDt": {"type": ["date", "null"]},
           "shortTitle": {"type": "string"},
-          "title": {"type": "string|null"},
+          "title": {"type": ["string", "null"]},
           "reviewerLink": {"type": "string"},
           "applicantLink": {"type": "string"},
           "reb": {
@@ -1630,7 +1650,7 @@ curl "https://ctoregistry.com/api/v1/user/:userId/study"
         "required": [
           "id",
           "isInvestigatorInitiatedStudy",
-          "sponsor",
+          "studySponsor",
           "ohrp",
           "fda",
           "observational",

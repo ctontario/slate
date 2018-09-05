@@ -16,16 +16,20 @@ curl "https://ctoregistry.com/api/v1/study/"
 ```json
 {
   "query": {
-    "id": "/ListQuery",
+    "id": "/StudyListQuery",
     "type": "object",
     "properties": {
-      "count": {"type": "string"},
-      "offset": {"type": "string"},
-      "limit": {"type": "string"},
+      "offset": {"type": "integer", "minimum": 0, "default": 0},
+      "limit": {"type": "integer", "minimum": 0, "default": 20},
       "sortby": {"type": "string"},
       "order": {"type": "string"},
       "search": {"type": "string"},
-      "status": {"type": "string"}
+      "status": {"type": "string"},
+      "institutionIds": {
+        "type": ["string", "array"],
+        "description": "an array of sponsor institution IDs"
+      },
+      "committeeIds": {"type": ["string", "array"], "description": "an array of committee IDs"}
     }
   }
 }
@@ -56,15 +60,35 @@ curl "https://ctoregistry.com/api/v1/study/"
         "properties": {
           "id": {"type": "object"},
           "isInvestigatorInitiatedStudy": {"type": "boolean"},
-          "sponsor": {"type": "string|null"},
-          "sponsorId": {"type": "object"},
+          "sponsor": {
+            "type": ["string", "null"],
+            "description": "@Deprecated: Use studySponsor.name instead."
+          },
+          "studySponsor": {
+            "type": "object",
+            "properties": {"id": {"type": "object"}, "name": {"type": ["string", "null"]}},
+            "required": ["name"]
+          },
           "ohrp": {"type": "boolean"},
           "fda": {"type": "boolean"},
           "observational": {"type": "boolean"},
-          "provincialStatus": {"type": "string"},
-          "expiryDt": {"type": "date|null"},
+          "provincialStatus": {
+            "type": "string",
+            "enum": [
+              "Active",
+              "Completed",
+              "Expired",
+              "None",
+              "Not Approved",
+              "Pending",
+              "Suspended",
+              "Terminated",
+              "Withdrawn"
+            ]
+          },
+          "expiryDt": {"type": ["date", "null"]},
           "shortTitle": {"type": "string"},
-          "title": {"type": "string|null"},
+          "title": {"type": ["string", "null"]},
           "reviewerLink": {"type": "string"},
           "applicantLink": {"type": "string"},
           "reb": {
@@ -79,7 +103,7 @@ curl "https://ctoregistry.com/api/v1/study/"
         "required": [
           "id",
           "isInvestigatorInitiatedStudy",
-          "sponsor",
+          "studySponsor",
           "ohrp",
           "fda",
           "observational",
@@ -118,7 +142,7 @@ curl "https://ctoregistry.com/api/v1/study/"
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
-institution | member | N/A|User has a collaborater role for the target study.
+institution | member | N/A|User has a collaborator role for the target study.
 institution | admin | N/A|Study has a centre application for the target institution of the privilege.
 committee | member | N/A|Study REB is set to the target of the privilege.
 
@@ -158,8 +182,15 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
       "properties": {
         "id": {"type": "object"},
         "isInvestigatorInitiatedStudy": {"type": "boolean"},
-        "sponsor": {"type": ["string", "null"]},
-        "sponsorId": {"type": "object"},
+        "sponsor": {
+          "type": ["string", "null"],
+          "description": "@Deprecated: Use studySponsor.name instead."
+        },
+        "studySponsor": {
+          "type": "object",
+          "properties": {"id": {"type": "object"}, "name": {"type": ["string", "null"]}},
+          "required": ["name"]
+        },
         "ctaita": {"type": "boolean"},
         "ctaitaTypes": {
           "type": "array",
@@ -169,7 +200,20 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
         "ohrp": {"type": "boolean"},
         "fda": {"type": "boolean"},
         "observational": {"type": "boolean"},
-        "provincialStatus": {"type": "string"},
+        "provincialStatus": {
+          "type": "string",
+          "enum": [
+            "Active",
+            "Completed",
+            "Expired",
+            "None",
+            "Not Approved",
+            "Pending",
+            "Suspended",
+            "Terminated",
+            "Withdrawn"
+          ]
+        },
         "expiryDt": {"type": ["date", "null"]},
         "shortTitle": {"type": "string"},
         "title": {"type": ["string", "null"]},
@@ -232,9 +276,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
               "children",
               "emergency",
               "lackConsentCapacity",
-              "cognitivelyImpared",
+              "cognitivelyImpaired",
               "physicalDisabilities",
-              "speechImpared",
+              "speechImpaired",
               "lackConsentTemporary",
               "pregnant",
               "elderly",
@@ -258,9 +302,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
             "studyContact": {
               "id": "/StudyUser",
               "properties": {
-                "email": {"type": "string|null"},
-                "firstName": {"type": "string|null"},
-                "lastName": {"type": "string|null"},
+                "email": {"type": ["string", "null"]},
+                "firstName": {"type": ["string", "null"]},
+                "lastName": {"type": ["string", "null"]},
                 "user": {
                   "type": "object",
                   "properties": {
@@ -280,9 +324,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
             "projectOwner": {
               "id": "/StudyUser",
               "properties": {
-                "email": {"type": "string|null"},
-                "firstName": {"type": "string|null"},
-                "lastName": {"type": "string|null"},
+                "email": {"type": ["string", "null"]},
+                "firstName": {"type": ["string", "null"]},
+                "lastName": {"type": ["string", "null"]},
                 "user": {
                   "type": "object",
                   "properties": {
@@ -302,9 +346,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
             "provincialApplicant": {
               "id": "/StudyUser",
               "properties": {
-                "email": {"type": "string|null"},
-                "firstName": {"type": "string|null"},
-                "lastName": {"type": "string|null"},
+                "email": {"type": ["string", "null"]},
+                "firstName": {"type": ["string", "null"]},
+                "lastName": {"type": ["string", "null"]},
                 "user": {
                   "type": "object",
                   "properties": {
@@ -333,7 +377,20 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
                 "description": "The document Id of the institution.  This may be empty due to a data linking issue."
               },
               "name": {"type": "string"},
-              "status": {"type": "string"},
+              "status": {
+                "type": "string",
+                "enum": [
+                  "Active",
+                  "Completed",
+                  "Expired",
+                  "None",
+                  "Not Approved",
+                  "Pending",
+                  "Suspended",
+                  "Terminated",
+                  "Withdrawn"
+                ]
+              },
               "startDate": {
                 "type": "string",
                 "description": "The textual start date for the centre"
@@ -341,9 +398,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
               "principalInvestigator": {
                 "id": "/StudyUser",
                 "properties": {
-                  "email": {"type": "string|null"},
-                  "firstName": {"type": "string|null"},
-                  "lastName": {"type": "string|null"},
+                  "email": {"type": ["string", "null"]},
+                  "firstName": {"type": ["string", "null"]},
+                  "lastName": {"type": ["string", "null"]},
                   "user": {
                     "type": "object",
                     "properties": {
@@ -363,9 +420,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
               "coInvestigator": {
                 "id": "/StudyUser",
                 "properties": {
-                  "email": {"type": "string|null"},
-                  "firstName": {"type": "string|null"},
-                  "lastName": {"type": "string|null"},
+                  "email": {"type": ["string", "null"]},
+                  "firstName": {"type": ["string", "null"]},
+                  "lastName": {"type": ["string", "null"]},
                   "user": {
                     "type": "object",
                     "properties": {
@@ -385,9 +442,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
               "studyContact": {
                 "id": "/StudyUser",
                 "properties": {
-                  "email": {"type": "string|null"},
-                  "firstName": {"type": "string|null"},
-                  "lastName": {"type": "string|null"},
+                  "email": {"type": ["string", "null"]},
+                  "firstName": {"type": ["string", "null"]},
+                  "lastName": {"type": ["string", "null"]},
                   "user": {
                     "type": "object",
                     "properties": {
@@ -417,6 +474,7 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
         "id",
         "isInvestigatorInitiatedStudy",
         "sponsor",
+        "studySponsor",
         "ohrp",
         "fda",
         "observational",

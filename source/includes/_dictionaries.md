@@ -58,9 +58,9 @@ illiterate|People who are unable to read or write
 children|Children
 emergency|People in medical emergencies
 lackConsentCapacity|People who lack capacity to consent
-cognitivelyImpared|Cognitively impaired individuals
+cognitivelyImpaired|Cognitively impaired individuals
 physicalDisabilities|Individuals with physical disabilities
-speechImpared|People who have trouble understanding and/or producing speech
+speechImpaired|People who have trouble understanding and/or producing speech
 lackConsentTemporary|Adult individuals who are temporarily unable to provide consent
 pregnant|Pregnant women
 elderly|Elderly people

@@ -43,7 +43,8 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>21103</small> | <small>400</small> | <small>INSTITUTION_NOT_FOUND</small> | <small>Institution not found</small>
 <small>21110</small> | <small>400</small> | <small>INSTITUTION_CODE_NOT_FOUND</small> | <small>The institution code does not exist</small>
 <small>21120</small> | <small>400</small> | <small>INSTITUTION_TYPE_CODE_NOT_FOUND</small> | <small>Institution type code was not found</small>
-<small>22104</small> | <small>400</small> | <small>COMMITTEE_NOT_FOUND</small> | <small>Committee not found</small>
+<small>22100</small> | <small>400</small> | <small>COMMITTEE_NOT_FOUND</small> | <small>Committee not found</small>
+<small>22101</small> | <small>400</small> | <small>INSTITUTION_CODE_NOT_FOUND</small> | <small>The institution code does not exist</small>
 <small>22102</small> | <small>400</small> | <small>COMMITTEE_CODE_DUPLICATE</small> | <small>Committee code is already used</small>
 <small>22103</small> | <small>400</small> | <small>COMMITTEE_NAME_DUPLICATE</small> | <small>Committee name is already used</small>
 <small>22104</small> | <small>400</small> | <small>COMMITTEE_SHORTNAME_DUPLICATE</small> | <small>Committee short name is already used</small>
@@ -59,6 +60,7 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>26011</small> | <small>400</small> | <small>PRIVILEGE_TARGET_NOT_FOUND</small> | <small>The target for the privilege could not be found in the system</small>
 <small>26015</small> | <small>400</small> | <small>PRIVILEGE_DUPLICATE</small> | <small>The privilege was already assigned to the user</small>
 <small>27001</small> | <small>400</small> | <small>TASKLOG_NOT_FOUND</small> | <small>The task log could not be found</small>
+<small>27002</small> | <small>400</small> | <small>TASKLOG_ISSUE_NOT_FOUND</small> | <small>The task log issue could not be found</small>
 <small>90100</small> | <small>401</small> | <small>UNAUTHENTICATED</small> | <small>Not authenticated to access this resource</small>
 <small>90101</small> | <small>403</small> | <small>UNAUTHORIZED</small> | <small>Not authorized to access this resource</small>
 <small>90102</small> | <small>401</small> | <small>AUTHENTICATION_EXPIRED</small> | <small>No longer authenticated to access this resource.  Please login again.</small>
