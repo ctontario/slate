@@ -52,6 +52,10 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>22110</small> | <small>400</small> | <small>COMMITTEE_USER_DUPLICATE</small> | <small>This user is already associated to the committee</small>
 <small>22111</small> | <small>400</small> | <small>COMMITTEE_MEMBER_NOT_FOUND</small> | <small>The requested committee member was not found.</small>
 <small>23104</small> | <small>400</small> | <small>STUDY_NOT_FOUND</small> | <small>Study not found</small>
+<small>23105</small> | <small>400</small> | <small>QUICKSTART_SITE_NOT_FOUND</small> | <small>QuickSTART site not found</small>
+<small>23201</small> | <small>400</small> | <small>QUICKSTART_PROJECTIDNUMBER_DUPLICATE</small> | <small>QuickSTART project Id Number is already used</small>
+<small>23202</small> | <small>400</small> | <small>QUICKSTART_SHORTTITLE_DUPLICATE</small> | <small>QuickSTART short title is already used</small>
+<small>23301</small> | <small>400</small> | <small>QUICKSTART_SITE_DUPLICATE</small> | <small>QuickSTART site with institutionId already exists on the specified QuickSTART application</small>
 <small>25020</small> | <small>400</small> | <small>ADMIN_VETTING_NOT_SET_FOR_MODERATION</small> | <small>The user institution is not set for moderation</small>
 <small>25050</small> | <small>400</small> | <small>ADMIN_VETTING_CODE_NOT_RECOGNIZED</small> | <small>The vetting code used was not recognized</small>
 <small>25051</small> | <small>400</small> | <small>ADMIN_VETTING_CODE_NOT_PERMITTED</small> | <small>The vetting code used is not permitted with the current status</small>

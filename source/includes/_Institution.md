@@ -133,12 +133,16 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
         "type": "boolean",
         "description": "Whether to load users from stream or not"
       },
+      "isQuickStartReady": {
+        "type": "boolean",
+        "description": "Whether the institution is ready to participate in the QuickSTART program or not."
+      },
       "legalEntityId": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "The ID of the legal entity institution, used if the institution is grouped under one legal entity"
       },
       "committeeId": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "The ID of the committee associated with this institution."
       },
       "website": {"type": "string"},
@@ -573,6 +577,7 @@ curl "https://ctoregistry.com/api/v1/institution/"
           "name": {"type": "string"},
           "type": {"type": "string"},
           "committeeId": {"type": "object", "description": "the associated committee ID"},
+          "legalEntityId": {"type": "object", "description": "the associated legal entity ID"},
           "status": {"type": "string"},
           "address": {
             "id": "/Address",
@@ -656,7 +661,12 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
         "createDt": {"type": "date"},
         "updateDt": {"type": "date"},
         "loadStreamUsers": {"type": "boolean"},
+        "isQuickStartReady": {"type": "boolean"},
         "committeeId": {"type": "object", "description": "The ID of the associated committee"},
+        "legalEntityId": {
+          "type": "object",
+          "description": "The ID of the associated parent institution"
+        },
         "sites": {
           "type": "array",
           "items": {
@@ -706,6 +716,7 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
         "createDt",
         "updateDt",
         "loadStreamUsers",
+        "isQuickStartReady",
         "sites"
       ]
     },
@@ -718,6 +729,7 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
         "name": {"type": "string"},
         "type": {"type": "string"},
         "committeeId": {"type": "object", "description": "the associated committee ID"},
+        "legalEntityId": {"type": "object", "description": "the associated legal entity ID"},
         "status": {"type": "string"},
         "address": {
           "id": "/Address",
@@ -864,6 +876,7 @@ curl "https://ctoregistry.com/api/v1/dictionary/institution/:searchString"
           "name": {"type": "string"},
           "type": {"type": "string"},
           "committeeId": {"type": "object", "description": "the associated committee ID"},
+          "legalEntityId": {"type": "object", "description": "the associated legal entity ID"},
           "status": {"type": "string"},
           "address": {
             "id": "/Address",
@@ -932,12 +945,16 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
         "type": "boolean",
         "description": "Whether to load users from stream or not"
       },
+      "isQuickStartReady": {
+        "type": "boolean",
+        "description": "Whether the institution is ready to participate in the QuickSTART program or not."
+      },
       "legalEntityId": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "The ID of the legal entity institution, used if the institution is grouped under one legal entity"
       },
       "committeeId": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "The ID of the committee associated with this institution."
       },
       "website": {"type": "string"},

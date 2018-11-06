@@ -227,6 +227,11 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
         "projectIdNumber": {"type": "number"},
         "createDt": {"type": "date"},
         "updateDt": {"type": "date"},
+        "initialApprovalDt": {"type": ["date", "null"]},
+        "initialReviewType": {
+          "type": ["string", "null"],
+          "enum": ["Full Board Review", "Delegated Review", "Admin Review"]
+        },
         "summary": {"type": ["string", "null"]},
         "interventions": {
           "type": "array",
@@ -464,9 +469,14 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
               "centreSampleSize": {
                 "type": "string",
                 "description": "Textual description of the planned centre sample size"
+              },
+              "initialApprovalDt": {"type": ["date", "null"]},
+              "initialReviewType": {
+                "type": ["string", "null"],
+                "enum": ["Full Board Review", "Delegated Review", "Admin Review"]
               }
             },
-            "required": ["name", "status"]
+            "required": ["name", "status", "initialApprovalDt", "initialReviewType"]
           }
         }
       },
@@ -496,7 +506,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
         "populations",
         "dsmb",
         "ctaApproved",
-        "ctaInvestigational"
+        "ctaInvestigational",
+        "initialReviewType",
+        "initialApprovalDt"
       ]
     }
   }

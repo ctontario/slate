@@ -2,6 +2,68 @@
 # User
 
 
+## UserAtInstitutionSearch - <em>Search Users at Institution</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/dictionary/institution/:institutionId/user/:searchString"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/SearchAtInstitution",
+    "type": "object",
+    "properties": {"institutionId": {"type": "string"}, "searchString": {"type": "string"}},
+    "required": ["institutionId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/UserSearchResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "id": {"type": "object"},
+          "username": {"type": "string"},
+          "fullName": {"type": "string"}
+        },
+        "required": ["id", "fullName", "username"]
+      }
+    }
+  }
+}
+```
+
+
+Searches for users whose name or email matches the search string who are at the specified institution.
+
+### HTTP Request
+
+`GET /dictionary/institution/:institutionId/user/:searchString`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+institution | admin | institution|N/A
+
 ## UserConfidentiality - <em>Update Confidentiality</em>
 
 
@@ -1545,6 +1607,82 @@ Lets an admin or the user themselves update a users profile information
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+institution | admin | user|N/A
+
+## UserShortProfile - <em>Get User Short Profile</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/user/:userId/short-profile"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/UserParams",
+    "type": "object",
+    "properties": {"userId": {"type": "string", "required": true}},
+    "required": ["userId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/UserShortProfileResponse",
+  "type": "object",
+  "properties": {
+    "user": {
+      "id": "/UserShortProfile",
+      "properties": {
+        "id": {"type": "object"},
+        "username": {"type": "string"},
+        "contact": {
+          "type": "object",
+          "properties": {
+            "firstName": {"type": "string"},
+            "middleName": {"type": "string"},
+            "lastName": {"type": "string"},
+            "title": {
+              "type": "string",
+              "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
+            }
+          },
+          "required": ["firstName", "lastName", "title"]
+        },
+        "institutionIds": {"type": "array", "items": {"type": "object"}}
+      },
+      "required": ["id", "username", "contact", "institutionIds"]
+    }
+  },
+  "required": ["user"]
+}
+```
+
+
+Get the short profile for the user with id, used when just displaying a user
+
+### HTTP Request
+
+`GET /user/:userId/short-profile`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+self | N/A | N/A|N/A
+system | admin | N/A|N/A
+committee | admin | user|N/A
 institution | admin | user|N/A
 
 ## UserStudyList - <em>Get User Studies</em>
