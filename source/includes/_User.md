@@ -58,11 +58,7 @@ Searches for users whose name or email matches the search string who are at the 
 
 ### Authorization
  
-    
- Scope      | Role       | Auth Source | Restrictions
-------------|------------|-------------|----------------
-system | admin | N/A|N/A
-institution | admin | institution|N/A
+N/A
 
 ## UserConfidentiality - <em>Update Confidentiality</em>
 
@@ -256,6 +252,7 @@ Task used when a user creates an account for another user. This task is for admi
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | N/A|If the institution specified in the request matches the target, the request is automatically approved.
 
 ## UserDocumentDelete - <em>Delete a User Document</em>
@@ -313,6 +310,7 @@ Deletes a specified document from a user account
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
 ## UserDocumentDownload - <em>Download User Document</em>
@@ -360,6 +358,7 @@ Downloads a specified document from the specified user.
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 committee | member | user|N/A
 
@@ -381,7 +380,11 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/user/:userId"
     "type": "object",
     "properties": {
       "type": {"type": "string", "description": "The document type"},
-      "completeDt": {"type": "date", "description": "The institution name"},
+      "completeDt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "The institution name"
+      },
       "vendor": {"type": "string", "description": "The document vendor"},
       "vendorOther": {"type": "string", "description": "The document vendor (other) text"},
       "value": {"type": "string", "description": "The document value, if a medical license number"},
@@ -419,7 +422,7 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/user/:userId"
         "originalFilename": {"type": "string"},
         "filename": {"type": "string"}
       },
-      "required": ["id", "type", "uploadDt", "completeDt", "originalFilename", "filename"]
+      "required": ["id", "type", "uploadDt", "completeDt"]
     }
   }
 }
@@ -441,7 +444,90 @@ Uploads a document to the specified user.  The document information is contained
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
+
+## UserDocuments - <em>Get User Documents</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/user/:userId/documents"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/UserParams",
+    "type": "object",
+    "properties": {"userId": {"type": "string", "required": true}},
+    "required": ["userId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/UserDocumentsResponse",
+  "type": "object",
+  "properties": {
+    "uploaded": {
+      "type": "array",
+      "items": {
+        "id": "/UserDocument",
+        "properties": {
+          "id": {"type": "object"},
+          "type": {"type": "string"},
+          "subCode": {"type": "string"},
+          "expiryDt": {"type": "date"},
+          "value": {"type": "string"},
+          "vendor": {
+            "type": "Object",
+            "properties": {"code": {"type": "string"}, "name": {"type": "string"}}
+          },
+          "vendorOther": {"type": "string"},
+          "completeDt": {"type": "date"},
+          "originalFilename": {"type": "string"},
+          "uploadDt": {"type": "date"},
+          "description": {"type": "string"},
+          "filename": {"type": "string"}
+        },
+        "required": ["id", "type", "uploadDt"]
+      }
+    },
+    "required": {"type": "array"},
+    "allowed": {"type": "array"}
+  },
+  "required": ["uploaded", "required", "allowed"]
+}
+```
+
+
+Get the documents for the user with id
+
+### HTTP Request
+
+`GET /user/:userId/documents`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+self | N/A | N/A|N/A
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+committee | admin | user|N/A
+institution | admin | user|N/A
+institution | member | user|N/A
 
 ## UserInstitutionCreation - <em>Add an institution to a user account</em>
 
@@ -567,6 +653,7 @@ Add an institution to a user account. The request needs moderation
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
 ## UserInstitutionProfile - <em>Get the info about one institution from a users account</em>
@@ -686,6 +773,7 @@ Gets the full information about a users institution for use in the edit institut
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 committee | member | user|The user has a role on a study, and the study is assigned to the privilege target REB.
 
@@ -759,6 +847,7 @@ This task is used when the owner of an account wants to add a role to his/her ac
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
 ## UserInstitutionRoleDelete - <em>Delete an institution role</em>
@@ -820,6 +909,7 @@ This task is used when the owner of an account wants to remove a role to his/her
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
 ## UserInstitutionUpdate - <em>Add an institution to a user account</em>
@@ -929,6 +1019,7 @@ Add an institution to a user account. The request needs moderation.
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
 ## UserList - <em>Get the list of users</em>
@@ -1063,7 +1154,9 @@ Returns the list of all the users in the system
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | N/A|User is a member at, or their request involves the target institution of the privilege.
+institution | member | N/A|User is a member at, or their request involves the target institution of the privilege.
 committee | member | N/A|The user has a role on a study, and the study is assigned to the privilege target REB.
 
 ## UserPasswordUpdate - <em>Update Password</em>
@@ -1125,6 +1218,7 @@ Lets a user update there password
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 
 ## UserPrivilegeCreation - <em>Add User Privilege</em>
 
@@ -1152,14 +1246,18 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/privileges"
       "scope": {
         "type": "string",
         "description": "The scope of the privilege",
-        "enum": ["system", "institution", "account"]
+        "enum": ["quickStart", "quickStartSite", "system", "institution", "committee"]
       },
       "target": {
         "type": ["string", "null"],
         "description": "The target (e.g.: the institution ID if the scope is 'institution' or a user ID if the scope is 'account')"
       },
       "role": {"type": "string", "description": "The role assigned to the privilege"},
-      "expiryDt": {"type": "Date", "description": "The date the privilege will expire"}
+      "expiryDt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "The date the privilege will expire"
+      }
     },
     "required": ["scope", "role"]
   }
@@ -1198,6 +1296,7 @@ Adds a new privilege to a user account
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 
 ## UserPrivilegeDelete - <em>Delete a User Privilege</em>
 
@@ -1253,6 +1352,7 @@ Deletes a specified privilege from a user account
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 
 ## UserPrivileges - <em>User's privileges</em>
 
@@ -1288,16 +1388,27 @@ curl "https://ctoregistry.com/api/v1/user/:userId/privileges"
       "type": "array",
       "items": {
         "type": "object",
+        "id": "/UserPrivilege",
         "properties": {
           "id": {"type": ["object", "null"]},
           "scope": {"type": "string"},
           "role": {"type": "string"},
           "target": {"type": ["string", "null"]},
           "targetName": {"type": ["string", "null"]},
+          "isDeletable": {"type": "boolean"},
           "createDt": {"type": "date"},
           "updateDt": {"type": "date"}
         },
-        "required": ["id", "scope", "role", "target", "targetName", "createDt", "updateDt"]
+        "required": [
+          "id",
+          "scope",
+          "role",
+          "target",
+          "targetName",
+          "isDeletable",
+          "createDt",
+          "updateDt"
+        ]
       }
     }
   }
@@ -1320,6 +1431,7 @@ Returns the list of the privileges assigned to a user
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
 ## UserProfile - <em>Get User Profile</em>
@@ -1470,37 +1582,6 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
               "roles"
             ]
           }
-        },
-        "documents": {
-          "type": "object",
-          "properties": {
-            "uploaded": {
-              "type": "array",
-              "items": {
-                "id": "/UserDocument",
-                "properties": {
-                  "id": {"type": "object"},
-                  "type": {"type": "string"},
-                  "subCode": {"type": "string"},
-                  "expiryDt": {"type": "date"},
-                  "value": {"type": "string"},
-                  "vendor": {
-                    "type": "Object",
-                    "properties": {"code": {"type": "string"}, "name": {"type": "string"}}
-                  },
-                  "vendorOther": {"type": "string"},
-                  "completeDt": {"type": "date"},
-                  "originalFilename": {"type": "string"},
-                  "uploadDt": {"type": "date"},
-                  "description": {"type": "string"},
-                  "filename": {"type": "string"}
-                },
-                "required": ["id", "type", "uploadDt"]
-              }
-            },
-            "required": {"type": "array"},
-            "allowed": {"type": "array"}
-          }
         }
       },
       "required": [
@@ -1528,13 +1609,7 @@ Get the profile for the user with id
 
 ### Authorization
  
-    
- Scope      | Role       | Auth Source | Restrictions
-------------|------------|-------------|----------------
-self | N/A | N/A|N/A
-system | admin | N/A|N/A
-committee | admin | user|N/A
-institution | admin | user|N/A
+N/A
 
 ## UserProfileUpdate - <em>User Profile Update</em>
 
@@ -1607,6 +1682,7 @@ Lets an admin or the user themselves update a users profile information
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
 ## UserShortProfile - <em>Get User Short Profile</em>
@@ -1677,13 +1753,7 @@ Get the short profile for the user with id, used when just displaying a user
 
 ### Authorization
  
-    
- Scope      | Role       | Auth Source | Restrictions
-------------|------------|-------------|----------------
-self | N/A | N/A|N/A
-system | admin | N/A|N/A
-committee | admin | user|N/A
-institution | admin | user|N/A
+N/A
 
 ## UserStudyList - <em>Get User Studies</em>
 
@@ -1825,4 +1895,5 @@ Get all the studies that a user can access
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A

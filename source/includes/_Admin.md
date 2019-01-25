@@ -149,6 +149,7 @@ Gets the list of users that the authenticated user can moderate.  This will incl
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | N/A|User is a member at, or their request involves the target institution of the privilege.
 
 ## AdminUserModeration - <em>Admin User Institution Moderation</em>
@@ -217,6 +218,7 @@ Lets an admin moderate a users institution request.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
 ## AdminUserRoleModeration - <em>Admin User Institution Role Moderation</em>
@@ -278,6 +280,7 @@ Lets an admin moderate a users role request at a specified institution
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
 ## GetTaskLogIssues - <em>Task Log Issues</em>

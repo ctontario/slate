@@ -51,6 +51,7 @@ Checks to see if an institution code is already in use or not
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | N/A|N/A
 
 ## InstitutionCheckUniqueName - <em>Check if Institution Name Unique</em>
@@ -102,6 +103,7 @@ Checks to see if an institution name is already in use or not
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | N/A|N/A
 
 ## InstitutionCreation - <em>Create a new institution</em>
@@ -222,6 +224,7 @@ Create a new institution in the system.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 
 ## InstitutionDictionary - <em>Institution Dictionary</em>
 
@@ -331,6 +334,7 @@ Deletes a specified document from an institution document
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | institution|N/A
 
 ## InstitutionDocumentDownload - <em>Download User Document</em>
@@ -377,6 +381,7 @@ Downloads one document from the specified institution.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | institution|N/A
 institution | member | institution|N/A
 
@@ -398,7 +403,7 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/institution/:institutionId"
     "type": "object",
     "properties": {
       "name": {"type": "string", "description": "The document name"},
-      "completeDt": {"type": "date"},
+      "completeDt": {"type": "string", "format": "date-time"},
       "description": {"type": "string", "description": "The document description"}
     },
     "required": ["name"]
@@ -450,6 +455,7 @@ Uploads a document to the specified institution.  The document information is co
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | institution|N/A
 
 ## InstitutionDocuments - <em>Get Institution Documents</em>
@@ -517,6 +523,7 @@ Gets all the documents related to one institution
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | institution|N/A
 institution | member | institution|N/A
 
@@ -611,12 +618,7 @@ Gets a listing of institutions in the system that the current user can access.
 
 ### Authorization
  
-    
- Scope      | Role       | Auth Source | Restrictions
-------------|------------|-------------|----------------
-system | admin | N/A|N/A
-institution | member | N/A|The data is filtered to only include records that match the privilege target.
-institution | admin | N/A|The data is filtered to only include records that match the privilege target.
+N/A
 
 ## InstitutionProfile - <em>Get Institution</em>
 
@@ -832,6 +834,7 @@ Get the list of institution roles allowed for a specific institution
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | institution|N/A
 institution | member | institution|N/A
 
@@ -1040,4 +1043,5 @@ Updates one institutions information in the system
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 institution | admin | institution|N/A

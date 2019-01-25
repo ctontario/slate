@@ -325,10 +325,7 @@ Gets the list of committees that are present in the system
 
 ### Authorization
  
-    
- Scope      | Role       | Auth Source | Restrictions
-------------|------------|-------------|----------------
-system | admin | N/A|N/A
+N/A
 
 ## CommitteeList - <em>Get Committee List</em>
 
@@ -850,11 +847,7 @@ Gets the data associated to one committee.
 
 ### Authorization
  
-    
- Scope      | Role       | Auth Source | Restrictions
-------------|------------|-------------|----------------
-system | admin | N/A|N/A
-committee | member | committee|N/A
+N/A
 
 ## CommitteeSearch - <em>Search Committees</em>
 
@@ -926,10 +919,7 @@ Searches for committees whose name matches the search string.
 
 ### Authorization
  
-    
- Scope      | Role       | Auth Source | Restrictions
-------------|------------|-------------|----------------
-system | admin | N/A|N/A
+N/A
 
 ## CommitteeUpdate - <em>Update Committee</em>
 

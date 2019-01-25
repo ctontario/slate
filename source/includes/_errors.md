@@ -53,9 +53,12 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>22111</small> | <small>400</small> | <small>COMMITTEE_MEMBER_NOT_FOUND</small> | <small>The requested committee member was not found.</small>
 <small>23104</small> | <small>400</small> | <small>STUDY_NOT_FOUND</small> | <small>Study not found</small>
 <small>23105</small> | <small>400</small> | <small>QUICKSTART_SITE_NOT_FOUND</small> | <small>QuickSTART site not found</small>
+<small>23106</small> | <small>400</small> | <small>QUICKSTART_SITE_NOT_READY</small> | <small>QuickSTART site not ready</small>
+<small>23301</small> | <small>400</small> | <small>QUICKSTART_SITE_DUPLICATE</small> | <small>QuickSTART site with institutionId already exists on the specified QuickSTART application</small>
 <small>23201</small> | <small>400</small> | <small>QUICKSTART_PROJECTIDNUMBER_DUPLICATE</small> | <small>QuickSTART project Id Number is already used</small>
 <small>23202</small> | <small>400</small> | <small>QUICKSTART_SHORTTITLE_DUPLICATE</small> | <small>QuickSTART short title is already used</small>
-<small>23301</small> | <small>400</small> | <small>QUICKSTART_SITE_DUPLICATE</small> | <small>QuickSTART site with institutionId already exists on the specified QuickSTART application</small>
+<small>23302</small> | <small>400</small> | <small>QUICKSTART_REVIEW_NOT_COMPLETE</small> | <small>QuickSTART review must be completed before attempting the current action.</small>
+<small>23303</small> | <small>400</small> | <small>QUICKSTART_REVIEW_NOT_APPLICABLE</small> | <small>The approval has either already been entered, or the approval is awaiting a sponsor response.</small>
 <small>25020</small> | <small>400</small> | <small>ADMIN_VETTING_NOT_SET_FOR_MODERATION</small> | <small>The user institution is not set for moderation</small>
 <small>25050</small> | <small>400</small> | <small>ADMIN_VETTING_CODE_NOT_RECOGNIZED</small> | <small>The vetting code used was not recognized</small>
 <small>25051</small> | <small>400</small> | <small>ADMIN_VETTING_CODE_NOT_PERMITTED</small> | <small>The vetting code used is not permitted with the current status</small>
@@ -68,6 +71,7 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>90100</small> | <small>401</small> | <small>UNAUTHENTICATED</small> | <small>Not authenticated to access this resource</small>
 <small>90101</small> | <small>403</small> | <small>UNAUTHORIZED</small> | <small>Not authorized to access this resource</small>
 <small>90102</small> | <small>401</small> | <small>AUTHENTICATION_EXPIRED</small> | <small>No longer authenticated to access this resource.  Please login again.</small>
+<small>90103</small> | <small>403</small> | <small>PRIVILEGE_TARGET_REQUIRED</small> | <small>Resource was authorized, but specific privilege was not found for request data.</small>
 <small>90110</small> | <small>400</small> | <small>AUTHENTICATION_FAILED</small> | <small>Wrong credentials: the authentication failed</small>
 <small>90120</small> | <small>400</small> | <small>TOKEN_NOT_FOUND</small> | <small>The token used to access this resource was not found.</small>
 <small>90121</small> | <small>400</small> | <small>INVALID_TOKEN</small> | <small>The token used to access this resource is not valid.</small>
