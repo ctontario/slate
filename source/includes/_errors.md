@@ -44,7 +44,7 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>21110</small> | <small>400</small> | <small>INSTITUTION_CODE_NOT_FOUND</small> | <small>The institution code does not exist</small>
 <small>21120</small> | <small>400</small> | <small>INSTITUTION_TYPE_CODE_NOT_FOUND</small> | <small>Institution type code was not found</small>
 <small>22100</small> | <small>400</small> | <small>COMMITTEE_NOT_FOUND</small> | <small>Committee not found</small>
-<small>22101</small> | <small>400</small> | <small>INSTITUTION_CODE_NOT_FOUND</small> | <small>The institution code does not exist</small>
+<small>22101</small> | <small>400</small> | <small>COMMITTEE_CODE_NOT_FOUND</small> | <small>The institution code does not exist</small>
 <small>22102</small> | <small>400</small> | <small>COMMITTEE_CODE_DUPLICATE</small> | <small>Committee code is already used</small>
 <small>22103</small> | <small>400</small> | <small>COMMITTEE_NAME_DUPLICATE</small> | <small>Committee name is already used</small>
 <small>22104</small> | <small>400</small> | <small>COMMITTEE_SHORTNAME_DUPLICATE</small> | <small>Committee short name is already used</small>

@@ -324,7 +324,14 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/"
     "properties": {
       "shortTitle": {"type": "string"},
       "sponsorInstitutionId": {"type": "string"},
-      "sponsorUserId": {"type": "string"},
+      "sponsorUserIds": {
+        "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
+        "items": {"type": "string"}
+      },
+      "sponsorContractUserId": {"type": ["string", "null"]},
+      "sponsorBudgetUserId": {"type": ["string", "null"]},
       "studyType": {"type": "string"},
       "studyTypeOther": {"type": ["string", "null"]},
       "therapeuticArea": {"type": "string"},
@@ -334,7 +341,9 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/"
     "required": [
       "shortTitle",
       "sponsorInstitutionId",
-      "sponsorUserId",
+      "sponsorUserIds",
+      "sponsorContractUserId",
+      "sponsorBudgetUserId",
       "therapeuticArea",
       "studyType"
     ]
@@ -433,6 +442,8 @@ Deletes a specified document from an QuickSTART application
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTDocumentDownload - <em>Download QuickSTART Document</em>
@@ -571,6 +582,8 @@ Uploads a document to the specified QuickSTART application.  The document inform
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTExtraDocumentDelete - <em>QuickSTART Site Pre Screen Document Delete</em>
@@ -633,6 +646,8 @@ Deletes an extra document from a quickSTART site.  The document associated must 
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | contract | quickStartSite|N/A
 quickStartSite | budget | quickStartSite|N/A
@@ -706,6 +721,8 @@ Updates or creates an extra document for a QuickSTART site.  The document associ
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | contract | quickStartSite|N/A
 quickStartSite | budget | quickStartSite|N/A
@@ -796,6 +813,8 @@ Uploads an extra document to the specified QuickSTART Site application.  The doc
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | contract | quickStartSite|N/A
 quickStartSite | budget | quickStartSite|N/A
@@ -1008,7 +1027,55 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
       },
       "required": ["institutionId", "code", "name"]
     },
-    "sponsorUser": {
+    "sponsorUsers": {
+      "type": "array",
+      "items": {
+        "id": "/UserShortProfile",
+        "properties": {
+          "id": {"type": "object"},
+          "username": {"type": "string"},
+          "contact": {
+            "type": "object",
+            "properties": {
+              "firstName": {"type": "string"},
+              "middleName": {"type": "string"},
+              "lastName": {"type": "string"},
+              "title": {
+                "type": "string",
+                "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
+              }
+            },
+            "required": ["firstName", "lastName", "title"]
+          },
+          "institutionIds": {"type": "array", "items": {"type": "object"}}
+        },
+        "required": ["id", "username", "contact", "institutionIds"]
+      },
+      "minItems": 1
+    },
+    "sponsorContractUser": {
+      "id": "/UserShortProfile",
+      "properties": {
+        "id": {"type": "object"},
+        "username": {"type": "string"},
+        "contact": {
+          "type": "object",
+          "properties": {
+            "firstName": {"type": "string"},
+            "middleName": {"type": "string"},
+            "lastName": {"type": "string"},
+            "title": {
+              "type": "string",
+              "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
+            }
+          },
+          "required": ["firstName", "lastName", "title"]
+        },
+        "institutionIds": {"type": "array", "items": {"type": "object"}}
+      },
+      "required": ["id", "username", "contact", "institutionIds"]
+    },
+    "sponsorBudgetUser": {
       "id": "/UserShortProfile",
       "properties": {
         "id": {"type": "object"},
@@ -1031,7 +1098,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
       "required": ["id", "username", "contact", "institutionIds"]
     }
   },
-  "required": ["quickStart", "sponsor", "sponsorUser"]
+  "required": ["quickStart", "sponsor", "sponsorUsers"]
 }
 ```
 
@@ -1371,6 +1438,8 @@ Deletes a specified document from an QuickSTART application
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteDocumentDownload - <em>Download QuickSTART Document</em>
@@ -1513,6 +1582,8 @@ Uploads a document to the specified QuickSTART application.  The document inform
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSitePreScreenComment - <em>QuickSTART Site Pre-Screen Comment</em>
@@ -1765,6 +1836,8 @@ Gets all comments for a QuickSTART Site Pre-Screen
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteProfile - <em>QuickSTART Site</em>
@@ -2256,6 +2329,8 @@ Updates an existing QuickSTART Site with the.
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 
@@ -2321,6 +2396,8 @@ system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteResponse - <em>QuickSTART Site Response</em>
@@ -2388,6 +2465,8 @@ Submit a sponsor response for one section of data for a QuickSTART site
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartAdmin | quickStart|N/A
 
 ## QuickSTARTSiteRestore - <em>QuickSTART Site Restore Defaults</em>
@@ -2450,6 +2529,8 @@ Updates an existing QuickSTART Site portion to use the defaults from the overall
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteReview - <em>QuickSTART Site Review</em>
@@ -2636,6 +2717,8 @@ Updates an existing QuickSTART Site portion of an application in the system.
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSites - <em>QuickSTART Sites</em>
@@ -2819,6 +2902,8 @@ Updates an existing QuickSTART application in the system.
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickStartCheckUniqueProjectIdNumber - <em>Check QuickSTART unique stream project Id number</em>
@@ -2872,6 +2957,8 @@ Checks to see if a QuickSTART stream project Id number is already in use or not.
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | N/A|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | N/A|N/A
 
 ## QuickStartCheckUniqueShortTitle - <em>Check QuickSTART unique short title</em>
@@ -2925,4 +3012,6 @@ Checks to see if a QuickSTART short title is already in use or not.
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | N/A|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | N/A|N/A

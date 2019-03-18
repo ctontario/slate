@@ -121,6 +121,17 @@ curl "https://ctoregistry.com/api/v1/system/version"
         "releaseDate": {"type": "date-time"}
       },
       "required": ["apiVersion", "major", "minor", "dot", "codeName", "releaseDate"]
+    },
+    "system": {
+      "type": "object",
+      "properties": {
+        "environment": {"type": "string"},
+        "frontendUrl": {"type": "string"},
+        "database": {"type": "string"},
+        "confidentiality": {"type": "string"},
+        "email": {"type": "boolean"}
+      },
+      "required": ["environment", "frontendUrl", "database", "confidentiality", "email"]
     }
   }
 }
