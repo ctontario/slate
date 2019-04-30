@@ -441,7 +441,7 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/"
               "region": {"type": "string"},
               "countryName": {"type": "string"}
             },
-            "required": ["streetAddress", "postalCode", "locality", "region", "countryName"]
+            "required": ["streetAddress", "postalCode", "locality", "region"]
           },
           "email": {"type": "string", "format": "email", "description": "Email"},
           "phones": {
@@ -465,7 +465,6 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/"
           },
           "privacy": {"type": "string", "enum": ["public", "private", "institution", "members"]}
         },
-        "anyOf": [{"required": ["name"]}, {"required": ["code"]}],
         "required": ["address", "email", "phones", "isInvestigator"]
       },
       "confidentiality": {

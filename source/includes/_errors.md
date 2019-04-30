@@ -41,10 +41,11 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>21101</small> | <small>400</small> | <small>INSTITUTION_NAME_DUPLICATE</small> | <small>Institution name is already used</small>
 <small>21102</small> | <small>400</small> | <small>INSTITUTION_CODE_DUPLICATE</small> | <small>Institution code is already used</small>
 <small>21103</small> | <small>400</small> | <small>INSTITUTION_NOT_FOUND</small> | <small>Institution not found</small>
+<small>21104</small> | <small>400</small> | <small>INSTITUTION_ALTERNATE_NAME_DUPLICATE</small> | <small>Institution alternate name is already in use</small>
 <small>21110</small> | <small>400</small> | <small>INSTITUTION_CODE_NOT_FOUND</small> | <small>The institution code does not exist</small>
 <small>21120</small> | <small>400</small> | <small>INSTITUTION_TYPE_CODE_NOT_FOUND</small> | <small>Institution type code was not found</small>
 <small>22100</small> | <small>400</small> | <small>COMMITTEE_NOT_FOUND</small> | <small>Committee not found</small>
-<small>22101</small> | <small>400</small> | <small>COMMITTEE_CODE_NOT_FOUND</small> | <small>The institution code does not exist</small>
+<small>22101</small> | <small>400</small> | <small>COMMITTEE_CODE_NOT_FOUND</small> | <small>The committee code does not exist</small>
 <small>22102</small> | <small>400</small> | <small>COMMITTEE_CODE_DUPLICATE</small> | <small>Committee code is already used</small>
 <small>22103</small> | <small>400</small> | <small>COMMITTEE_NAME_DUPLICATE</small> | <small>Committee name is already used</small>
 <small>22104</small> | <small>400</small> | <small>COMMITTEE_SHORTNAME_DUPLICATE</small> | <small>Committee short name is already used</small>
@@ -55,8 +56,7 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>23105</small> | <small>400</small> | <small>QUICKSTART_SITE_NOT_FOUND</small> | <small>QuickSTART site not found</small>
 <small>23106</small> | <small>400</small> | <small>QUICKSTART_SITE_NOT_READY</small> | <small>QuickSTART site not ready</small>
 <small>23301</small> | <small>400</small> | <small>QUICKSTART_SITE_DUPLICATE</small> | <small>QuickSTART site with institutionId already exists on the specified QuickSTART application</small>
-<small>23201</small> | <small>400</small> | <small>QUICKSTART_PROJECTIDNUMBER_DUPLICATE</small> | <small>QuickSTART project Id Number is already used</small>
-<small>23202</small> | <small>400</small> | <small>QUICKSTART_SHORTTITLE_DUPLICATE</small> | <small>QuickSTART short title is already used</small>
+<small>23201</small> | <small>400</small> | <small>QUICKSTART_FIELD_DUPLICATE</small> | <small>QuickSTART field is already used</small>
 <small>23302</small> | <small>400</small> | <small>QUICKSTART_REVIEW_NOT_COMPLETE</small> | <small>QuickSTART review must be completed before attempting the current action.</small>
 <small>23303</small> | <small>400</small> | <small>QUICKSTART_REVIEW_NOT_APPLICABLE</small> | <small>The approval has either already been entered, or the approval is awaiting a sponsor response.</small>
 <small>25020</small> | <small>400</small> | <small>ADMIN_VETTING_NOT_SET_FOR_MODERATION</small> | <small>The user institution is not set for moderation</small>

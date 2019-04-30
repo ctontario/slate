@@ -2,6 +2,58 @@
 # Institution
 
 
+## InstitutionCheckUniqueAlternateName - <em>Check if Institution Alternate Name Unique</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/institution/unique-alternate-name/:alternateName/:institutionId?"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/InstitutionUniqueAlternateNameParams",
+    "type": "object",
+    "properties": {"alternateName": {"type": "string"}, "institutionId": {"type": "string"}},
+    "required": ["alternateName"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/CheckExistsResponse",
+  "type": "object",
+  "properties": {"exists": {"type": "boolean"}},
+  "required": ["exists"]
+}
+```
+
+
+Checks to see if an institution alternate name is already in use or not
+
+### HTTP Request
+
+`GET /institution/unique-alternate-name/:alternateName/:institutionId?`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+institution | admin | N/A|N/A
+
 ## InstitutionCheckUniqueCode - <em>Check if Institution Code Unique</em>
 
 
@@ -124,6 +176,7 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
     "type": "object",
     "properties": {
       "name": {"type": "string", "maxLength": 200, "description": "Institution name"},
+      "alternateNames": {"type": "array", "items": {"type": "string", "maxLength": 200}},
       "code": {"type": "string", "maxLength": 25, "description": "Code name"},
       "type": {"type": "string", "maxLength": 15, "description": "The institution type"},
       "status": {"type": "string", "enum": ["pending", "active", "deleted", "suspended"]},
@@ -164,7 +217,7 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
           "region": {"type": "string"},
           "countryName": {"type": "string"}
         },
-        "required": ["streetAddress", "postalCode", "locality", "region", "countryName"]
+        "required": ["streetAddress", "postalCode", "locality", "region"]
       },
       "phones": {
         "type": "array",
@@ -657,6 +710,7 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
         "id": {"type": "object"},
         "code": {"type": "string"},
         "name": {"type": "string"},
+        "alternateNames": {"type": "array", "items": {"type": "string"}},
         "type": {"type": "string"},
         "status": {"type": "string"},
         "website": {"type": "string"},
@@ -937,6 +991,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
     "type": "object",
     "properties": {
       "name": {"type": "string", "maxLength": 200, "description": "Institution name"},
+      "alternateNames": {"type": "array", "items": {"type": "string", "maxLength": 200}},
       "code": {"type": "string", "maxLength": 25, "description": "Code name"},
       "type": {"type": "string", "maxLength": 15, "description": "The institution type"},
       "status": {"type": "string", "enum": ["pending", "active", "deleted", "suspended"]},
@@ -977,7 +1032,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
           "region": {"type": "string"},
           "countryName": {"type": "string"}
         },
-        "required": ["streetAddress", "postalCode", "locality", "region", "countryName"]
+        "required": ["streetAddress", "postalCode", "locality", "region"]
       },
       "phones": {
         "type": "array",

@@ -228,9 +228,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
         "projectIdNumber": {"type": "number"},
         "createDt": {"type": "date"},
         "updateDt": {"type": "date"},
-        "initialApprovalDt": {"type": ["date", "null"]},
+        "initialApprovalDt": {"type": ["date"]},
         "initialReviewType": {
-          "type": ["string", "null"],
+          "type": ["string"],
           "enum": ["Full Board Review", "Delegated Review", "Admin Review"]
         },
         "summary": {"type": ["string", "null"]},
@@ -508,9 +508,7 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
         "populations",
         "dsmb",
         "ctaApproved",
-        "ctaInvestigational",
-        "initialReviewType",
-        "initialApprovalDt"
+        "ctaInvestigational"
       ]
     }
   }

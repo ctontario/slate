@@ -167,7 +167,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/"
               "region": {"type": "string"},
               "countryName": {"type": "string"}
             },
-            "required": ["streetAddress", "postalCode", "locality", "region", "countryName"]
+            "required": ["streetAddress", "postalCode", "locality", "region"]
           },
           "email": {"type": "string", "format": "email", "description": "Email"},
           "phones": {
@@ -191,7 +191,6 @@ curl -X POST "https://ctoregistry.com/api/v1/user/"
           },
           "privacy": {"type": "string", "enum": ["public", "private", "institution", "members"]}
         },
-        "anyOf": [{"required": ["name"]}, {"required": ["code"]}],
         "required": ["address", "email", "phones", "isInvestigator"]
       },
       "confidentiality": {
@@ -574,7 +573,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution"
           "region": {"type": "string"},
           "countryName": {"type": "string"}
         },
-        "required": ["streetAddress", "postalCode", "locality", "region", "countryName"]
+        "required": ["streetAddress", "postalCode", "locality", "region"]
       },
       "email": {"type": "string", "format": "email", "description": "Email"},
       "phones": {
@@ -598,7 +597,6 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution"
       },
       "privacy": {"type": "string", "enum": ["public", "private", "institution", "members"]}
     },
-    "anyOf": [{"required": ["name"]}, {"required": ["code"]}],
     "required": ["address", "email", "phones", "isInvestigator"]
   }
 }
@@ -953,7 +951,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:instituti
           "region": {"type": "string"},
           "countryName": {"type": "string"}
         },
-        "required": ["streetAddress", "postalCode", "locality", "region", "countryName"]
+        "required": ["streetAddress", "postalCode", "locality", "region"]
       },
       "email": {"type": "string", "format": "email", "description": "Email"},
       "phones": {
@@ -977,7 +975,6 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:instituti
       },
       "privacy": {"type": "string", "enum": ["public", "private", "institution", "members"]}
     },
-    "anyOf": [{"required": ["name"]}, {"required": ["code"]}],
     "required": []
   }
 }

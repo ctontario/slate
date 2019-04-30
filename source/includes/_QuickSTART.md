@@ -99,7 +99,11 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
     "properties": {
       "userId": {"type": "string"},
       "dueDay": {"type": "integer", "minimum": 1, "maximum": 90},
-      "type": {"type": "string", "enum": ["protocol", "budget", "contract", "overall"]},
+      "type": {
+        "type": "string",
+        "enum": ["overall", "protocol", "budget", "contract", "signatures", "resource", "other"]
+      },
+      "typeOther": {"type": ["string", "null"]},
       "action": {"type": "string"}
     },
     "required": ["userId", "dueDay", "type", "action"]
@@ -140,7 +144,14 @@ Creates an approval record for a quickSTART site.
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
+quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
+quickStartSite | contract | quickStartSite|N/A
+quickStartSite | budget | quickStartSite|N/A
+quickStartSite | approver | quickStartSite|N/A
+institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTApprovalUpdate - <em>QuickSTART Site Add / Update Approvals</em>
 
@@ -171,7 +182,11 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
     "properties": {
       "userId": {"type": "string"},
       "dueDay": {"type": "integer", "minimum": 1, "maximum": 90},
-      "type": {"type": "string", "enum": ["protocol", "budget", "contract", "overall"]},
+      "type": {
+        "type": "string",
+        "enum": ["overall", "protocol", "budget", "contract", "signatures", "resource", "other"]
+      },
+      "typeOther": {"type": ["string", "null"]},
       "action": {"type": "string"}
     },
     "required": ["userId", "dueDay", "type", "action"]
@@ -212,7 +227,14 @@ Updates or creates an approval record for a quickSTART site.
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
+quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
+quickStartSite | contract | quickStartSite|N/A
+quickStartSite | budget | quickStartSite|N/A
+quickStartSite | approver | quickStartSite|N/A
+institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTApprovalsList - <em>QuickSTART Site Approvals</em>
 
@@ -251,7 +273,11 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
         "type": "object",
         "properties": {
           "id": {"type": "object"},
-          "type": {"type": "string", "enum": ["protocol", "budget", "contract", "overall"]},
+          "type": {
+            "type": "string",
+            "enum": ["overall", "protocol", "budget", "contract", "signatures", "resource", "other"]
+          },
+          "typeOther": {"type": ["string", "null"]},
           "action": {"type": "string"},
           "assignedDt": {"type": "date"},
           "createUserId": {"type": "object"},
@@ -335,6 +361,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/"
       "studyType": {"type": "string"},
       "studyTypeOther": {"type": ["string", "null"]},
       "therapeuticArea": {"type": "string"},
+      "quickStartIdentifier": {"type": ["string", "null"]},
       "projectIdNumber": {"type": ["string", "null"]},
       "status": {"type": "string", "enum": ["pending", "screen", "active", "completed"]}
     },
@@ -345,7 +372,8 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/"
       "sponsorContractUserId",
       "sponsorBudgetUserId",
       "therapeuticArea",
-      "studyType"
+      "studyType",
+      "quickStartIdentifier"
     ]
   }
 }
@@ -872,6 +900,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/"
         "type": "object",
         "properties": {
           "id": {"type": "object"},
+          "quickStartIdentifier": {"type": "string"},
           "status": {"type": "string", "enum": ["pending", "screen", "active", "completed"]},
           "shortTitle": {"type": "string"},
           "sponsorInstitutionId": {"type": "object"},
@@ -882,7 +911,15 @@ curl "https://ctoregistry.com/api/v1/quick-start/"
           "updateDt": {"type": "date"},
           "sites": {"type": "array"}
         },
-        "required": ["id", "status", "shortTitle", "studyType", "createDt", "updateDt"]
+        "required": [
+          "id",
+          "quickStartIdentifier",
+          "status",
+          "shortTitle",
+          "studyType",
+          "createDt",
+          "updateDt"
+        ]
       }
     }
   }
@@ -944,6 +981,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
       "id": "/QuickStartProfile",
       "properties": {
         "id": {"type": "object"},
+        "quickStartIdentifier": {"type": "string"},
         "shortTitle": {"type": "string"},
         "studyType": {"type": "string"},
         "studyTypeOther": {"type": "string"},
@@ -1015,7 +1053,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
           }
         }
       },
-      "required": ["id", "shortTitle", "studyType", "therapeuticArea"]
+      "required": ["id", "quickStartIdentifier", "shortTitle", "studyType", "therapeuticArea"]
     },
     "sponsor": {
       "type": "object",
@@ -1251,8 +1289,11 @@ Adds a user to a QuickSTART site with the specified roles.  Will update existing
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStartSite | rc | quickStartSite|N/A
-quickStart | sponsor | quickStart|Only roster roles (Research coordinator, Investigator) can be added, not approval roles.
-institution | quickStartSponsor | quickStart|Only roster roles (Research coordinator, Investigator) can be added, not approval roles.
+quickStart | sponsor | quickStart|N/A
+institution | quickStartSponsor | quickStart|N/A
+quickStartSite | contract | quickStartSite|The user can only specify a role that they currently have.                        The user can only give themselves the read only role
+quickStartSite | budget | quickStartSite|The user can only specify a role that they currently have.                        The user can only give themselves the read only role
+quickStartSite | approver | quickStartSite|The user can only give themselves the read only role
 
 ## QuickSTARTSiteCompletePreScreen - <em>QuickSTART Complete Pre-Screen</em>
 
@@ -2220,8 +2261,11 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
             "Withdrawn"
           ]
         },
-        "initialApprovalDt": {"type": "date"},
-        "initialReviewType": {"type": "string"},
+        "initialApprovalDt": {"type": ["date"]},
+        "initialReviewType": {
+          "type": ["string"],
+          "enum": ["Full Board Review", "Delegated Review", "Admin Review"]
+        },
         "createDt": {"type": "date"},
         "history": {
           "type": "array",
@@ -2392,6 +2436,7 @@ Removes a Read-Only user from a QuickSTART site.  All other users must be manage
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
+self | N/A | N/A|The user can only specify a role that they currently have.
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStartSite | rc | quickStartSite|N/A
@@ -2946,6 +2991,61 @@ Checks to see if a QuickSTART stream project Id number is already in use or not.
 ### HTTP Request
 
 `GET /quick-start/unique-project-id-number/:projectIdNumber/:quickStartId?`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+quickStart | sponsor | N/A|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
+institution | quickStartSponsor | N/A|N/A
+
+## QuickStartCheckUniqueQuickStartIdentifier - <em>Check QuickSTART unique Identifier</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/quick-start/unique-quick-start-identifier/:quickStartIdentifier/:quickStartId?"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/QuickSTARTUniqueQuickStartIdentifierParams",
+    "type": "object",
+    "properties": {"quickStartIdentifier": {"type": "string"}, "quickStartId": {"type": "string"}},
+    "required": ["quickStartIdentifier"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/CheckExistsResponse",
+  "type": "object",
+  "properties": {"exists": {"type": "boolean"}},
+  "required": ["exists"]
+}
+```
+
+
+Checks to see if a QuickSTART Identifier is already in use or not.
+
+### HTTP Request
+
+`GET /quick-start/unique-quick-start-identifier/:quickStartIdentifier/:quickStartId?`
 
 
 
