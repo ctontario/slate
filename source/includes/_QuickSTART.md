@@ -1376,7 +1376,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites"
     "properties": {
       "institutionId": {"type": "string"},
       "researchCoordinatorId": {"type": "string"},
-      "principalInvestigatorId": {"type": "string"}
+      "principalInvestigatorId": {"type": ["string", "null"]}
     },
     "required": ["institutionId", "researchCoordinatorId"]
   }
@@ -1916,7 +1916,10 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
       "id": "/QuickStartSiteProfile",
       "properties": {
         "id": {"type": "object"},
-        "studyId": {"type": "object"},
+        "studyId": {
+          "type": "object",
+          "description": "If a stream project id number was set and there is a corresponding study in the system, the document id for the study."
+        },
         "institutionId": {"type": "object"},
         "researchCoordinatorId": {"type": "object"},
         "principalInvestigatorId": {"type": "object"},
@@ -2080,6 +2083,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
             }
           }
         },
+        "protocolDocumentSentDt": {"type": "date"},
         "protocol": {
           "id": "/QuickStartProtocol",
           "type": "object",
@@ -2176,16 +2180,26 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
               "name"
             ]
           }
+        },
+        "customData": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
+            "required": ["label", "value"]
+          }
         }
       },
       "required": [
         "id",
         "institutionId",
         "researchCoordinatorId",
+        "readOnlyUserIds",
         "status",
         "useProtocolDefaults",
         "useContractDefaults",
         "useBudgetDefaults",
+        "times",
         "approvals",
         "protocol",
         "budget",
@@ -2331,7 +2345,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
     "id": "/QuickSTARTSiteRecordSentDtBody",
     "type": "object",
     "properties": {
-      "type": {"type": "string", "enum": ["budget", "contract"]},
+      "type": {"type": "string", "enum": ["budget", "contract", "protocol"]},
       "documentSentDt": {"type": "string", "format": "date-time"}
     },
     "required": ["type", "documentSentDt"]
@@ -2646,6 +2660,73 @@ system | quickStartAdmin | N/A|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | budget | quickStartSite|The user must be assigned to the specific approval.
 quickStartSite | contract | quickStartSite|The user must be assigned to the specific approval.
+
+## QuickSTARTSiteSaveCustomData - <em>QuickSTART Site Save Custom Data</em>
+
+
+```shell
+curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutionId/custom-data"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/QuickSTARTSiteParams",
+    "type": "object",
+    "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
+    "required": ["quickStartId", "institutionId"]
+  },
+  "body": {
+    "id": "/QuickSTARTSiteCustomDataBody",
+    "type": "object",
+    "properties": {"label": {"type": "string"}, "value": {"type": ["string", "null"]}},
+    "required": ["label"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Saves a custom data point to a QuickSTART site application.  Will also delete existing custom data fields if the value is passed in is empty/null.
+
+### HTTP Request
+
+`POST /quick-start/:quickStartId/sites/:institutionId/custom-data`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+quickStart | sponsor | quickStart|N/A
+quickStart | sponsor-contract | quickStart|N/A
+quickStart | sponsor-budget | quickStart|N/A
+quickStartSite | rc | quickStartSite|N/A
+institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteSendToPreScreen - <em>QuickSTART Site Send to Pre-Screen</em>
 

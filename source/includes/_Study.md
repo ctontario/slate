@@ -97,6 +97,13 @@ curl "https://ctoregistry.com/api/v1/study/"
             "required": ["name"]
           },
           "projectIdNumber": {"type": "number"},
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The users role on the study, only set when returned as part of the user studies route."
+            }
+          },
           "createDt": {"type": "date"},
           "updateDt": {"type": "date"}
         },
