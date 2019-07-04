@@ -229,7 +229,7 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
             "extension": {"type": "string", "description": "The extension"},
             "type": {
               "type": "string",
-              "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"],
+              "enum": ["home", "msg", "work", "pref", "fax", "cell", "pager"],
               "description": "Phone number type"
             }
           },
@@ -544,6 +544,7 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId/documents"
     "data": {
       "type": "array",
       "items": {
+        "id": "/InstitutionDocument",
         "type": "object",
         "properties": {
           "id": {"type": "object"},
@@ -752,7 +753,7 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
                     "extension": {"type": ["string", "null"]},
                     "type": {
                       "type": ["string", "null"],
-                      "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"]
+                      "enum": ["home", "msg", "work", "pref", "fax", "cell", "pager", null]
                     }
                   },
                   "required": ["number", "extension", "type"]
@@ -973,6 +974,52 @@ Searches for institutions whose name matches the search string.
  
 N/A
 
+## InstitutionTypes - <em>Get Institution Types</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/dictionary/institution-type"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Response Schema
+
+```json
+{
+  "id": "/InstitutionTypeDictionaryResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "id": "InstitutionTypeDictionary",
+      "patternProperties": {
+        "^[a-zA-Z_$][\\w$]*$": {
+          "properties": {
+            "code": {"type": "string"},
+            "label": {"type": "string"},
+            "description": {"type": "string"}
+          },
+          "required": ["code", "label", "description"]
+        }
+      }
+    }
+  }
+}
+```
+
+
+Get the list of institution types allowed in the system
+
+### HTTP Request
+
+`GET /dictionary/institution-type`
+
+
+
+### Authorization
+ 
+N/A
+
 ## InstitutionUpdate - <em>Update Institution</em>
 
 
@@ -1044,7 +1091,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
             "extension": {"type": "string", "description": "The extension"},
             "type": {
               "type": "string",
-              "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"],
+              "enum": ["home", "msg", "work", "pref", "fax", "cell", "pager"],
               "description": "Phone number type"
             }
           },

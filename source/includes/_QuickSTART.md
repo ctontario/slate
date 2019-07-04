@@ -56,7 +56,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```
 
 
-Updates or creates an approval record for a quickSTART site.
+Records the users signature for the approval using their account password.
 
 ### HTTP Request
 
@@ -129,7 +129,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```
 
 
-Creates an approval record for a quickSTART site.
+Creates an approval record for a quickSTART site. The site must not be completed
 
 ### HTTP Request
 
@@ -212,7 +212,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```
 
 
-Updates or creates an approval record for a quickSTART site.
+Updates or creates an approval record for a quickSTART site. The site must not be completed
 
 ### HTTP Request
 
@@ -312,7 +312,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
 ```
 
 
-Updates or creates an approval record for a quickSTART site.
+Gets the list of approvals recorded for the site
 
 ### HTTP Request
 
@@ -1200,7 +1200,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```
 
 
-Sends a QuickSTART pre-screened application to the Site
+Sends a QuickSTART pre-screened application to the Site.  The site status must be 'review'
 
 ### HTTP Request
 
@@ -1242,6 +1242,10 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
     "type": "object",
     "properties": {
       "userId": {"type": "string"},
+      "label": {
+        "type": "string",
+        "description": "The label text to display for the user, only applicable to read-only users"
+      },
       "roles": {
         "type": "array",
         "items": {
@@ -1273,7 +1277,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```
 
 
-Adds a user to a QuickSTART site with the specified roles.  Will update existing users if present
+Adds a user to a QuickSTART site with the specified roles.  Will update existing users if present.  The site must not be completed
 
 ### HTTP Request
 
@@ -1335,7 +1339,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```
 
 
-Marks a QuickSTART Site Pre-Screen as complete by CTO
+Marks a QuickSTART Site Pre-Screen as complete by CTO.  The site status must be 'screen'
 
 ### HTTP Request
 
@@ -1702,7 +1706,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```
 
 
-Adds or updates a comment on a QuickSTART Site Pre-Screen
+Adds or updates a comment on a QuickSTART Site Pre-Screen.  The site status must be 'screen'
 
 ### HTTP Request
 
@@ -1762,7 +1766,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```
 
 
-Adds a comment to a QuickSTART Site to Pre-Screen
+Adds a comment to a QuickSTART Site to Pre-Screen.  The site status must be 'screen'
 
 ### HTTP Request
 
@@ -1923,7 +1927,14 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
         "institutionId": {"type": "object"},
         "researchCoordinatorId": {"type": "object"},
         "principalInvestigatorId": {"type": "object"},
-        "readOnlyUserIds": {"type": "array", "items": {"type": "object"}},
+        "readOnlyUsers": {
+          "type": "array",
+          "items": {
+            "id": "QuickStartSiteReadOnlyUser",
+            "properties": {"userId": {"type": "object"}, "label": {"type": "string"}},
+            "required": ["userId"]
+          }
+        },
         "status": {
           "type": "string",
           "enum": ["pending", "screen", "review", "active", "completed"]
@@ -2194,7 +2205,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
         "id",
         "institutionId",
         "researchCoordinatorId",
-        "readOnlyUserIds",
+        "readOnlyUsers",
         "status",
         "useProtocolDefaults",
         "useContractDefaults",
@@ -2371,7 +2382,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```
 
 
-Updates an existing QuickSTART Site with the.
+Updates an existing QuickSTART Site with the send date of a document, specified by type.  The application must be active, or an error is returned.
 
 ### HTTP Request
 
@@ -2390,7 +2401,6 @@ quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
-quickStartSite | rc | quickStartSite|N/A
 
 ## QuickSTARTSiteRemoveUser - <em>QuickSTART Site Remove User</em>
 
@@ -2437,7 +2447,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```
 
 
-Removes a Read-Only user from a QuickSTART site.  All other users must be managed through adding and replacing.
+Removes a Read-Only user from a QuickSTART site.  All other users must be managed through adding and replacing. The site must not be completed
 
 ### HTTP Request
 
@@ -2642,7 +2652,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```
 
 
-Submit a review for one section of data for a QuickSTART site
+Submit a review for one section of data for a QuickSTART site.  The site status must be active
 
 ### HTTP Request
 
@@ -2707,7 +2717,10 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```
 
 
-Saves a custom data point to a QuickSTART site application.  Will also delete existing custom data fields if the value is passed in is empty/null.
+
+        Saves a custom data point to a QuickSTART site application.  Will also delete existing custom data fields if the value is passed in is empty/null.
+        The site status must be not be completed.
+        
 
 ### HTTP Request
 
@@ -2726,6 +2739,10 @@ quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
+quickStartSite | investigator | quickStartSite|N/A
+quickStartSite | approver | quickStartSite|N/A
+quickStartSite | contract | quickStartSite|N/A
+quickStartSite | budget | quickStartSite|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteSendToPreScreen - <em>QuickSTART Site Send to Pre-Screen</em>
@@ -2768,7 +2785,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```
 
 
-Sends a QuickSTART Site to Pre-Screen with CTO
+Sends a QuickSTART Site to Pre-Screen with CTO.  The site status must be 'pending'
 
 ### HTTP Request
 
@@ -2827,7 +2844,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```
 
 
-Updates an existing QuickSTART Site portion of an application in the system.
+Updates an existing QuickSTART Site portion of an application in the system. If the site is completed, an error will be returned
 
 ### HTTP Request
 

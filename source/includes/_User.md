@@ -180,7 +180,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/"
                 "extension": {"type": "string", "description": "The extension"},
                 "type": {
                   "type": "string",
-                  "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"],
+                  "enum": ["home", "msg", "work", "pref", "fax", "cell", "pager"],
                   "description": "Phone number type"
                 }
               },
@@ -586,7 +586,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution"
             "extension": {"type": "string", "description": "The extension"},
             "type": {
               "type": "string",
-              "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"],
+              "enum": ["home", "msg", "work", "pref", "fax", "cell", "pager"],
               "description": "Phone number type"
             }
           },
@@ -719,7 +719,7 @@ curl "https://ctoregistry.com/api/v1/user/:userId/institution/:institutionId"
               "extension": {"type": ["string", "null"]},
               "type": {
                 "type": ["string", "null"],
-                "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"]
+                "enum": ["home", "msg", "work", "pref", "fax", "cell", "pager", null]
               }
             },
             "required": ["number", "extension", "type"]
@@ -964,7 +964,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:instituti
             "extension": {"type": "string", "description": "The extension"},
             "type": {
               "type": "string",
-              "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"],
+              "enum": ["home", "msg", "work", "pref", "fax", "cell", "pager"],
               "description": "Phone number type"
             }
           },
@@ -1547,7 +1547,7 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
                     "extension": {"type": ["string", "null"]},
                     "type": {
                       "type": ["string", "null"],
-                      "enum": [null, "home", "msg", "work", "pref", "fax", "cell", "pager"]
+                      "enum": ["home", "msg", "work", "pref", "fax", "cell", "pager", null]
                     }
                   },
                   "required": ["number", "extension", "type"]

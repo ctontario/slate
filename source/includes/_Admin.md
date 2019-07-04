@@ -283,6 +283,253 @@ system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
+## GetEmailLog - <em>Email Log</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/admin/email/:emailLogId"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/EmailLogParams",
+    "type": "object",
+    "properties": {"emailLogId": {"type": "string"}},
+    "required": ["emailLogId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/EmailLogResponse",
+  "type": "object",
+  "properties": {
+    "emailLog": {
+      "id": "EmailLog",
+      "type": "object",
+      "properties": {
+        "id": {"type": "object"},
+        "email": {"type": "string"},
+        "template": {"type": "string"},
+        "categories": {"type": "array", "items": {"type": "string"}},
+        "lastEvent": {
+          "type": "string",
+          "enum": [
+            "processed",
+            "dropped",
+            "delivered",
+            "deferred",
+            "bounce",
+            "open",
+            "click",
+            "spamreport",
+            "unsubscribe",
+            "group_unsubscribe",
+            "group_resubscribe"
+          ]
+        },
+        "eventCount": {"type": "number"},
+        "isDelivered": {"type": "boolean"},
+        "isOpened": {"type": "boolean"},
+        "createDt": {"type": "date"},
+        "updateDt": {"type": "date"}
+      },
+      "required": [
+        "id",
+        "email",
+        "template",
+        "categories",
+        "lastEvent",
+        "eventCount",
+        "isDelivered",
+        "isOpened",
+        "createDt",
+        "updateDt"
+      ]
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "id": "EmailLogEvent",
+        "properties": {
+          "id": {"type": "object"},
+          "event": {
+            "type": "string",
+            "enum": [
+              "processed",
+              "dropped",
+              "delivered",
+              "deferred",
+              "bounce",
+              "open",
+              "click",
+              "spamreport",
+              "unsubscribe",
+              "group_unsubscribe",
+              "group_resubscribe"
+            ]
+          },
+          "useragent": {"type": "string"},
+          "IP": {"type": "string"},
+          "attempt": {"type": "string"},
+          "reason": {"type": "string"},
+          "status": {"type": "string"},
+          "response": {"type": "string"},
+          "url": {"type": "string"},
+          "bounceType": {"type": "string"},
+          "createDt": {"type": "date"},
+          "updateDt": {"type": "date"}
+        },
+        "required": ["id", "event", "createDt", "updateDt"]
+      }
+    },
+    "required": ["emailLog", "events"]
+  }
+}
+```
+
+
+Gets the details about one email log entry from the system
+
+
+
+### HTTP Request
+
+`GET /admin/email/:emailLogId`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+
+## GetEmailLogs - <em>Email Logs</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/admin/email"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "query": {
+    "id": "/EmailLogsQuery",
+    "type": "object",
+    "properties": {
+      "offset": {"type": "integer", "minimum": 0, "default": 0},
+      "limit": {"type": "integer", "minimum": 0, "default": 20},
+      "sortby": {"type": "string"},
+      "order": {"type": "string"},
+      "search": {"type": "string"},
+      "status": {"type": "string"},
+      "categories": {"type": ["string", "array"], "items": {"type": "string"}},
+      "templates": {"type": ["string", "array"], "items": {"type": "string"}}
+    }
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/EmailLogsResponse",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "id": "/ListMeta",
+      "properties": {
+        "count": {"type": "number"},
+        "limit": {"type": "number"},
+        "offset": {"type": "number"}
+      },
+      "required": ["count", "limit", "offset"]
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "id": "EmailLog",
+        "type": "object",
+        "properties": {
+          "id": {"type": "object"},
+          "email": {"type": "string"},
+          "template": {"type": "string"},
+          "categories": {"type": "array", "items": {"type": "string"}},
+          "lastEvent": {
+            "type": "string",
+            "enum": [
+              "processed",
+              "dropped",
+              "delivered",
+              "deferred",
+              "bounce",
+              "open",
+              "click",
+              "spamreport",
+              "unsubscribe",
+              "group_unsubscribe",
+              "group_resubscribe"
+            ]
+          },
+          "eventCount": {"type": "number"},
+          "isDelivered": {"type": "boolean"},
+          "isOpened": {"type": "boolean"},
+          "createDt": {"type": "date"},
+          "updateDt": {"type": "date"}
+        },
+        "required": [
+          "id",
+          "email",
+          "template",
+          "categories",
+          "lastEvent",
+          "eventCount",
+          "isDelivered",
+          "isOpened",
+          "createDt",
+          "updateDt"
+        ]
+      }
+    }
+  }
+}
+```
+
+
+Gets the list of emails that have been sent in the system
+        
+
+
+### HTTP Request
+
+`GET /admin/email`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+
 ## GetTaskLogIssues - <em>Task Log Issues</em>
 
 
@@ -299,8 +546,8 @@ curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId/issues"
   "params": {
     "id": "/TaskLogIssuesRequest",
     "type": "object",
-    "properties": {"taskName": {"type": "string"}},
-    "required": ["taskName"]
+    "properties": {"taskLogId": {"type": "string"}},
+    "required": ["taskLogId"]
   },
   "query": {
     "id": "/TaskLogIssuesQuery",
@@ -391,20 +638,6 @@ curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs"
   -H "Content-Type: application/json"
 ```
 
-> Request Schema
-
-```json
-{
-  "params": {
-    "id": "/TaskLogsRequest",
-    "type": "object",
-    "properties": {"taskName": {"type": "string"}},
-    "required": []
-  }
-}
-```
-
-
 > Response Schema
 
 ```json
@@ -442,8 +675,7 @@ curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs"
 
 Lets an admin review the logs from the last round of synchronization
 If taskName is passed then only that task log is returned, or an error if not found.  If no task
-name is passed in then all tasks from the previous run will be included
-        
+name is passed in then all tasks from the previous run will be included        
 
 
 ### HTTP Request
@@ -475,8 +707,12 @@ curl -X PUT "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId/issue
   "params": {
     "id": "/TaskLogIssueUpdateRequest",
     "type": "object",
-    "properties": {"issueId": {"type": "string"}, "isResolved": {"type": "string"}},
-    "required": ["issueId", "isResolved"]
+    "properties": {
+      "taskLogId": {"type": "string"},
+      "issueId": {"type": "string"},
+      "resolved": {"type": "boolean"}
+    },
+    "required": ["taskLogId", "issueId", "resolved"]
   }
 }
 ```

@@ -705,6 +705,7 @@ curl "https://ctoregistry.com/api/v1/committee/:committeeId/members"
       "type": "array",
       "items": {
         "type": "object",
+        "id": "/CommitteeMember",
         "properties": {
           "id": {"type": "object"},
           "role": {"type": "string"},
@@ -790,6 +791,7 @@ curl "https://ctoregistry.com/api/v1/committee/:committeeId"
   "properties": {
     "committee": {
       "type": "object",
+      "id": "/CommitteeProfile",
       "properties": {
         "id": {"type": "object"},
         "code": {"type": "string"},

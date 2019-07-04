@@ -83,4 +83,5 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>99020</small> | <small>400</small> | <small>FILE_SIZE_EXCEEDS_LIMIT</small> | <small>The upload file size exceeds the permitted limit</small>
 <small>99100</small> | <small>404</small> | <small>ROUTE_NOT_FOUND</small> | <small>The resource requested could not be located</small>
 <small>99200</small> | <small>500</small> | <small>TASK_AUTH_NOT_FOUND</small> | <small>The task auth for this route was not found, but the route requires authorization.</small>
+<small>99300</small> | <small>500</small> | <small>DATA_NOT_FOUND</small> | <small>The requested data was not found.</small>
 <small>99999</small> | <small>501</small> | <small>NOT_IMPLEMENTED_YET</small> | <small>This feature is not implemented yet!</small>
