@@ -233,10 +233,6 @@ curl -X POST "https://ctoregistry.com/api/v1/committee/"
         "description": "The status of the committee",
         "enum": ["pending", "active", "deleted", "suspended"]
       },
-      "statusEffectiveChangeDt": {
-        "type": "string",
-        "description": "The effective date of a change of status"
-      },
       "parentInstitutionId": {"type": "string", "description": "The ID of the parent institution"},
       "parentCommitteeId": {
         "type": ["string", "null"],
@@ -953,10 +949,6 @@ curl -X PUT "https://ctoregistry.com/api/v1/committee/:committeeId"
         "type": "string",
         "description": "The status of the committee",
         "enum": ["pending", "active", "deleted", "suspended"]
-      },
-      "statusEffectiveChangeDt": {
-        "type": "string",
-        "description": "The effective date of a change of status"
       },
       "parentInstitutionId": {"type": "string", "description": "The ID of the parent institution"},
       "parentCommitteeId": {

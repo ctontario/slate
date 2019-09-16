@@ -196,8 +196,39 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
         },
         "studySponsor": {
           "type": "object",
-          "properties": {"id": {"type": "object"}, "name": {"type": ["string", "null"]}},
-          "required": ["name"]
+          "properties": {
+            "id": {"type": "object"},
+            "name": {"type": ["string", "null"]},
+            "contact": {
+              "properties": {
+                "userId": {"type": ["object", "null"]},
+                "firstName": {"type": ["string", "null"]},
+                "lastName": {"type": ["string", "null"]},
+                "email": {"type": ["string", "null"]},
+                "phone": {"type": ["string", "null"]}
+              },
+              "required": ["firstName", "lastName", "email"]
+            }
+          },
+          "required": ["name", "contact"]
+        },
+        "studyCro": {
+          "type": "object",
+          "properties": {
+            "id": {"type": "object"},
+            "name": {"type": ["string", "null"]},
+            "contact": {
+              "properties": {
+                "userId": {"type": ["object", "null"]},
+                "firstName": {"type": ["string", "null"]},
+                "lastName": {"type": ["string", "null"]},
+                "email": {"type": ["string", "null"]},
+                "phone": {"type": ["string", "null"]}
+              },
+              "required": ["firstName", "lastName", "email"]
+            }
+          },
+          "required": ["name", "contact"]
         },
         "ctaita": {"type": "boolean"},
         "ctaitaTypes": {
@@ -316,6 +347,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
               "id": "/StudyUser",
               "properties": {
                 "email": {"type": ["string", "null"]},
+                "phone": {"type": ["string", "null"]},
+                "organization": {"type": ["string", "null"]},
+                "institutionId": {"type": ["object", "null"]},
                 "firstName": {"type": ["string", "null"]},
                 "lastName": {"type": ["string", "null"]},
                 "user": {
@@ -338,6 +372,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
               "id": "/StudyUser",
               "properties": {
                 "email": {"type": ["string", "null"]},
+                "phone": {"type": ["string", "null"]},
+                "organization": {"type": ["string", "null"]},
+                "institutionId": {"type": ["object", "null"]},
                 "firstName": {"type": ["string", "null"]},
                 "lastName": {"type": ["string", "null"]},
                 "user": {
@@ -360,6 +397,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
               "id": "/StudyUser",
               "properties": {
                 "email": {"type": ["string", "null"]},
+                "phone": {"type": ["string", "null"]},
+                "organization": {"type": ["string", "null"]},
+                "institutionId": {"type": ["object", "null"]},
                 "firstName": {"type": ["string", "null"]},
                 "lastName": {"type": ["string", "null"]},
                 "user": {
@@ -413,6 +453,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
                 "id": "/StudyUser",
                 "properties": {
                   "email": {"type": ["string", "null"]},
+                  "phone": {"type": ["string", "null"]},
+                  "organization": {"type": ["string", "null"]},
+                  "institutionId": {"type": ["object", "null"]},
                   "firstName": {"type": ["string", "null"]},
                   "lastName": {"type": ["string", "null"]},
                   "user": {
@@ -435,6 +478,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
                 "id": "/StudyUser",
                 "properties": {
                   "email": {"type": ["string", "null"]},
+                  "phone": {"type": ["string", "null"]},
+                  "organization": {"type": ["string", "null"]},
+                  "institutionId": {"type": ["object", "null"]},
                   "firstName": {"type": ["string", "null"]},
                   "lastName": {"type": ["string", "null"]},
                   "user": {
@@ -457,6 +503,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
                 "id": "/StudyUser",
                 "properties": {
                   "email": {"type": ["string", "null"]},
+                  "phone": {"type": ["string", "null"]},
+                  "organization": {"type": ["string", "null"]},
+                  "institutionId": {"type": ["object", "null"]},
                   "firstName": {"type": ["string", "null"]},
                   "lastName": {"type": ["string", "null"]},
                   "user": {
@@ -493,7 +542,6 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
         "id",
         "isInvestigatorInitiatedStudy",
         "sponsor",
-        "studySponsor",
         "ohrp",
         "fda",
         "observational",

@@ -180,10 +180,6 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
       "code": {"type": "string", "maxLength": 25, "description": "Code name"},
       "type": {"type": "string", "maxLength": 15, "description": "The institution type"},
       "status": {"type": "string", "enum": ["pending", "active", "deleted", "suspended"]},
-      "statusEffectiveChangeDt": {
-        "type": "string",
-        "description": "The effective date of a change of status"
-      },
       "loadStreamUsers": {
         "type": "boolean",
         "description": "Whether to load users from stream or not"
@@ -1042,10 +1038,6 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
       "code": {"type": "string", "maxLength": 25, "description": "Code name"},
       "type": {"type": "string", "maxLength": 15, "description": "The institution type"},
       "status": {"type": "string", "enum": ["pending", "active", "deleted", "suspended"]},
-      "statusEffectiveChangeDt": {
-        "type": "string",
-        "description": "The effective date of a change of status"
-      },
       "loadStreamUsers": {
         "type": "boolean",
         "description": "Whether to load users from stream or not"

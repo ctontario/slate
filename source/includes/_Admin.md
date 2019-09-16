@@ -73,6 +73,7 @@ curl "https://ctoregistry.com/api/v1/admin/moderation/user"
             "type": "array",
             "items": {
               "type": "object",
+              "id": "AdminUserModerationInstitution",
               "properties": {
                 "address": {
                   "id": "/Address",
@@ -104,6 +105,7 @@ curl "https://ctoregistry.com/api/v1/admin/moderation/user"
                   "type": "array",
                   "items": {
                     "type": "object",
+                    "id": "AdminUserModerationRole",
                     "properties": {
                       "id": {"type": "object"},
                       "code": {"type": "string"},
@@ -558,7 +560,8 @@ curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId/issues"
       "sortby": {"type": "string"},
       "order": {"type": "string"},
       "search": {"type": "string"},
-      "status": {"type": "string"}
+      "status": {"type": "string"},
+      "csv": {"type": "boolean"}
     }
   }
 }
@@ -572,25 +575,14 @@ curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId/issues"
   "id": "/TaskLogIssuesResponse",
   "type": "object",
   "properties": {
-    "taskLog": {
-      "id": "/TaskLog",
+    "meta": {
+      "id": "/ListMeta",
       "properties": {
-        "id": {"type": "object"},
-        "taskName": {"type": "string"},
-        "runDt": {"type": "date"},
-        "issues": {
-          "type": "object",
-          "properties": {"total": {"type": "integer"}, "resolved": {"type": "integer"}},
-          "required": ["total", "resolved"]
-        },
-        "results": {
-          "type": "object",
-          "properties": {"total": {"type": "integer"}, "errors": {"type": "integer"}},
-          "required": ["total", "errors"]
-        },
-        "error": {"type": ["object", "any"]}
+        "count": {"type": "number"},
+        "limit": {"type": "number"},
+        "offset": {"type": "number"}
       },
-      "required": ["id", "taskName", "runDt", "issues", "results"]
+      "required": ["count", "limit", "offset"]
     },
     "data": {
       "type": "array",
@@ -603,13 +595,22 @@ curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId/issues"
           "issueType": {"type": "string"},
           "issue": {"type": ["string"]},
           "isResolved": {"type": "boolean"},
-          "data": {"type": ["object", "string"]}
+          "rawData": {"type": ["object", "string"]},
+          "data": {
+            "properties": {
+              "id": {"type": "string"},
+              "email": {"type": "string"},
+              "firstName": {"type": "string"},
+              "lastName": {"type": "string"},
+              "institution": {"type": "string"}
+            }
+          }
         },
-        "required": ["id", "taskLogId", "issueType", "isResolved"]
+        "required": ["id", "data", "taskLogId", "issueType", "isResolved"]
       }
     }
   },
-  "required": ["taskLog", "data"]
+  "required": ["meta", "data"]
 }
 ```
 
@@ -740,6 +741,77 @@ Updates the issues with the new isResolved value
 ### HTTP Request
 
 `PUT /admin/sync/taskLogs/:taskLogId/issues/:issueId/:resolved`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+
+## TaskLogProfile - <em>Task Log Profile</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/TaskLogProfileRequest",
+    "type": "object",
+    "properties": {"taskLogId": {"type": "string"}},
+    "required": ["taskLogId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/TaskLogProfileResponse",
+  "type": "object",
+  "properties": {
+    "taskLog": {
+      "id": "/TaskLog",
+      "properties": {
+        "id": {"type": "object"},
+        "taskName": {"type": "string"},
+        "runDt": {"type": "date"},
+        "issues": {
+          "type": "object",
+          "properties": {"total": {"type": "integer"}, "resolved": {"type": "integer"}},
+          "required": ["total", "resolved"]
+        },
+        "results": {
+          "type": "object",
+          "properties": {"total": {"type": "integer"}, "errors": {"type": "integer"}},
+          "required": ["total", "errors"]
+        },
+        "error": {"type": ["object", "any"]}
+      },
+      "required": ["id", "taskName", "runDt", "issues", "results"]
+    }
+  },
+  "required": ["taskLog"]
+}
+```
+
+
+Gets the information for one task log
+
+### HTTP Request
+
+`GET /admin/sync/taskLogs/:taskLogId`
 
 
 

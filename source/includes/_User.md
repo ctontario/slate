@@ -500,8 +500,90 @@ curl "https://ctoregistry.com/api/v1/user/:userId/documents"
         "required": ["id", "type", "uploadDt"]
       }
     },
-    "required": {"type": "array"},
-    "allowed": {"type": "array"}
+    "required": {
+      "type": "array",
+      "items": {
+        "id": "UserUploadDocument",
+        "properties": {
+          "code": {"type": "string"},
+          "isRequired": {"type": "boolean"},
+          "validity": {"type": ["number", "null"]},
+          "documentDefinitionId": {"type": "object"},
+          "description": {"type": "string"},
+          "type": {"type": "string", "enum": ["file", "number"]},
+          "name": {"type": "string"},
+          "vendors": {
+            "type": "array",
+            "items": {
+              "properties": {"code": {"type": "string"}, "name": {"type": "string"}},
+              "required": ["code", "name"]
+            }
+          },
+          "allowedMimeTypes": {"type": "array", "items": {"type": "string"}},
+          "categories": {"type": "array", "items": {"type": "string"}},
+          "subCodes": {
+            "type": "array",
+            "items": {
+              "properties": {"code": {"type": "string"}, "name": {"type": "string"}},
+              "required": ["code", "name"]
+            }
+          }
+        },
+        "required": [
+          "code",
+          "isRequired",
+          "validity",
+          "documentDefinitionId",
+          "description",
+          "type",
+          "name",
+          "vendors",
+          "categories"
+        ]
+      }
+    },
+    "allowed": {
+      "type": "array",
+      "items": {
+        "id": "UserUploadDocument",
+        "properties": {
+          "code": {"type": "string"},
+          "isRequired": {"type": "boolean"},
+          "validity": {"type": ["number", "null"]},
+          "documentDefinitionId": {"type": "object"},
+          "description": {"type": "string"},
+          "type": {"type": "string", "enum": ["file", "number"]},
+          "name": {"type": "string"},
+          "vendors": {
+            "type": "array",
+            "items": {
+              "properties": {"code": {"type": "string"}, "name": {"type": "string"}},
+              "required": ["code", "name"]
+            }
+          },
+          "allowedMimeTypes": {"type": "array", "items": {"type": "string"}},
+          "categories": {"type": "array", "items": {"type": "string"}},
+          "subCodes": {
+            "type": "array",
+            "items": {
+              "properties": {"code": {"type": "string"}, "name": {"type": "string"}},
+              "required": ["code", "name"]
+            }
+          }
+        },
+        "required": [
+          "code",
+          "isRequired",
+          "validity",
+          "documentDefinitionId",
+          "description",
+          "type",
+          "name",
+          "vendors",
+          "categories"
+        ]
+      }
+    }
   },
   "required": ["uploaded", "required", "allowed"]
 }
@@ -690,7 +772,10 @@ curl "https://ctoregistry.com/api/v1/user/:userId/institution/:institutionId"
         "userInstitutionId": {"type": "object"},
         "name": {"type": "string"},
         "code": {"type": "string"},
-        "status": {"type": "string"},
+        "status": {
+          "type": "string",
+          "enum": ["pending", "accepted", "denied", "suspended", "deleted"]
+        },
         "institutionId": {"type": "object"},
         "isPrimary": {"type": "boolean"},
         "isPublished": {"type": "boolean"},
@@ -733,7 +818,10 @@ curl "https://ctoregistry.com/api/v1/user/:userId/institution/:institutionId"
               "id": {"type": "object"},
               "code": {"type": "string"},
               "label": {"type": "string"},
-              "status": {"type": "string"}
+              "status": {
+                "type": "string",
+                "enum": ["pending", "accepted", "denied", "suspended", "deleted"]
+              }
             },
             "required": ["id", "code", "label", "status"]
           }
@@ -1518,7 +1606,10 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
               "userInstitutionId": {"type": "object"},
               "name": {"type": "string"},
               "code": {"type": "string"},
-              "status": {"type": "string"},
+              "status": {
+                "type": "string",
+                "enum": ["pending", "accepted", "denied", "suspended", "deleted"]
+              },
               "institutionId": {"type": "object"},
               "isPrimary": {"type": "boolean"},
               "isPublished": {"type": "boolean"},
@@ -1561,7 +1652,10 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
                     "id": {"type": "object"},
                     "code": {"type": "string"},
                     "label": {"type": "string"},
-                    "status": {"type": "string"}
+                    "status": {
+                      "type": "string",
+                      "enum": ["pending", "accepted", "denied", "suspended", "deleted"]
+                    }
                   },
                   "required": ["id", "code", "label", "status"]
                 }

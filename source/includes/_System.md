@@ -298,7 +298,7 @@ curl -X POST "https://ctoregistry.com/api/v1/system/email/event-notification"
         "reason": {"type": "string"},
         "status": {"type": "string"},
         "response": {"type": "string"},
-        "tls": {"type": "string"},
+        "tls": {"type": "number"},
         "url": {"type": "string"},
         "url_offset": {
           "type": "object",
@@ -310,15 +310,7 @@ curl -X POST "https://ctoregistry.com/api/v1/system/email/event-notification"
         "type": {"type": "string"},
         "asm_group_id": {"type": "number"}
       },
-      "required": [
-        "email",
-        "timestamp",
-        "event",
-        "smtp-id",
-        "sg_event_id",
-        "sg_message_id",
-        "category"
-      ]
+      "required": ["email", "timestamp", "event", "sg_event_id", "sg_message_id"]
     }
   }
 }
