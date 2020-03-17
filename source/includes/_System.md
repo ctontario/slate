@@ -19,7 +19,7 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
   "type": "object",
   "properties": {
     "study": {
-      "id": "StudyDictionary",
+      "id": "StudyDictionaries",
       "properties": {
         "ctaitaTypes": {
           "id": "StudyCtaitaTypeDictionary",
@@ -77,7 +77,7 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
       "required": ["ctaitaTypes", "interventions", "funding", "populations"]
     },
     "contact": {
-      "id": "ContactDictionary",
+      "id": "ContactDictionaries",
       "properties": {
         "title": {"type": "array", "items": {"type": "string"}},
         "phoneType": {"type": "array", "items": {"type": "string"}}
@@ -85,7 +85,7 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
       "required": ["title", "phoneType"]
     },
     "user": {
-      "id": "UserDictionary",
+      "id": "UserDictionaries",
       "properties": {
         "accountStatus": {"type": "array", "items": {"type": "string"}},
         "dataStatus": {"type": "array", "items": {"type": "string"}},
@@ -118,7 +118,7 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
       "required": ["accountStatus", "dataStatus", "privileges"]
     },
     "committee": {
-      "id": "CommitteeDictionary",
+      "id": "CommitteeDictionaries",
       "properties": {
         "type": {
           "id": "CommitteeTypeDictionary",
@@ -156,9 +156,13 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
       "required": ["type", "member"]
     },
     "quickStart": {
-      "id": "QuickStartDictionary",
+      "id": "QuickStartDictionaries",
       "properties": {
         "status": {"type": "array", "items": {"type": "string"}},
+        "creationProgress": {
+          "type": "array",
+          "items": {"type": "string", "enum": ["study", "studyDocuments", "contract", "budget"]}
+        },
         "site": {
           "properties": {
             "status": {"type": "array", "items": {"type": "string"}},
@@ -170,9 +174,51 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
                   "required": ["code", "label"]
                 }
               }
+            },
+            "rebEvents": {
+              "id": "QuickStartSiteRebEventsDictionary",
+              "patternProperties": {
+                "^[a-zA-Z_$][\\w$]*$": {
+                  "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+                  "required": ["code", "label"]
+                }
+              }
+            },
+            "approveAfterEvents": {
+              "id": "QuickStartSiteApproveAfterEvents",
+              "patternProperties": {
+                "^[a-zA-Z_$][\\w$]*$": {
+                  "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+                  "required": ["code", "label"]
+                }
+              }
+            },
+            "timers": {
+              "id": "QuickStartSiteTimers",
+              "type": "object",
+              "properties": {
+                "daysToApprove": {"type": "number"},
+                "contract": {
+                  "type": "object",
+                  "properties": {
+                    "siteDaysToAction": {"type": "array", "items": {"type": "number"}},
+                    "sponsorDaysToRespond": {"type": "array", "items": {"type": "number"}}
+                  },
+                  "required": ["siteDaysToAction", "sponsorDaysToRespond"]
+                },
+                "budget": {
+                  "type": "object",
+                  "properties": {
+                    "siteDaysToAction": {"type": "array", "items": {"type": "number"}},
+                    "sponsorDaysToRespond": {"type": "array", "items": {"type": "number"}}
+                  },
+                  "required": ["siteDaysToAction", "sponsorDaysToRespond"]
+                }
+              },
+              "required": ["daysToApprove", "contract", "budget"]
             }
           },
-          "required": ["status", "comments"]
+          "required": ["status", "comments", "rebEvents", "approveAfterEvents", "timers"]
         },
         "approvalTypes": {
           "id": "QuickStartApprovalTypeDictionary",
@@ -185,10 +231,10 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
         },
         "documentType": {"type": "array", "items": {"type": "string"}}
       },
-      "required": ["status", "site", "approvalTypes", "documentType"]
+      "required": ["status", "creationProgress", "site", "approvalTypes", "documentType"]
     },
     "document": {
-      "id": "DocumentDictionary",
+      "id": "DocumentDictionaries",
       "properties": {
         "mimeTypes": {
           "patternProperties": {
@@ -198,15 +244,19 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
           }
         },
         "allowedMimeTypes": {
-          "quickStart": {"type": "array", "items": {"type": "string"}},
-          "institution": {"type": "array", "items": {"type": "string"}}
+          "properties": {
+            "quickStart": {"type": "array", "items": {"type": "string"}},
+            "institution": {"type": "array", "items": {"type": "string"}},
+            "fundingHstExemption": {"type": "array", "items": {"type": "string"}}
+          },
+          "required": ["quickStart", "institution", "fundingHstExemption"]
         },
         "maxFileSize": {"type": "number"}
       },
       "required": ["mimeTypes", "allowedMimeTypes", "maxFileSize"]
     },
     "email": {
-      "id": "EmailDictionary",
+      "id": "EmailDictionaries",
       "properties": {
         "template": {
           "id": "EmailTemplateDictionary",
@@ -228,9 +278,33 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
         }
       },
       "required": ["template", "event"]
+    },
+    "studyFunding": {
+      "id": "StudyFundingDictionaries",
+      "properties": {
+        "paymentTypes": {
+          "id": "StudyFundingPaymentTypeDictionary",
+          "patternProperties": {
+            "^[a-zA-Z_$][\\w$]*$": {
+              "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+              "required": ["code", "label"]
+            }
+          }
+        }
+      },
+      "required": ["paymentTypes"]
     }
   },
-  "required": ["study", "contact", "user", "committee", "quickStart", "document", "email"]
+  "required": [
+    "study",
+    "contact",
+    "user",
+    "committee",
+    "quickStart",
+    "document",
+    "email",
+    "studyFunding"
+  ]
 }
 ```
 

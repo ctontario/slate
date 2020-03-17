@@ -100,3 +100,4 @@ Gets the share metrics report used to determine Committee assigned and for overa
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A

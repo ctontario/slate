@@ -57,57 +57,6 @@ Tests a users credentials, and if successful returns a token to access the syste
  
 N/A
 
-## CheckToken - <em>Check Token</em>
-
-
-```shell
-curl -X POST "https://ctoregistry.com/api/v1/security/token"  
-  -H "Authorization: {{_JWT_TOKEN_}}"  
-  -H "Content-Type: application/json"
-```
-
-> Request Schema
-
-```json
-{
-  "body": {
-    "id": "/CheckToken",
-    "type": "object",
-    "properties": {"token": {"type": "string"}, "service": {"type": "string"}},
-    "required": ["token", "service"]
-  }
-}
-```
-
-
-> Response Schema
-
-```json
-{
-  "id": "/CheckTokenResponse",
-  "type": "object",
-  "properties": {"tokenStatus": {"type": "string", "enum": ["invalid", "valid"]}},
-  "required": ["tokenStatus"]
-}
-```
-
-
-
-<aside class="notice">This route is public and does not require authentication</aside>
-
-
-Validates an authentication token
-
-### HTTP Request
-
-`POST /security/token`
-
-
-
-### Authorization
- 
-N/A
-
 ## PrivilegeToken - <em>Get Privilege Token</em>
 
 

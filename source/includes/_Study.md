@@ -25,6 +25,7 @@ curl "https://ctoregistry.com/api/v1/study/"
       "order": {"type": "string"},
       "search": {"type": "string"},
       "status": {"type": "string"},
+      "csv": {"type": "boolean"},
       "institutionIds": {
         "type": ["string", "array"],
         "description": "an array of sponsor institution IDs"
@@ -148,8 +149,7 @@ curl "https://ctoregistry.com/api/v1/study/"
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
+system | * | N/A|N/A
 institution | member | N/A|User has a collaborator role for the target study.
 institution | admin | N/A|Study has a centre application for the target institution of the privilege.
 committee | member | N/A|Study REB is set to the target of the privilege.
@@ -210,7 +210,7 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
               "required": ["firstName", "lastName", "email"]
             }
           },
-          "required": ["name", "contact"]
+          "required": ["name"]
         },
         "studyCro": {
           "type": "object",
@@ -587,8 +587,7 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
+system | * | N/A|N/A
 study | applicant | study|Study data is filtered to only contain centre applications for the target institution.
 committee | member | study|N/A
 institution | admin | study|Study data is filtered to only contain centre applications for the target institution.

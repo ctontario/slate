@@ -51,6 +51,7 @@ Checks to see if an institution alternate name is already in use or not
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | N/A|N/A
 
@@ -103,6 +104,7 @@ Checks to see if an institution code is already in use or not
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | N/A|N/A
 
@@ -155,6 +157,7 @@ Checks to see if an institution name is already in use or not
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | N/A|N/A
 
@@ -273,6 +276,7 @@ Create a new institution in the system.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 
 ## InstitutionDictionary - <em>Institution Dictionary</em>
@@ -383,6 +387,7 @@ Deletes a specified document from an institution document
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | institution|N/A
 
@@ -429,8 +434,7 @@ Downloads one document from the specified institution.
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
+system | * | N/A|N/A
 institution | admin | institution|N/A
 institution | member | institution|N/A
 
@@ -504,6 +508,7 @@ Uploads a document to the specified institution.  The document information is co
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | institution|N/A
 
@@ -572,8 +577,7 @@ Gets all the documents related to one institution
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
+system | * | N/A|N/A
 institution | admin | institution|N/A
 institution | member | institution|N/A
 
@@ -600,6 +604,7 @@ curl "https://ctoregistry.com/api/v1/institution/"
       "order": {"type": "string"},
       "search": {"type": "string"},
       "status": {"type": "string"},
+      "csv": {"type": "boolean"},
       "types": {"type": ["string", "array"], "items": {"type": "string"}}
     }
   }
@@ -647,7 +652,7 @@ curl "https://ctoregistry.com/api/v1/institution/"
               "extendedAddress": {"type": "array", "items": {"type": "string"}},
               "countryName": {"type": "string"}
             },
-            "required": ["streetAddress", "locality", "region", "postalCode"]
+            "required": []
           }
         },
         "required": ["id", "code", "name", "type", "status", "address"]
@@ -669,6 +674,182 @@ Gets a listing of institutions in the system that the current user can access.
 ### Authorization
  
 N/A
+
+## InstitutionPayee - <em>Get Institution Payee</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/institution/:institutionId/payee"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/InstitutionParams",
+    "type": "object",
+    "properties": {"institutionId": {"type": "string"}},
+    "required": ["institutionId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/InstitutionPayeeResponse",
+  "type": "object",
+  "properties": {
+    "institutionPayee": {
+      "id": "/InstitutionPayee",
+      "properties": {
+        "id": {"type": "object"},
+        "name": {"type": ["string", "null"]},
+        "address": {
+          "id": "/Address",
+          "type": "object",
+          "properties": {
+            "streetAddress": {"type": "string"},
+            "locality": {"type": "string"},
+            "region": {"type": "string"},
+            "postalCode": {"type": "string"},
+            "extendedAddress": {"type": "array", "items": {"type": "string"}},
+            "countryName": {"type": "string"}
+          },
+          "required": []
+        },
+        "contact": {
+          "properties": {
+            "userId": {"type": ["object", "null"]},
+            "firstName": {"type": ["string", "null"]},
+            "lastName": {"type": ["string", "null"]},
+            "email": {"type": ["string", "null"]},
+            "phone": {"type": ["string", "null"]}
+          },
+          "required": []
+        }
+      },
+      "required": []
+    }
+  },
+  "required": ["institutionPayee"]
+}
+```
+
+
+Gets the payee data related to one institution. Payee information is only included for users with the system:admin, system:funding, or system:support roles
+
+### HTTP Request
+
+`GET /institution/:institutionId/payee`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | support | N/A|N/A
+system | funding | N/A|N/A
+
+## InstitutionPayeeUpdate - <em>Update Institution Payee</em>
+
+
+```shell
+curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId/payee"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/InstitutionParams",
+    "type": "object",
+    "properties": {"institutionId": {"type": "string"}},
+    "required": ["institutionId"]
+  },
+  "body": {
+    "id": "/InstitutionPayeeUpdateBody",
+    "properties": {
+      "institutionId": {"type": "string"},
+      "name": {"type": "string"},
+      "address": {
+        "id": "/PayeeAddress",
+        "type": "object",
+        "properties": {
+          "streetAddress": {"type": "string", "description": "Street address"},
+          "extendedAddress": {
+            "type": "array",
+            "items": {"type": "string"},
+            "minItems": 0,
+            "maxItems": 5
+          },
+          "postalCode": {"type": "string", "maxLength": 10},
+          "locality": {"type": "string"},
+          "region": {"type": "string"},
+          "countryName": {"type": "string"}
+        },
+        "required": []
+      },
+      "contact": {
+        "properties": {
+          "firstName": {"type": "string"},
+          "lastName": {"type": "string"},
+          "phone": {"type": "string"},
+          "email": {"type": "string"}
+        },
+        "required": ["firstName", "lastName", "phone", "email"]
+      }
+    },
+    "required": ["name"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Updates one institutions payee information in the system
+
+### HTTP Request
+
+`PUT /institution/:institutionId/payee`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | support | N/A|N/A
+system | funding | N/A|N/A
 
 ## InstitutionProfile - <em>Get Institution</em>
 
@@ -737,7 +918,7 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
                   "extendedAddress": {"type": "array", "items": {"type": "string"}},
                   "countryName": {"type": "string"}
                 },
-                "required": ["streetAddress", "locality", "region", "postalCode"]
+                "required": []
               },
               "phones": {
                 "type": "array",
@@ -795,7 +976,7 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
             "extendedAddress": {"type": "array", "items": {"type": "string"}},
             "countryName": {"type": "string"}
           },
-          "required": ["streetAddress", "locality", "region", "postalCode"]
+          "required": []
         }
       },
       "required": ["id", "code", "name", "type", "status", "address"]
@@ -816,7 +997,7 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId"
 ```
 
 
-Gets the profile data related to one institution
+Gets the profile data related to one institution.
 
 ### HTTP Request
 
@@ -827,6 +1008,310 @@ Gets the profile data related to one institution
 ### Authorization
  
 N/A
+
+## InstitutionQuickSTARTApprovalCreation - <em>Institution QuickSTART Create Approval</em>
+
+
+```shell
+curl -X POST "https://ctoregistry.com/api/v1/institution/:institutionId/quick-start-approvals"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/InstitutionQuickSTARTApprovalCreationParams",
+    "type": "object",
+    "properties": {"institutionId": {"type": "string"}},
+    "required": ["institutionId"]
+  },
+  "body": {
+    "id": "/QuickSTARTApprovalBody",
+    "type": "object",
+    "properties": {
+      "userId": {"type": ["string", "null"]},
+      "dueDay": {"type": "integer", "minimum": 1},
+      "dueType": {"type": "string", "enum": ["fixed", "variable"]},
+      "dueAfterEvent": {
+        "type": ["string", "null"],
+        "enum": [null, "contractApproved", "budgetApproved", "fullApproval"]
+      },
+      "type": {
+        "type": "string",
+        "enum": ["overall", "protocol", "budget", "contract", "signatures", "resource", "other"]
+      },
+      "typeOther": {"type": ["string", "null"]},
+      "action": {"type": "string"}
+    },
+    "required": ["dueDay", "dueType", "dueAfterEvent", "type", "action"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Creates an approval record for this institution to use as a template when creating QuickSTART sites.
+
+### HTTP Request
+
+`POST /institution/:institutionId/quick-start-approvals`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+institution | admin | institution|N/A
+institution | quickStartAdmin | institution|N/A
+
+## InstitutionQuickSTARTApprovalDelete - <em>Institution QuickSTART Delete Approval</em>
+
+
+```shell
+curl -X DELETE "https://ctoregistry.com/api/v1/institution/:institutionId/quick-start-approvals/:approvalId"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/InstitutionQuickSTARTApprovalDeleteParams",
+    "type": "object",
+    "properties": {"institutionId": {"type": "string"}, "approvalId": {"type": "string"}},
+    "required": ["institutionId", "approvalId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Deletes an approval template record for an Institution.
+
+### HTTP Request
+
+`DELETE /institution/:institutionId/quick-start-approvals/:approvalId`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+institution | admin | institution|N/A
+institution | quickStartAdmin | institution|N/A
+
+## InstitutionQuickSTARTApprovalUpdate - <em>Institution QuickSTART Update Approval</em>
+
+
+```shell
+curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId/quick-start-approvals/:approvalId"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/InstitutionQuickSTARTApprovalUpdateParams",
+    "type": "object",
+    "properties": {"institutionId": {"type": "string"}, "approvalId": {"type": "string"}},
+    "required": ["institutionId", "approvalId"]
+  },
+  "body": {
+    "id": "/QuickSTARTApprovalBody",
+    "type": "object",
+    "properties": {
+      "userId": {"type": ["string", "null"]},
+      "dueDay": {"type": "integer", "minimum": 1},
+      "dueType": {"type": "string", "enum": ["fixed", "variable"]},
+      "dueAfterEvent": {
+        "type": ["string", "null"],
+        "enum": [null, "contractApproved", "budgetApproved", "fullApproval"]
+      },
+      "type": {
+        "type": "string",
+        "enum": ["overall", "protocol", "budget", "contract", "signatures", "resource", "other"]
+      },
+      "typeOther": {"type": ["string", "null"]},
+      "action": {"type": "string"}
+    },
+    "required": ["dueDay", "dueType", "dueAfterEvent", "type", "action"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Updates an approval template record for an Institution.
+
+### HTTP Request
+
+`PUT /institution/:institutionId/quick-start-approvals/:approvalId`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+institution | admin | institution|N/A
+institution | quickStartAdmin | institution|N/A
+
+## InstitutionQuickSTARTApprovalsList - <em>QuickSTART Site Approvals</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/institution/:institutionId/quick-start-approvals"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/InstitutionParams",
+    "type": "object",
+    "properties": {"institutionId": {"type": "string"}},
+    "required": ["institutionId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/InstitutionQuickStartApprovalsResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "id": "/InstitutionQuickStartApproval",
+        "type": "object",
+        "properties": {
+          "id": {"type": "object"},
+          "type": {
+            "type": "string",
+            "enum": ["overall", "protocol", "budget", "contract", "signatures", "resource", "other"]
+          },
+          "typeOther": {"type": ["string", "null"]},
+          "action": {"type": "string"},
+          "createUserId": {"type": "object"},
+          "assignedUserId": {"type": "object"},
+          "dueType": {"type": "string", "enum": ["fixed", "variable"]},
+          "dueAfterEvent": {
+            "type": "string",
+            "enum": ["contractApproved", "budgetApproved", "fullApproval"]
+          },
+          "dueDay": {"type": "integer", "minimum": 1},
+          "createDt": {"type": "date"},
+          "updateDt": {"type": "date"}
+        },
+        "required": [
+          "id",
+          "type",
+          "action",
+          "createUserId",
+          "dueType",
+          "dueDay",
+          "createDt",
+          "updateDt"
+        ]
+      }
+    }
+  },
+  "required": ["data"]
+}
+```
+
+
+Gets the list of  Quick Start approval templates recorded for the institution
+
+### HTTP Request
+
+`GET /institution/:institutionId/quick-start-approvals`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+institution | admin | institution|N/A
+institution | quickStartAdmin | institution|N/A
 
 ## InstitutionRoles - <em>Get Institution Roles</em>
 
@@ -885,6 +1370,7 @@ Get the list of institution roles allowed for a specific institution
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | institution|N/A
 institution | member | institution|N/A
@@ -893,7 +1379,7 @@ institution | member | institution|N/A
 
 
 ```shell
-curl "https://ctoregistry.com/api/v1/dictionary/institution/:searchString"  
+curl "https://ctoregistry.com/api/v1/dictionary/institution-search/:searchString?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -903,10 +1389,16 @@ curl "https://ctoregistry.com/api/v1/dictionary/institution/:searchString"
 ```json
 {
   "params": {
-    "id": "/Search",
+    "id": "/SearchParams",
     "type": "object",
     "properties": {"searchString": {"type": "string"}},
-    "required": ["searchString"]
+    "required": []
+  },
+  "query": {
+    "id": "/SearchQuery",
+    "type": "object",
+    "properties": {"reject": {"type": "string"}},
+    "required": []
   }
 }
 ```
@@ -943,7 +1435,7 @@ curl "https://ctoregistry.com/api/v1/dictionary/institution/:searchString"
               "extendedAddress": {"type": "array", "items": {"type": "string"}},
               "countryName": {"type": "string"}
             },
-            "required": ["streetAddress", "locality", "region", "postalCode"]
+            "required": []
           }
         },
         "required": ["id", "code", "name", "type", "status", "address"]
@@ -962,7 +1454,7 @@ Searches for institutions whose name matches the search string.
 
 ### HTTP Request
 
-`GET /dictionary/institution/:searchString`
+`GET /dictionary/institution-search/:searchString?`
 
 
 
@@ -1137,5 +1629,6 @@ Updates one institutions information in the system
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | institution|N/A

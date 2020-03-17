@@ -97,8 +97,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
     "id": "/QuickSTARTApprovalBody",
     "type": "object",
     "properties": {
-      "userId": {"type": "string"},
-      "dueDay": {"type": "integer", "minimum": 1, "maximum": 90},
+      "userId": {"type": ["string", "null"]},
+      "dueDay": {"type": "integer", "minimum": 1},
+      "dueType": {"type": "string", "enum": ["fixed", "variable"]},
+      "dueAfterEvent": {
+        "type": ["string", "null"],
+        "enum": [null, "contractApproved", "budgetApproved", "fullApproval"]
+      },
       "type": {
         "type": "string",
         "enum": ["overall", "protocol", "budget", "contract", "signatures", "resource", "other"]
@@ -106,7 +111,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
       "typeOther": {"type": ["string", "null"]},
       "action": {"type": "string"}
     },
-    "required": ["userId", "dueDay", "type", "action"]
+    "required": ["dueDay", "dueType", "dueAfterEvent", "type", "action"]
   }
 }
 ```
@@ -147,10 +152,14 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | contract | quickStartSite|N/A
 quickStartSite | budget | quickStartSite|N/A
 quickStartSite | approver | quickStartSite|N/A
+quickStartSite | investigator | quickStartSite|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTApprovalDelete - <em>QuickSTART Site Delete Approval</em>
@@ -215,6 +224,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | contract | quickStartSite|N/A
 quickStartSite | budget | quickStartSite|N/A
@@ -248,8 +260,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
     "id": "/QuickSTARTApprovalBody",
     "type": "object",
     "properties": {
-      "userId": {"type": "string"},
-      "dueDay": {"type": "integer", "minimum": 1, "maximum": 90},
+      "userId": {"type": ["string", "null"]},
+      "dueDay": {"type": "integer", "minimum": 1},
+      "dueType": {"type": "string", "enum": ["fixed", "variable"]},
+      "dueAfterEvent": {
+        "type": ["string", "null"],
+        "enum": [null, "contractApproved", "budgetApproved", "fullApproval"]
+      },
       "type": {
         "type": "string",
         "enum": ["overall", "protocol", "budget", "contract", "signatures", "resource", "other"]
@@ -257,7 +274,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
       "typeOther": {"type": ["string", "null"]},
       "action": {"type": "string"}
     },
-    "required": ["userId", "dueDay", "type", "action"]
+    "required": ["dueDay", "dueType", "dueAfterEvent", "type", "action"]
   }
 }
 ```
@@ -298,10 +315,14 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | contract | quickStartSite|N/A
 quickStartSite | budget | quickStartSite|N/A
 quickStartSite | approver | quickStartSite|N/A
+quickStartSite | investigator | quickStartSite|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTApprovalsList - <em>QuickSTART Site Approvals</em>
@@ -351,12 +372,18 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
           "createUserId": {"type": "object"},
           "assignedUserId": {"type": "object"},
           "signUserId": {"type": "object"},
-          "dueDay": {"type": "integer", "minimum": 1, "maximum": 90},
-          "dueDt": {"type": "date"},
+          "dueType": {"type": "string", "enum": ["fixed", "variable"]},
+          "dueAfterEvent": {
+            "type": "string",
+            "enum": ["contractApproved", "budgetApproved", "fullApproval"]
+          },
+          "dueDay": {"type": "integer", "minimum": 1},
+          "dueDt": {"type": ["date", "null"]},
           "doneDt": {"type": "date"},
           "approvalNotes": {"type": "string"},
           "daysLeft": {"type": ["number", "null"]},
           "daysToComplete": {"type": ["number", "null"]},
+          "daysOverdue": {"type": ["number", "null"]},
           "createDt": {"type": "date"},
           "updateDt": {"type": "date"}
         },
@@ -365,10 +392,8 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
           "type",
           "action",
           "createUserId",
-          "assignedUserId",
-          "assignedDt",
+          "dueType",
           "dueDay",
-          "dueDt",
           "createDt",
           "updateDt"
         ]
@@ -426,9 +451,23 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/"
       },
       "sponsorContractUserId": {"type": ["string", "null"]},
       "sponsorBudgetUserId": {"type": ["string", "null"]},
+      "croInstitutionId": {"type": ["string", "null"]},
+      "croUserIds": {
+        "type": "array",
+        "minItems": 0,
+        "uniqueItems": true,
+        "items": {"type": "string"}
+      },
+      "croContractUserId": {"type": ["string", "null"]},
+      "croBudgetUserId": {"type": ["string", "null"]},
       "studyType": {"type": "string"},
       "studyTypeOther": {"type": ["string", "null"]},
       "therapeuticArea": {"type": "string"},
+      "isSingleSiteStudy": {"type": "boolean"},
+      "reb": {
+        "properties": {"name": {"type": "string"}, "committeeId": {"type": ["string", "null"]}},
+        "required": ["name"]
+      },
       "quickStartIdentifier": {"type": ["string", "null"]},
       "projectIdNumber": {"type": ["string", "null"]},
       "status": {"type": "string", "enum": ["pending", "screen", "active", "completed"]}
@@ -439,7 +478,12 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/"
       "sponsorUserIds",
       "sponsorContractUserId",
       "sponsorBudgetUserId",
+      "croInstitutionId",
+      "croUserIds",
+      "croContractUserId",
+      "croBudgetUserId",
       "therapeuticArea",
+      "isSingleSiteStudy",
       "studyType",
       "quickStartIdentifier"
     ]
@@ -540,6 +584,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTDocumentDownload - <em>Download QuickSTART Document</em>
@@ -680,6 +727,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTExtraDocumentDelete - <em>QuickSTART Site Pre Screen Document Delete</em>
@@ -744,6 +794,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | contract | quickStartSite|N/A
 quickStartSite | budget | quickStartSite|N/A
@@ -773,7 +826,10 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
     "type": "object",
     "properties": {
       "documentId": {"type": "string"},
-      "category": {"type": "string", "enum": ["screen", "review", "active"]},
+      "category": {
+        "type": "string",
+        "enum": ["pending", "screen", "review", "active", "completed"]
+      },
       "type": {"type": "string", "enum": ["budget", "contract", "protocol"]},
       "visibility": {"type": "array", "items": {"type": "string", "enum": ["site", "sponsor"]}},
       "name": {"type": "string"}
@@ -819,6 +875,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | contract | quickStartSite|N/A
 quickStartSite | budget | quickStartSite|N/A
@@ -849,7 +908,7 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/quick-start/:quickStartId/si
       "category": {
         "type": "string",
         "description": "The document type",
-        "enum": ["screen", "review", "active"]
+        "enum": ["pending", "screen", "review", "active", "completed"]
       },
       "type": {
         "type": "string",
@@ -911,10 +970,74 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | contract | quickStartSite|N/A
 quickStartSite | budget | quickStartSite|N/A
 institution | quickStartSponsor | quickStart|N/A
+
+## QuickSTARTHistoryDelete - <em>QuickSTART Site Delete History</em>
+
+
+```shell
+curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutionId/history/:type/:historyId"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/QuickSTARTSiteHistoryDeleteParams",
+    "type": "object",
+    "properties": {
+      "quickStartId": {"type": "string"},
+      "institutionId": {"type": "string"},
+      "historyId": {"type": "string"},
+      "type": {"type": "string", "enum": ["budget", "contract"]}
+    },
+    "required": ["quickStartId", "institutionId", "historyId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Deletes a history record for a quickSTART site. The site must not be completed
+
+### HTTP Request
+
+`DELETE /quick-start/:quickStartId/sites/:institutionId/history/:type/:historyId`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 
 ## QuickSTARTList - <em>QuickSTART List</em>
 
@@ -938,7 +1061,8 @@ curl "https://ctoregistry.com/api/v1/quick-start/"
       "sortby": {"type": "string"},
       "order": {"type": "string"},
       "search": {"type": "string"},
-      "status": {"type": "string"}
+      "status": {"type": "string"},
+      "csv": {"type": "boolean"}
     }
   }
 }
@@ -974,10 +1098,10 @@ curl "https://ctoregistry.com/api/v1/quick-start/"
           "sponsorInstitutionId": {"type": "object"},
           "studyType": {"type": "string"},
           "studyTypeOther": {"type": "string"},
+          "therapeuticArea": {"type": "string"},
           "projectIdNumber": {"type": "number"},
           "createDt": {"type": "date"},
-          "updateDt": {"type": "date"},
-          "sites": {"type": "array"}
+          "updateDt": {"type": "date"}
         },
         "required": [
           "id",
@@ -985,6 +1109,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/"
           "status",
           "shortTitle",
           "studyType",
+          "therapeuticArea",
           "createDt",
           "updateDt"
         ]
@@ -1056,41 +1181,39 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
         "therapeuticArea": {"type": "string"},
         "projectIdNumber": {"type": "number"},
         "studyId": {"type": "object"},
+        "isSingleSiteStudy": {"type": "boolean"},
         "status": {"type": "string", "enum": ["pending", "screen", "active", "completed"]},
         "protocol": {
           "id": "/QuickStartProtocol",
           "type": "object",
           "properties": {
             "documentLocation": {"type": "string", "enum": ["upload", "manual"]},
-            "version": {"type": "string"},
-            "versionDt": {"type": "date"},
+            "documentName": {"type": "string"},
             "notes": {"type": "string"}
           },
-          "required": ["documentLocation", "version", "versionDt"]
+          "required": ["documentLocation", "documentName"]
         },
         "budget": {
           "id": "/QuickStartBudget",
           "type": "object",
           "properties": {
             "documentLocation": {"type": "string", "enum": ["upload", "manual"]},
-            "version": {"type": "string"},
-            "versionDt": {"type": "date"},
+            "documentName": {"type": "string"},
             "notes": {"type": "string"}
           },
-          "required": ["documentLocation", "version", "versionDt"]
+          "required": ["documentLocation", "documentName"]
         },
         "contract": {
           "id": "/QuickStartContract",
           "type": "object",
           "properties": {
             "documentLocation": {"type": "string", "enum": ["upload", "manual"]},
-            "version": {"type": "string"},
-            "versionDt": {"type": "date"},
+            "documentName": {"type": "string"},
             "strategy": {"type": "string"},
             "strategyOther": {"type": "string"},
             "notes": {"type": "string"}
           },
-          "required": ["documentLocation", "version", "versionDt", "strategy"]
+          "required": ["documentLocation", "documentName", "strategy"]
         },
         "documents": {
           "type": "array",
@@ -1119,9 +1242,27 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
               "uploadUserId"
             ]
           }
+        },
+        "creationProgress": {
+          "type": "array",
+          "items": {"type": "string", "enum": ["study", "studyDocuments", "contract", "budget"]}
         }
       },
-      "required": ["id", "quickStartIdentifier", "shortTitle", "studyType", "therapeuticArea"]
+      "required": [
+        "id",
+        "quickStartIdentifier",
+        "shortTitle",
+        "studyType",
+        "therapeuticArea",
+        "isSingleSiteStudy",
+        "creationProgress"
+      ]
+    },
+    "reb": {
+      "type": "object",
+      "id": "/QuickStartREB",
+      "properties": {"committeeId": {"type": "object"}, "name": {"type": "string"}},
+      "required": ["name"]
     },
     "sponsor": {
       "type": "object",
@@ -1202,6 +1343,86 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
         "institutionIds": {"type": "array", "items": {"type": "object"}}
       },
       "required": ["id", "username", "contact", "institutionIds"]
+    },
+    "cro": {
+      "type": "object",
+      "id": "/QuickStartCro",
+      "properties": {
+        "institutionId": {"type": "object"},
+        "code": {"type": "string"},
+        "name": {"type": "string"}
+      },
+      "required": ["institutionId", "code", "name"]
+    },
+    "croUsers": {
+      "type": "array",
+      "items": {
+        "id": "/UserShortProfile",
+        "properties": {
+          "id": {"type": "object"},
+          "username": {"type": "string"},
+          "contact": {
+            "type": "object",
+            "properties": {
+              "firstName": {"type": "string"},
+              "middleName": {"type": "string"},
+              "lastName": {"type": "string"},
+              "title": {
+                "type": "string",
+                "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
+              }
+            },
+            "required": ["firstName", "lastName", "title"]
+          },
+          "institutionIds": {"type": "array", "items": {"type": "object"}}
+        },
+        "required": ["id", "username", "contact", "institutionIds"]
+      },
+      "minItems": 1
+    },
+    "croContractUser": {
+      "id": "/UserShortProfile",
+      "properties": {
+        "id": {"type": "object"},
+        "username": {"type": "string"},
+        "contact": {
+          "type": "object",
+          "properties": {
+            "firstName": {"type": "string"},
+            "middleName": {"type": "string"},
+            "lastName": {"type": "string"},
+            "title": {
+              "type": "string",
+              "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
+            }
+          },
+          "required": ["firstName", "lastName", "title"]
+        },
+        "institutionIds": {"type": "array", "items": {"type": "object"}}
+      },
+      "required": ["id", "username", "contact", "institutionIds"]
+    },
+    "croBudgetUser": {
+      "id": "/UserShortProfile",
+      "properties": {
+        "id": {"type": "object"},
+        "username": {"type": "string"},
+        "contact": {
+          "type": "object",
+          "properties": {
+            "firstName": {"type": "string"},
+            "middleName": {"type": "string"},
+            "lastName": {"type": "string"},
+            "title": {
+              "type": "string",
+              "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
+            }
+          },
+          "required": ["firstName", "lastName", "title"]
+        },
+        "institutionIds": {"type": "array", "items": {"type": "object"}}
+      },
+      "required": ["id", "username", "contact", "institutionIds"]
     }
   },
   "required": ["quickStart", "sponsor", "sponsorUsers"]
@@ -1227,6 +1448,147 @@ system | quickStartAdmin | N/A|N/A
 quickStart | * | quickStart|N/A
 quickStartSite | * | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
+
+## QuickSTARTRebEventDelete - <em>QuickSTART Site Delete REB Event</em>
+
+
+```shell
+curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutionId/reb-event/:eventId"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/QuickSTARTRebEventDeleteParams",
+    "type": "object",
+    "properties": {
+      "quickStartId": {"type": "string"},
+      "institutionId": {"type": "string"},
+      "eventId": {"type": "string"}
+    },
+    "required": ["quickStartId", "institutionId", "eventId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Removes one quick start site REB event that was previously recorded in the system
+
+### HTTP Request
+
+`DELETE /quick-start/:quickStartId/sites/:institutionId/reb-event/:eventId`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+quickStartSite | rc | quickStartSite|N/A
+
+## QuickSTARTRebEventSave - <em>QuickSTART Site REB Event Save</em>
+
+
+```shell
+curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutionId/reb-event"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/QuickSTARTSiteParams",
+    "type": "object",
+    "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
+    "required": ["quickStartId", "institutionId"]
+  },
+  "body": {
+    "id": "/QuickSTARTRebEventBody",
+    "type": "object",
+    "properties": {
+      "event": {
+        "type": "string",
+        "enum": [
+          "submit",
+          "review",
+          "investigatorQuestions",
+          "sponsorQuestions",
+          "response",
+          "approvalSent",
+          "approvalReceived"
+        ]
+      },
+      "isDone": {"type": "boolean"},
+      "eventDt": {"type": "string", "format": "date-time"},
+      "eventId": {"type": "string", "description": "If passed in, will update the event"},
+      "comment": {"type": "string"}
+    },
+    "required": ["event"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Adds or updates an REB event for the related quick start site.
+
+### HTTP Request
+
+`POST /quick-start/:quickStartId/sites/:institutionId/reb-event`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+quickStartSite | rc | quickStartSite|N/A
 
 ## QuickSTARTSendToSite - <em>QuickSTART Send to Site</em>
 
@@ -1284,6 +1646,7 @@ Sends a QuickSTART pre-screened application to the Site.  The site status must b
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | cro | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteAddUser - <em>QuickSTART Site Add User</em>
@@ -1362,6 +1725,7 @@ system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | cro | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 quickStartSite | contract | quickStartSite|The user can only specify a role that they currently have.                        The user can only give themselves the read only role
 quickStartSite | budget | quickStartSite|The user can only specify a role that they currently have.                        The user can only give themselves the read only role
@@ -1553,6 +1917,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteDocumentDownload - <em>Download QuickSTART Document</em>
@@ -1697,6 +2064,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSitePreScreenComment - <em>QuickSTART Site Pre-Screen Comment</em>
@@ -1951,6 +2321,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteProfile - <em>QuickSTART Site</em>
@@ -2028,7 +2401,9 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
               "properties": {
                 "reviewerUserId": {"type": "object"},
                 "documentSentDt": {"type": "date"},
+                "documentSentUserId": {"type": "object"},
                 "assignedDt": {"type": "date"},
+                "approvedDt": {"type": "date"},
                 "status": {"type": "string", "enum": ["pending", "site", "sponsor", "approved"]},
                 "history": {
                   "type": "array",
@@ -2036,23 +2411,23 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
                     "type": "object",
                     "id": "/QuickStartSiteApprovalHistory",
                     "properties": {
-                      "state": {"type": "string"},
+                      "id": {"type": "object"},
                       "userId": {"type": "object"},
                       "action": {
                         "type": "string",
                         "enum": [
                           "reviewer_comment",
                           "send_sponsor",
-                          "reviewer_approve",
                           "sponsor_comment",
                           "send_site",
+                          "sponsor_approve",
                           "assign"
                         ]
                       },
                       "comment": {"type": "string"},
                       "actionDt": {"type": "date"}
                     },
-                    "required": ["action", "actionDt"]
+                    "required": ["id", "action", "actionDt"]
                   }
                 },
                 "rounds": {
@@ -2067,7 +2442,8 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
                           "startDt": {"type": "date"},
                           "completeDt": {"type": ["date", "null"]},
                           "daysToComplete": {"type": ["number", "null"]},
-                          "daysLeft": {"type": ["number", "null"]}
+                          "daysLeft": {"type": ["number", "null"]},
+                          "daysOverdue": {"type": ["number", "null"]}
                         },
                         "required": ["dueDt", "startDt"]
                       },
@@ -2078,7 +2454,8 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
                           "startDt": {"type": "date"},
                           "completeDt": {"type": ["date", "null"]},
                           "daysToComplete": {"type": ["number", "null"]},
-                          "daysLeft": {"type": ["number", "null"]}
+                          "daysLeft": {"type": ["number", "null"]},
+                          "daysOverdue": {"type": ["number", "null"]}
                         },
                         "required": ["dueDt", "startDt"]
                       }
@@ -2095,7 +2472,9 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
               "properties": {
                 "reviewerUserId": {"type": "object"},
                 "documentSentDt": {"type": "date"},
+                "documentSentUserId": {"type": "object"},
                 "assignedDt": {"type": "date"},
+                "approvedDt": {"type": "date"},
                 "status": {"type": "string", "enum": ["pending", "site", "sponsor", "approved"]},
                 "history": {
                   "type": "array",
@@ -2103,23 +2482,23 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
                     "type": "object",
                     "id": "/QuickStartSiteApprovalHistory",
                     "properties": {
-                      "state": {"type": "string"},
+                      "id": {"type": "object"},
                       "userId": {"type": "object"},
                       "action": {
                         "type": "string",
                         "enum": [
                           "reviewer_comment",
                           "send_sponsor",
-                          "reviewer_approve",
                           "sponsor_comment",
                           "send_site",
+                          "sponsor_approve",
                           "assign"
                         ]
                       },
                       "comment": {"type": "string"},
                       "actionDt": {"type": "date"}
                     },
-                    "required": ["action", "actionDt"]
+                    "required": ["id", "action", "actionDt"]
                   }
                 },
                 "rounds": {
@@ -2134,7 +2513,8 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
                           "startDt": {"type": "date"},
                           "completeDt": {"type": ["date", "null"]},
                           "daysToComplete": {"type": ["number", "null"]},
-                          "daysLeft": {"type": ["number", "null"]}
+                          "daysLeft": {"type": ["number", "null"]},
+                          "daysOverdue": {"type": ["number", "null"]}
                         },
                         "required": ["dueDt", "startDt"]
                       },
@@ -2145,7 +2525,8 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
                           "startDt": {"type": "date"},
                           "completeDt": {"type": ["date", "null"]},
                           "daysToComplete": {"type": ["number", "null"]},
-                          "daysLeft": {"type": ["number", "null"]}
+                          "daysLeft": {"type": ["number", "null"]},
+                          "daysOverdue": {"type": ["number", "null"]}
                         },
                         "required": ["dueDt", "startDt"]
                       }
@@ -2158,41 +2539,63 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
             }
           }
         },
+        "timers": {
+          "id": "QuickStartSiteTimers",
+          "type": "object",
+          "properties": {
+            "daysToApprove": {"type": "number"},
+            "contract": {
+              "type": "object",
+              "properties": {
+                "siteDaysToAction": {"type": "array", "items": {"type": "number"}},
+                "sponsorDaysToRespond": {"type": "array", "items": {"type": "number"}}
+              },
+              "required": ["siteDaysToAction", "sponsorDaysToRespond"]
+            },
+            "budget": {
+              "type": "object",
+              "properties": {
+                "siteDaysToAction": {"type": "array", "items": {"type": "number"}},
+                "sponsorDaysToRespond": {"type": "array", "items": {"type": "number"}}
+              },
+              "required": ["siteDaysToAction", "sponsorDaysToRespond"]
+            }
+          },
+          "required": ["daysToApprove", "contract", "budget"]
+        },
         "protocolDocumentSentDt": {"type": "date"},
+        "protocolDocumentSentUserId": {"type": "object"},
         "protocol": {
           "id": "/QuickStartProtocol",
           "type": "object",
           "properties": {
             "documentLocation": {"type": "string", "enum": ["upload", "manual"]},
-            "version": {"type": "string"},
-            "versionDt": {"type": "date"},
+            "documentName": {"type": "string"},
             "notes": {"type": "string"}
           },
-          "required": ["documentLocation", "version", "versionDt"]
+          "required": ["documentLocation", "documentName"]
         },
         "budget": {
           "id": "/QuickStartBudget",
           "type": "object",
           "properties": {
             "documentLocation": {"type": "string", "enum": ["upload", "manual"]},
-            "version": {"type": "string"},
-            "versionDt": {"type": "date"},
+            "documentName": {"type": "string"},
             "notes": {"type": "string"}
           },
-          "required": ["documentLocation", "version", "versionDt"]
+          "required": ["documentLocation", "documentName"]
         },
         "contract": {
           "id": "/QuickStartContract",
           "type": "object",
           "properties": {
             "documentLocation": {"type": "string", "enum": ["upload", "manual"]},
-            "version": {"type": "string"},
-            "versionDt": {"type": "date"},
+            "documentName": {"type": "string"},
             "strategy": {"type": "string"},
             "strategyOther": {"type": "string"},
             "notes": {"type": "string"}
           },
-          "required": ["documentLocation", "version", "versionDt", "strategy"]
+          "required": ["documentLocation", "documentName", "strategy"]
         },
         "documents": {
           "type": "array",
@@ -2230,7 +2633,10 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
             "properties": {
               "id": {"type": "object"},
               "type": {"type": "string", "enum": ["budget", "contract", "protocol"]},
-              "category": {"type": "string", "enum": ["screen", "review", "active"]},
+              "category": {
+                "type": "string",
+                "enum": ["pending", "screen", "review", "active", "completed"]
+              },
               "uploadDt": {"type": "date"},
               "link": {"type": "string"},
               "mimeType": {"type": "string"},
@@ -2256,6 +2662,31 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
             ]
           }
         },
+        "rebEvents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "object"},
+              "event": {
+                "type": "string",
+                "enum": [
+                  "submit",
+                  "review",
+                  "investigatorQuestions",
+                  "sponsorQuestions",
+                  "response",
+                  "approvalSent",
+                  "approvalReceived"
+                ]
+              },
+              "eventDt": {"type": "date"},
+              "isDone": {"type": "boolean"},
+              "comment": {"type": "string"}
+            },
+            "required": ["id", "event", "isDone"]
+          }
+        },
         "customData": {
           "type": "array",
           "items": {
@@ -2263,7 +2694,9 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
             "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
             "required": ["label", "value"]
           }
-        }
+        },
+        "createDt": {"type": "date"},
+        "updateDt": {"type": "date"}
       },
       "required": [
         "id",
@@ -2278,7 +2711,9 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
         "approvals",
         "protocol",
         "budget",
-        "contract"
+        "contract",
+        "createDt",
+        "updateDt"
       ]
     },
     "institution": {
@@ -2303,7 +2738,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
             "extendedAddress": {"type": "array", "items": {"type": "string"}},
             "countryName": {"type": "string"}
           },
-          "required": ["streetAddress", "locality", "region", "postalCode"]
+          "required": []
         }
       },
       "required": ["id", "code", "name", "type", "status", "address"]
@@ -2350,6 +2785,12 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
             "Withdrawn"
           ]
         },
+        "reb": {
+          "type": "object",
+          "id": "/QuickStartREB",
+          "properties": {"committeeId": {"type": "object"}, "name": {"type": "string"}},
+          "required": ["name"]
+        },
         "initialApprovalDt": {"type": ["date"]},
         "initialReviewType": {
           "type": ["string"],
@@ -2370,7 +2811,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
           }
         }
       },
-      "required": ["status", "createDt"]
+      "required": ["status", "reb", "createDt"]
     }
   },
   "required": ["quickStartSite", "institution"]
@@ -2464,6 +2905,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteRemoveUser - <em>QuickSTART Site Remove User</em>
@@ -2531,6 +2975,9 @@ quickStartSite | rc | quickStartSite|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteResponse - <em>QuickSTART Site Response</em>
@@ -2556,11 +3003,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
     "id": "/QuickSTARTSiteResponseBody",
     "type": "object",
     "properties": {
+      "historyId": {"type": "string"},
       "type": {"type": "string", "enum": ["budget", "contract"]},
-      "action": {"type": "string", "enum": ["sponsor_comment", "send_site"]},
+      "action": {"type": "string", "enum": ["sponsor_comment", "send_site", "sponsor_approve"]},
+      "actionDt": {"type": "string", "format": "date-time"},
       "comment": {"type": "string"}
     },
-    "required": ["type", "action"]
+    "required": ["type", "action", "actionDt"]
   }
 }
 ```
@@ -2601,6 +3050,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartAdmin | quickStart|N/A
 
 ## QuickSTARTSiteRestore - <em>QuickSTART Site Restore Defaults</em>
@@ -2665,6 +3117,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteReview - <em>QuickSTART Site Review</em>
@@ -2690,14 +3145,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
     "id": "/QuickSTARTSiteReviewBody",
     "type": "object",
     "properties": {
+      "historyId": {"type": "string"},
       "type": {"type": "string", "enum": ["budget", "contract"]},
-      "action": {
-        "type": "string",
-        "enum": ["reviewer_comment", "send_sponsor", "reviewer_approve"]
-      },
+      "action": {"type": "string", "enum": ["reviewer_comment", "send_sponsor"]},
+      "actionDt": {"type": "string", "format": "date-time"},
       "comment": {"type": "string"}
     },
-    "required": ["type", "action"]
+    "required": ["type", "action", "actionDt"]
   }
 }
 ```
@@ -2806,6 +3260,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 quickStartSite | rc | quickStartSite|N/A
 quickStartSite | investigator | quickStartSite|N/A
 quickStartSite | approver | quickStartSite|N/A
@@ -2869,6 +3326,7 @@ Sends a QuickSTART Site to Pre-Screen with CTO.  The site status must be 'pendin
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
+quickStart | cro | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickSTARTSiteUpdate - <em>QuickSTART Site Update</em>
@@ -2930,7 +3388,91 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
+
+## QuickSTARTSiteUpdateTimers - <em>QuickSTART Site Update Timers</em>
+
+
+```shell
+curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutionId/timers"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/QuickSTARTSiteParams",
+    "type": "object",
+    "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
+    "required": ["quickStartId", "institutionId"]
+  },
+  "body": {
+    "id": "QuickStartSiteTimers",
+    "type": "object",
+    "properties": {
+      "daysToApprove": {"type": "number"},
+      "contract": {
+        "type": "object",
+        "properties": {
+          "siteDaysToAction": {"type": "array", "items": {"type": "number"}},
+          "sponsorDaysToRespond": {"type": "array", "items": {"type": "number"}}
+        },
+        "required": ["siteDaysToAction", "sponsorDaysToRespond"]
+      },
+      "budget": {
+        "type": "object",
+        "properties": {
+          "siteDaysToAction": {"type": "array", "items": {"type": "number"}},
+          "sponsorDaysToRespond": {"type": "array", "items": {"type": "number"}}
+        },
+        "required": ["siteDaysToAction", "sponsorDaysToRespond"]
+      },
+      "startDt": {"type": "string", "format": "date-time"}
+    },
+    "required": ["daysToApprove", "contract", "budget", "startDt"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Updates an existing QuickSTART Site Timers in the system. If the site is completed, an error will be returned
+
+### HTTP Request
+
+`PUT /quick-start/:quickStartId/sites/:institutionId/timers`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
 
 ## QuickSTARTSites - <em>QuickSTART Sites</em>
 
@@ -2994,7 +3536,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites"
                   "extendedAddress": {"type": "array", "items": {"type": "string"}},
                   "countryName": {"type": "string"}
                 },
-                "required": ["streetAddress", "locality", "region", "postalCode"]
+                "required": []
               }
             },
             "required": ["id", "code", "name", "type", "status", "address"]
@@ -3016,9 +3558,19 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites"
               "timerCompleteDt": {"type": "date"},
               "actualCompleteDt": {"type": "date"}
             }
-          }
+          },
+          "createDt": {"type": "date"},
+          "updateDt": {"type": "date"}
         },
-        "required": ["id", "institutionId", "institution", "researchCoordinatorId", "status"]
+        "required": [
+          "id",
+          "institutionId",
+          "institution",
+          "researchCoordinatorId",
+          "status",
+          "createDt",
+          "updateDt"
+        ]
       }
     }
   },
@@ -3072,6 +3624,11 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
       "quickStartSiteId": {
         "type": "string",
         "description": "If passed along with content, the site will be updated instead of the overall QuickSTART application"
+      },
+      "creationProgress": {
+        "type": "array",
+        "items": {"type": "string", "enum": ["study", "studyDocuments", "contract", "budget"]},
+        "description": "any strings passed in will update the quick start creation progress status to true for that key.  Has no effect if quick start site id is passed"
       }
     },
     "required": []
@@ -3115,6 +3672,9 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
 ## QuickStartCheckUniqueProjectIdNumber - <em>Check QuickSTART unique stream project Id number</em>
@@ -3167,9 +3727,12 @@ Checks to see if a QuickSTART stream project Id number is already in use or not.
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
-quickStart | sponsor | N/A|N/A
+quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | N/A|N/A
 
 ## QuickStartCheckUniqueQuickStartIdentifier - <em>Check QuickSTART unique Identifier</em>
@@ -3222,9 +3785,12 @@ Checks to see if a QuickSTART Identifier is already in use or not.
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
-quickStart | sponsor | N/A|N/A
+quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | N/A|N/A
 
 ## QuickStartCheckUniqueShortTitle - <em>Check QuickSTART unique short title</em>
@@ -3277,7 +3843,10 @@ Checks to see if a QuickSTART short title is already in use or not.
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
-quickStart | sponsor | N/A|N/A
+quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
+quickStart | cro | quickStart|N/A
+quickStart | cro-contract | quickStart|N/A
+quickStart | cro-budget | quickStart|N/A
 institution | quickStartSponsor | N/A|N/A

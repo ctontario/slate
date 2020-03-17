@@ -38,23 +38,20 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>20504</small> | <small>400</small> | <small>LDAP_FAILED_TO_DELETE</small> | <small>The entry could not be deleted</small>
 <small>20510</small> | <small>400</small> | <small>LDAP_FAILED_TO_MODIFY</small> | <small>The entry could not be updated.</small>
 <small>21100</small> | <small>400</small> | <small>INVALID_INSTITUTION_REGISTRATION_MESSAGE</small> | <small>The input for institution registration is not valid</small>
-<small>21101</small> | <small>400</small> | <small>INSTITUTION_NAME_DUPLICATE</small> | <small>Institution name is already used</small>
-<small>21102</small> | <small>400</small> | <small>INSTITUTION_CODE_DUPLICATE</small> | <small>Institution code is already used</small>
+<small>21101</small> | <small>400</small> | <small>INSTITUTION_DATA_DUPLICATE</small> | <small>Institution data is already used</small>
 <small>21103</small> | <small>400</small> | <small>INSTITUTION_NOT_FOUND</small> | <small>Institution not found</small>
 <small>21104</small> | <small>400</small> | <small>INSTITUTION_ALTERNATE_NAME_DUPLICATE</small> | <small>Institution alternate name is already in use</small>
 <small>21110</small> | <small>400</small> | <small>INSTITUTION_CODE_NOT_FOUND</small> | <small>The institution code does not exist</small>
 <small>21120</small> | <small>400</small> | <small>INSTITUTION_TYPE_CODE_NOT_FOUND</small> | <small>Institution type code was not found</small>
 <small>22100</small> | <small>400</small> | <small>COMMITTEE_NOT_FOUND</small> | <small>Committee not found</small>
 <small>22101</small> | <small>400</small> | <small>COMMITTEE_CODE_NOT_FOUND</small> | <small>The committee code does not exist</small>
-<small>22102</small> | <small>400</small> | <small>COMMITTEE_CODE_DUPLICATE</small> | <small>Committee code is already used</small>
-<small>22103</small> | <small>400</small> | <small>COMMITTEE_NAME_DUPLICATE</small> | <small>Committee name is already used</small>
-<small>22104</small> | <small>400</small> | <small>COMMITTEE_SHORTNAME_DUPLICATE</small> | <small>Committee short name is already used</small>
-<small>22105</small> | <small>400</small> | <small>COMMITTEE_STREAMNAME_DUPLICATE</small> | <small>Committee stream name is already used</small>
+<small>22102</small> | <small>400</small> | <small>COMMITTEE_DATA_DUPLICATE</small> | <small>Committee data is already used</small>
 <small>22110</small> | <small>400</small> | <small>COMMITTEE_USER_DUPLICATE</small> | <small>This user is already associated to the committee</small>
 <small>22111</small> | <small>400</small> | <small>COMMITTEE_MEMBER_NOT_FOUND</small> | <small>The requested committee member was not found.</small>
 <small>23104</small> | <small>400</small> | <small>STUDY_NOT_FOUND</small> | <small>Study not found</small>
 <small>23105</small> | <small>400</small> | <small>QUICKSTART_SITE_NOT_FOUND</small> | <small>QuickSTART site not found</small>
 <small>23106</small> | <small>400</small> | <small>QUICKSTART_SITE_NOT_READY</small> | <small>QuickSTART site not ready</small>
+<small>23301</small> | <small>400</small> | <small>QUICKSTART_CREATION_NOT_COMPLETE</small> | <small>QuickSTART creation data has not been completed.</small>
 <small>23301</small> | <small>400</small> | <small>QUICKSTART_SITE_DUPLICATE</small> | <small>QuickSTART site with institutionId already exists on the specified QuickSTART application</small>
 <small>23201</small> | <small>400</small> | <small>QUICKSTART_FIELD_DUPLICATE</small> | <small>QuickSTART field is already used</small>
 <small>23302</small> | <small>400</small> | <small>QUICKSTART_REVIEW_NOT_COMPLETE</small> | <small>QuickSTART review must be completed before attempting the current action.</small>
@@ -68,6 +65,8 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>26015</small> | <small>400</small> | <small>PRIVILEGE_DUPLICATE</small> | <small>The privilege was already assigned to the user</small>
 <small>27001</small> | <small>400</small> | <small>TASKLOG_NOT_FOUND</small> | <small>The task log could not be found</small>
 <small>27002</small> | <small>400</small> | <small>TASKLOG_ISSUE_NOT_FOUND</small> | <small>The task log issue could not be found</small>
+<small>28001</small> | <small>400</small> | <small>FUNDING_INVOICE_OVERPAID</small> | <small>The invoice was overpaid</small>
+<small>28002</small> | <small>400</small> | <small>FUNDING_PAYMENT_LOCKED</small> | <small>The payment is locked due to payouts already taking place.</small>
 <small>90100</small> | <small>401</small> | <small>UNAUTHENTICATED</small> | <small>Not authenticated to access this resource</small>
 <small>90101</small> | <small>403</small> | <small>UNAUTHORIZED</small> | <small>Not authorized to access this resource</small>
 <small>90102</small> | <small>401</small> | <small>AUTHENTICATION_EXPIRED</small> | <small>No longer authenticated to access this resource.  Please login again.</small>
@@ -83,5 +82,5 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>99020</small> | <small>400</small> | <small>FILE_SIZE_EXCEEDS_LIMIT</small> | <small>The upload file size exceeds the permitted limit</small>
 <small>99100</small> | <small>404</small> | <small>ROUTE_NOT_FOUND</small> | <small>The resource requested could not be located</small>
 <small>99200</small> | <small>500</small> | <small>TASK_AUTH_NOT_FOUND</small> | <small>The task auth for this route was not found, but the route requires authorization.</small>
-<small>99300</small> | <small>500</small> | <small>DATA_NOT_FOUND</small> | <small>The requested data was not found.</small>
+<small>99300</small> | <small>404</small> | <small>DATA_NOT_FOUND</small> | <small>The requested data was not found.</small>
 <small>99999</small> | <small>501</small> | <small>NOT_IMPLEMENTED_YET</small> | <small>This feature is not implemented yet!</small>

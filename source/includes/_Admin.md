@@ -25,6 +25,7 @@ curl "https://ctoregistry.com/api/v1/admin/moderation/user"
       "order": {"type": "string"},
       "search": {"type": "string"},
       "status": {"type": "string"},
+      "csv": {"type": "boolean"},
       "institutionIds": {
         "type": ["string", "array"],
         "description": "an array of institution IDs to find users to moderate at"
@@ -86,7 +87,7 @@ curl "https://ctoregistry.com/api/v1/admin/moderation/user"
                     "extendedAddress": {"type": "array", "items": {"type": "string"}},
                     "countryName": {"type": "string"}
                   },
-                  "required": ["streetAddress", "locality", "region", "postalCode"]
+                  "required": []
                 },
                 "id": {"type": "object"},
                 "institutionId": {"type": "object"},
@@ -151,6 +152,7 @@ Gets the list of users that the authenticated user can moderate.  This will incl
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | N/A|User is a member at, or their request involves the target institution of the privilege.
 
@@ -220,6 +222,7 @@ Lets an admin moderate a users institution request.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
@@ -282,6 +285,7 @@ Lets an admin moderate a users role request at a specified institution
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
@@ -415,7 +419,7 @@ Gets the details about one email log entry from the system
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
+system | * | N/A|N/A
 
 ## GetEmailLogs - <em>Email Logs</em>
 
@@ -440,6 +444,7 @@ curl "https://ctoregistry.com/api/v1/admin/email"
       "order": {"type": "string"},
       "search": {"type": "string"},
       "status": {"type": "string"},
+      "csv": {"type": "boolean"},
       "categories": {"type": ["string", "array"], "items": {"type": "string"}},
       "templates": {"type": ["string", "array"], "items": {"type": "string"}}
     }
@@ -516,8 +521,6 @@ curl "https://ctoregistry.com/api/v1/admin/email"
 
 
 Gets the list of emails that have been sent in the system
-        
-
 
 ### HTTP Request
 
@@ -530,7 +533,7 @@ Gets the list of emails that have been sent in the system
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
+system | * | N/A|N/A
 
 ## GetTaskLogIssues - <em>Task Log Issues</em>
 
@@ -629,6 +632,7 @@ Gets the issues related to the last run of the specified taskName
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 
 ## GetTaskLogs - <em>Task Logs</em>
 
@@ -691,6 +695,7 @@ name is passed in then all tasks from the previous run will be included
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 
 ## TaskLogIssueMarkResolved - <em>Update Task Log Issue</em>
 
@@ -750,6 +755,7 @@ Updates the issues with the new isResolved value
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 
 ## TaskLogProfile - <em>Task Log Profile</em>
 
@@ -821,3 +827,4 @@ Gets the information for one task log
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A

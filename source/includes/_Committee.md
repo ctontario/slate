@@ -51,6 +51,7 @@ Checks to see if an committee code is already in use or not.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 
 ## CommitteeCheckUniqueName - <em>Check Committee Unique Name</em>
 
@@ -101,6 +102,7 @@ Checks to see if an committee name is already in use or not.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 
 ## CommitteeCheckUniqueShortName - <em>Check Committee Unique Short Name</em>
 
@@ -151,6 +153,7 @@ Checks to see if an committee short name is already in use or not.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 
 ## CommitteeCheckUniqueStreamName - <em>Check Committee Unique Stream Name</em>
 
@@ -201,6 +204,7 @@ Checks to see if an committee Stream Name is already in use or not.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 
 ## CommitteeCreation - <em>Create Committee</em>
 
@@ -276,6 +280,7 @@ Creates a new committee
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 
 ## CommitteeDictionary - <em>Committee Dictionary</em>
 
@@ -300,6 +305,7 @@ curl "https://ctoregistry.com/api/v1/dictionary/committee"
         "properties": {
           "id": {"type": "object"},
           "name": {"type": "string"},
+          "shortName": {"type": "string"},
           "streamName": {"type": "string"},
           "code": {"type": "string"}
         },
@@ -346,6 +352,7 @@ curl "https://ctoregistry.com/api/v1/committee/"
       "order": {"type": "string"},
       "search": {"type": "string"},
       "status": {"type": "string"},
+      "csv": {"type": "boolean"},
       "institutionIds": {"type": ["string", "array"], "description": "an array of institution IDs"},
       "committeeIds": {"type": ["string", "array"], "description": "an array of committee IDs"}
     }
@@ -414,6 +421,8 @@ Gets the list of committees the user can access.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
+system | funding | N/A|N/A
 
 ## CommitteeListForUser - <em>Committees for User</em>
 
@@ -506,7 +515,7 @@ Get the committees that a user belongs too
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
-system | admin | N/A|N/A
+system | * | N/A|N/A
 institution | admin | user|N/A
 
 ## CommitteeMemberCreation - <em>Committee Add Member</em>
@@ -539,7 +548,7 @@ curl -X POST "https://ctoregistry.com/api/v1/committee/:committeeId/members/add"
       "role": {
         "type": "string",
         "description": "The role of the member",
-        "enum": ["chair", "member", "staff", "director", "contact"]
+        "enum": ["chair", "admin", "member", "staff", "director", "contact"]
       },
       "status": {
         "type": "string",
@@ -585,6 +594,7 @@ Adds a user for one existing committee
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 
 ## CommitteeMemberEdit - <em>Committee Edit Member</em>
 
@@ -616,7 +626,7 @@ curl -X POST "https://ctoregistry.com/api/v1/committee/:committeeId/members/edit
       "role": {
         "type": "string",
         "description": "The role of the member",
-        "enum": ["chair", "member", "staff", "director", "contact"]
+        "enum": ["chair", "admin", "member", "staff", "director", "contact"]
       },
       "status": {
         "type": "string",
@@ -666,6 +676,7 @@ updates user information for one existing committee
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 
 ## CommitteeMembers - <em>Committee Members</em>
 
@@ -753,6 +764,7 @@ gets all the members of a committee
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 committee | member | committee|N/A
 
 ## CommitteeProfile - <em>Get Committee</em>
@@ -851,7 +863,7 @@ N/A
 
 
 ```shell
-curl "https://ctoregistry.com/api/v1/dictionary/committee/:searchString"  
+curl "https://ctoregistry.com/api/v1/dictionary/committee-search/:searchString?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -861,10 +873,16 @@ curl "https://ctoregistry.com/api/v1/dictionary/committee/:searchString"
 ```json
 {
   "params": {
-    "id": "/Search",
+    "id": "/SearchParams",
     "type": "object",
     "properties": {"searchString": {"type": "string"}},
-    "required": ["searchString"]
+    "required": []
+  },
+  "query": {
+    "id": "/SearchQuery",
+    "type": "object",
+    "properties": {"reject": {"type": "string"}},
+    "required": []
   }
 }
 ```
@@ -911,7 +929,7 @@ Searches for committees whose name matches the search string.
 
 ### HTTP Request
 
-`GET /dictionary/committee/:searchString`
+`GET /dictionary/committee-search/:searchString?`
 
 
 
@@ -999,3 +1017,4 @@ Updates an existing committee
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A

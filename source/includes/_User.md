@@ -6,7 +6,7 @@
 
 
 ```shell
-curl "https://ctoregistry.com/api/v1/dictionary/institution/:institutionId/user/:searchString"  
+curl "https://ctoregistry.com/api/v1/dictionary/institution/:institutionId/user/:searchString?"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -52,7 +52,7 @@ Searches for users whose name or email matches the search string who are at the 
 
 ### HTTP Request
 
-`GET /dictionary/institution/:institutionId/user/:searchString`
+`GET /dictionary/institution/:institutionId/user/:searchString?`
 
 
 
@@ -251,6 +251,7 @@ Task used when a user creates an account for another user. This task is for admi
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | N/A|If the institution specified in the request matches the target, the request is automatically approved.
 
@@ -309,6 +310,7 @@ Deletes a specified document from a user account
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
@@ -356,8 +358,7 @@ Downloads a specified document from the specified user.
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
+system | * | N/A|N/A
 institution | admin | user|N/A
 committee | member | user|N/A
 
@@ -443,6 +444,7 @@ Uploads a document to the specified user.  The document information is contained
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
@@ -604,8 +606,7 @@ Get the documents for the user with id
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
+system | * | N/A|N/A
 committee | admin | user|N/A
 institution | admin | user|N/A
 institution | member | user|N/A
@@ -733,6 +734,7 @@ Add an institution to a user account. The request needs moderation
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
@@ -791,7 +793,7 @@ curl "https://ctoregistry.com/api/v1/user/:userId/institution/:institutionId"
             "extendedAddress": {"type": "array", "items": {"type": "string"}},
             "countryName": {"type": "string"}
           },
-          "required": ["streetAddress", "locality", "region", "postalCode"]
+          "required": []
         },
         "email": {"type": "email"},
         "phones": {
@@ -858,8 +860,7 @@ Gets the full information about a users institution for use in the edit institut
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
+system | * | N/A|N/A
 institution | admin | user|N/A
 committee | member | user|The user has a role on a study, and the study is assigned to the privilege target REB.
 
@@ -933,6 +934,7 @@ This task is used when the owner of an account wants to add a role to his/her ac
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
@@ -995,6 +997,7 @@ This task is used when the owner of an account wants to remove a role to his/her
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
@@ -1104,6 +1107,7 @@ Add an institution to a user account. The request needs moderation.
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
@@ -1130,6 +1134,7 @@ curl "https://ctoregistry.com/api/v1/user/"
       "order": {"type": "string"},
       "search": {"type": "string"},
       "status": {"type": "string"},
+      "csv": {"type": "boolean"},
       "institutionIds": {"type": ["string", "array"], "description": "an array of institution IDs"},
       "committeeIds": {"type": ["string", "array"], "description": "an array of committee IDs"}
     }
@@ -1238,8 +1243,7 @@ Returns the list of all the users in the system
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
+system | * | N/A|N/A
 institution | admin | N/A|User is a member at, or their request involves the target institution of the privilege.
 institution | member | N/A|User is a member at, or their request involves the target institution of the privilege.
 committee | member | N/A|The user has a role on a study, and the study is assigned to the privilege target REB.
@@ -1303,6 +1307,7 @@ Lets a user update there password
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 
 ## UserPrivilegeCreation - <em>Add User Privilege</em>
@@ -1381,6 +1386,7 @@ Adds a new privilege to a user account
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 
 ## UserPrivilegeDelete - <em>Delete a User Privilege</em>
@@ -1437,6 +1443,7 @@ Deletes a specified privilege from a user account
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 
 ## UserPrivileges - <em>User's privileges</em>
@@ -1515,8 +1522,7 @@ Returns the list of the privileges assigned to a user
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
+system | * | N/A|N/A
 institution | admin | user|N/A
 
 ## UserProfile - <em>Get User Profile</em>
@@ -1625,7 +1631,7 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
                   "extendedAddress": {"type": "array", "items": {"type": "string"}},
                   "countryName": {"type": "string"}
                 },
-                "required": ["streetAddress", "locality", "region", "postalCode"]
+                "required": []
               },
               "email": {"type": "email"},
               "phones": {
@@ -1773,7 +1779,99 @@ Lets an admin or the user themselves update a users profile information
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
 system | admin | N/A|N/A
+system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
+institution | admin | user|N/A
+
+## UserQuickSTARTList - <em>Get User QuickSTART Studies</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/user/:userId/quick-start"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/UserParams",
+    "type": "object",
+    "properties": {"userId": {"type": "string", "required": true}},
+    "required": ["userId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/QuickStartListResponse",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "id": "/ListMeta",
+      "properties": {
+        "count": {"type": "number"},
+        "limit": {"type": "number"},
+        "offset": {"type": "number"}
+      },
+      "required": ["count", "limit", "offset"]
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "id": "/QuickStartShortProfile",
+        "type": "object",
+        "properties": {
+          "id": {"type": "object"},
+          "quickStartIdentifier": {"type": "string"},
+          "status": {"type": "string", "enum": ["pending", "screen", "active", "completed"]},
+          "shortTitle": {"type": "string"},
+          "sponsorInstitutionId": {"type": "object"},
+          "studyType": {"type": "string"},
+          "studyTypeOther": {"type": "string"},
+          "therapeuticArea": {"type": "string"},
+          "projectIdNumber": {"type": "number"},
+          "createDt": {"type": "date"},
+          "updateDt": {"type": "date"}
+        },
+        "required": [
+          "id",
+          "quickStartIdentifier",
+          "status",
+          "shortTitle",
+          "studyType",
+          "therapeuticArea",
+          "createDt",
+          "updateDt"
+        ]
+      }
+    }
+  }
+}
+```
+
+
+Get all the QuickSTART studies that a user can access
+
+### HTTP Request
+
+`GET /user/:userId/quick-start`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+self | N/A | N/A|N/A
+system | * | N/A|N/A
 institution | admin | user|N/A
 
 ## UserShortProfile - <em>Get User Short Profile</em>
@@ -1992,6 +2090,5 @@ Get all the studies that a user can access
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
 self | N/A | N/A|N/A
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
+system | * | N/A|N/A
 institution | admin | user|N/A
