@@ -1855,6 +1855,74 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
+## QuickSTARTSiteDisableNotifications - <em>QuickSTART Site Disable Notifications</em>
+
+
+```shell
+curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutionId/disable-notifications"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/QuickSTARTSiteParams",
+    "type": "object",
+    "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
+    "required": ["quickStartId", "institutionId"]
+  },
+  "body": {
+    "id": "QuickStartSiteDisabledNotifications",
+    "type": "object",
+    "properties": {
+      "siteReviewerReminder": {"type": "boolean"},
+      "siteSponsorReminder": {"type": "boolean"},
+      "siteReviewerDue": {"type": "boolean"},
+      "siteSponsorDue": {"type": "boolean"},
+      "siteCustomApprovalReminder": {"type": "boolean"},
+      "siteCustomApprovalDue": {"type": "boolean"}
+    }
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Updates an existing QuickSTART Site to disable notifications. If the site is completed, an error will be returned
+
+### HTTP Request
+
+`PUT /quick-start/:quickStartId/sites/:institutionId/disable-notifications`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+
 ## QuickSTARTSiteDocumentDelete - <em>Delete an QuickSTART Document</em>
 
 
@@ -2537,6 +2605,18 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
               },
               "required": ["status", "rounds"]
             }
+          }
+        },
+        "notificationsDisabled": {
+          "id": "QuickStartSiteDisabledNotifications",
+          "type": "object",
+          "properties": {
+            "siteReviewerReminder": {"type": "boolean"},
+            "siteSponsorReminder": {"type": "boolean"},
+            "siteReviewerDue": {"type": "boolean"},
+            "siteSponsorDue": {"type": "boolean"},
+            "siteCustomApprovalReminder": {"type": "boolean"},
+            "siteCustomApprovalDue": {"type": "boolean"}
           }
         },
         "timers": {
