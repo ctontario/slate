@@ -194,7 +194,7 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
               }
             },
             "timers": {
-              "id": "QuickStartSiteTimers",
+              "id": "QuickStartSiteTimerDictionary",
               "type": "object",
               "properties": {
                 "daysToApprove": {"type": "number"},

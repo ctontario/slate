@@ -301,7 +301,7 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
         },
         "fundingOther": {"type": "string"},
         "mta": {"type": "boolean"},
-        "overallSampleSize": {"type": "string"},
+        "overallSampleSize": {"type": ["string", "null"]},
         "populations": {
           "type": "array",
           "items": {
