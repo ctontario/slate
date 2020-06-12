@@ -10,6 +10,7 @@ includes:
   - Admin
   - Committee
   - Institution
+  - QuickSTART
   - Security
   - Study
   - System
