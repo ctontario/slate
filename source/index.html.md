@@ -25,7 +25,7 @@ search: true
 
 # CTO Registry API Reference
 
-<aside class="notice"><strong>Version: 1.7.0, Published: Fri Jun 12 2020 14:27:53 GMT-0400 (Eastern Daylight Time)</strong></aside>
+<aside class="notice"><strong>Version: 1.7.0, Published: Tue Jul 07 2020 15:13:25 GMT-0400 (Eastern Daylight Time)</strong></aside>
 
 The CTO Registry is a project by Clinical Trials Ontario that builds on the functionality provided by the CTO Stream system.
 The backbone of the CTO Registry is a set of REST APIs. This documentation describes the various requests that can be made
