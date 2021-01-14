@@ -1166,6 +1166,18 @@ curl "https://ctoregistry.com/api/v1/user/"
         "properties": {
           "id": {"type": "object"},
           "username": {"type": "string"},
+          "links": {
+            "type": "array",
+            "items": {
+              "id": "UserLink",
+              "properties": {
+                "system": {"type": "string"},
+                "id": {"type": "string"},
+                "syncDt": {"type": "date"}
+              },
+              "required": ["system", "id", "syncDt"]
+            }
+          },
           "account": {
             "id": "/UserAccount",
             "properties": {
@@ -1202,6 +1214,7 @@ curl "https://ctoregistry.com/api/v1/user/"
           "confidentiality": {
             "type": "array",
             "items": {
+              "id": "UserConfidentiality",
               "type": "object",
               "properties": {
                 "agreeDt": {"type": "date"},
@@ -1560,6 +1573,18 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
       "properties": {
         "id": {"type": "object"},
         "username": {"type": "string"},
+        "links": {
+          "type": "array",
+          "items": {
+            "id": "UserLink",
+            "properties": {
+              "system": {"type": "string"},
+              "id": {"type": "string"},
+              "syncDt": {"type": "date"}
+            },
+            "required": ["system", "id", "syncDt"]
+          }
+        },
         "account": {
           "id": "/UserAccount",
           "properties": {
@@ -1593,6 +1618,7 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
         "confidentiality": {
           "type": "array",
           "items": {
+            "id": "UserConfidentiality",
             "type": "object",
             "properties": {
               "agreeDt": {"type": "date"},
@@ -2032,6 +2058,7 @@ curl "https://ctoregistry.com/api/v1/user/:userId/study"
           },
           "expiryDt": {"type": ["date", "null"]},
           "shortTitle": {"type": "string"},
+          "studyIdentifier": {"type": ["string", "null"]},
           "title": {"type": ["string", "null"]},
           "reviewerLink": {"type": "string"},
           "applicantLink": {"type": "string"},

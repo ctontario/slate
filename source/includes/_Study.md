@@ -89,6 +89,7 @@ curl "https://ctoregistry.com/api/v1/study/"
           },
           "expiryDt": {"type": ["date", "null"]},
           "shortTitle": {"type": "string"},
+          "studyIdentifier": {"type": ["string", "null"]},
           "title": {"type": ["string", "null"]},
           "reviewerLink": {"type": "string"},
           "applicantLink": {"type": "string"},
@@ -254,6 +255,7 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
           ]
         },
         "expiryDt": {"type": ["date", "null"]},
+        "studyIdentifier": {"type": ["string", "null"]},
         "shortTitle": {"type": "string"},
         "title": {"type": ["string", "null"]},
         "reviewerLink": {"type": "string"},
@@ -266,7 +268,10 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
         "projectIdNumber": {"type": "number"},
         "createDt": {"type": "date"},
         "updateDt": {"type": "date"},
-        "initialApprovalDt": {"type": ["date"]},
+        "initialSubmitDt": {"type": "date"},
+        "rebAcceptDt": {"type": "date"},
+        "initialApprovalDt": {"type": "date"},
+        "initialReviewDt": {"type": "date"},
         "initialReviewType": {
           "type": ["string"],
           "enum": ["Full Board Review", "Delegated Review", "Admin Review"]
@@ -528,7 +533,9 @@ curl "https://ctoregistry.com/api/v1/study/:studyId"
                 "type": "string",
                 "description": "Textual description of the planned centre sample size"
               },
+              "initialSubmitDt": {"type": "date"},
               "initialApprovalDt": {"type": "date"},
+              "initialReviewDt": {"type": "date"},
               "initialReviewType": {
                 "type": "string",
                 "enum": ["Full Board Review", "Delegated Review", "Admin Review"]

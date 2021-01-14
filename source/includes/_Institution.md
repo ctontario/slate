@@ -726,13 +726,21 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId/payee"
         "contact": {
           "properties": {
             "userId": {"type": ["object", "null"]},
-            "firstName": {"type": ["string", "null"]},
-            "lastName": {"type": ["string", "null"]},
+            "name": {"type": ["string", "null"]},
             "email": {"type": ["string", "null"]},
-            "phone": {"type": ["string", "null"]}
+            "phones": {"type": "array", "items": {"type": "string"}}
           },
           "required": []
-        }
+        },
+        "invoiceDisplayValues": {
+          "type": "array",
+          "items": {
+            "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
+            "required": ["label", "value"]
+          }
+        },
+        "invoiceCCEmails": {"type": "array", "items": {"type": "string"}},
+        "daysToPay": {"type": "number"}
       },
       "required": []
     }
@@ -803,12 +811,28 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId/payee"
       },
       "contact": {
         "properties": {
-          "firstName": {"type": "string"},
-          "lastName": {"type": "string"},
-          "phone": {"type": "string"},
+          "name": {"type": "string"},
+          "phones": {"type": "array", "items": {"type": "string"}},
           "email": {"type": "string"}
         },
-        "required": ["firstName", "lastName", "phone", "email"]
+        "required": ["email"]
+      },
+      "invoiceDisplayValues": {
+        "type": "array",
+        "description": "if omitted, defaults from the linked institution will be used.",
+        "items": {
+          "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
+          "required": ["label", "value"]
+        }
+      },
+      "invoiceCCEmails": {
+        "type": "array",
+        "description": "if omitted, defaults from the linked institution will be used.",
+        "items": {"type": "string"}
+      },
+      "daysToPay": {
+        "type": "number",
+        "description": "if omitted, defaults from the linked institution will be used."
       }
     },
     "required": ["name"]

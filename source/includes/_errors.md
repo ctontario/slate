@@ -66,7 +66,10 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>27001</small> | <small>400</small> | <small>TASKLOG_NOT_FOUND</small> | <small>The task log could not be found</small>
 <small>27002</small> | <small>400</small> | <small>TASKLOG_ISSUE_NOT_FOUND</small> | <small>The task log issue could not be found</small>
 <small>28001</small> | <small>400</small> | <small>FUNDING_INVOICE_OVERPAID</small> | <small>The invoice was overpaid</small>
-<small>28002</small> | <small>400</small> | <small>FUNDING_PAYMENT_LOCKED</small> | <small>The payment is locked due to payouts already taking place.</small>
+<small>28002</small> | <small>400</small> | <small>FUNDING_INVOICE_PAYMENTS_SENT</small> | <small>Payments have been sent already for this invoice</small>
+<small>28003</small> | <small>400</small> | <small>FUNDING_PAYMENT_VOID_INVOICE</small> | <small>The payment includes void invoices that cannot have payments recorded to them.</small>
+<small>28101</small> | <small>400</small> | <small>FUNDING_PAYMENT_LOCKED</small> | <small>The payment is locked due to payouts already taking place.</small>
+<small>28102</small> | <small>400</small> | <small>FUNDING_PAYMENT_VOID</small> | <small>The payment is void and cannot be edited.</small>
 <small>90100</small> | <small>401</small> | <small>UNAUTHENTICATED</small> | <small>Not authenticated to access this resource</small>
 <small>90101</small> | <small>403</small> | <small>UNAUTHORIZED</small> | <small>Not authorized to access this resource</small>
 <small>90102</small> | <small>401</small> | <small>AUTHENTICATION_EXPIRED</small> | <small>No longer authenticated to access this resource.  Please login again.</small>

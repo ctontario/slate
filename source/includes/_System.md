@@ -18,6 +18,21 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
   "id": "/SystemDictionary",
   "type": "object",
   "properties": {
+    "system": {
+      "id": "SystemDictionaries",
+      "properties": {
+        "syncTasks": {
+          "id": "syncTasksDictionary",
+          "patternProperties": {
+            "^[a-zA-Z_$][\\w$]*$": {
+              "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+              "required": ["code", "label"]
+            }
+          }
+        }
+      },
+      "required": []
+    },
     "study": {
       "id": "StudyDictionaries",
       "properties": {
@@ -282,6 +297,15 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
     "studyFunding": {
       "id": "StudyFundingDictionaries",
       "properties": {
+        "paymentReasons": {
+          "id": "StudyFundingPaymentReasonDictionary",
+          "patternProperties": {
+            "^[a-zA-Z_$][\\w$]*$": {
+              "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+              "required": ["code", "label"]
+            }
+          }
+        },
         "paymentTypes": {
           "id": "StudyFundingPaymentTypeDictionary",
           "patternProperties": {
@@ -290,12 +314,22 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
               "required": ["code", "label"]
             }
           }
+        },
+        "invoiceHistoryActions": {
+          "id": "StudyFundingHistoryActionDictionary",
+          "patternProperties": {
+            "^[a-zA-Z_$][\\w$]*$": {
+              "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+              "required": ["code", "label"]
+            }
+          }
         }
       },
-      "required": ["paymentTypes"]
+      "required": ["paymentReasons", "paymentTypes", "invoiceHistoryActions"]
     }
   },
   "required": [
+    "system",
     "study",
     "contact",
     "user",

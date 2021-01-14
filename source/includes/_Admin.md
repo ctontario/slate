@@ -631,8 +631,7 @@ Gets the issues related to the last run of the specified taskName
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
-system | support | N/A|N/A
+system | * | N/A|N/A
 
 ## GetTaskLogs - <em>Task Logs</em>
 
@@ -694,8 +693,7 @@ name is passed in then all tasks from the previous run will be included
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
-system | support | N/A|N/A
+system | * | N/A|N/A
 
 ## TaskLogIssueMarkResolved - <em>Update Task Log Issue</em>
 
@@ -754,8 +752,99 @@ Updates the issues with the new isResolved value
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
-system | support | N/A|N/A
+system | * | N/A|N/A
+
+## TaskLogList - <em>Task Logs List</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs/list"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "query": {
+    "id": "/TaskLogListQuery",
+    "type": "object",
+    "properties": {
+      "offset": {"type": "integer", "minimum": 0, "default": 0},
+      "limit": {"type": "integer", "minimum": 0, "default": 20},
+      "sortby": {"type": "string"},
+      "order": {"type": "string"},
+      "search": {"type": "string"},
+      "status": {"type": "string"},
+      "csv": {"type": "boolean"},
+      "taskName": {"type": ["string", "array"]}
+    }
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/TaskLogListResponse",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "id": "/ListMeta",
+      "properties": {
+        "count": {"type": "number"},
+        "limit": {"type": "number"},
+        "offset": {"type": "number"}
+      },
+      "required": ["count", "limit", "offset"]
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "id": "/TaskLog",
+        "properties": {
+          "id": {"type": "object"},
+          "taskName": {"type": "string"},
+          "runDt": {"type": "date"},
+          "issues": {
+            "type": "object",
+            "properties": {"total": {"type": "integer"}, "resolved": {"type": "integer"}},
+            "required": ["total", "resolved"]
+          },
+          "results": {
+            "type": "object",
+            "properties": {"total": {"type": "integer"}, "errors": {"type": "integer"}},
+            "required": ["total", "errors"]
+          },
+          "error": {"type": ["object", "any"]}
+        },
+        "required": ["id", "taskName", "runDt", "issues", "results"]
+      }
+    }
+  },
+  "required": ["meta", "data"]
+}
+```
+
+
+access the full paginated list of task logs in the system
+
+
+### HTTP Request
+
+`GET /admin/sync/taskLogs/list`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | * | N/A|N/A
 
 ## TaskLogProfile - <em>Task Log Profile</em>
 
@@ -826,5 +915,4 @@ Gets the information for one task log
     
  Scope      | Role       | Auth Source | Restrictions
 ------------|------------|-------------|----------------
-system | admin | N/A|N/A
-system | support | N/A|N/A
+system | * | N/A|N/A

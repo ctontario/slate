@@ -20,7 +20,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/funding/:studyFundingId/documents
     "type": "object",
     "properties": {
       "studyFundingId": {"type": "string"},
-      "type": {"type": "string", "enum": ["fundingHstExemption"]},
+      "type": {"type": "string", "enum": ["fundingHstExemption", "invoice"]},
       "documentId": {"type": "string"}
     },
     "required": ["studyFundingId", "type", "documentId"]
@@ -80,7 +80,7 @@ curl "https://ctoregistry.com/api/v1/download/funding/:studyFundingId/documents/
     "type": "object",
     "properties": {
       "studyFundingId": {"type": "string"},
-      "type": {"type": "string", "enum": ["fundingHstExemption"]},
+      "type": {"type": "string", "enum": ["fundingHstExemption", "invoice"]},
       "documentId": {"type": "string"}
     },
     "required": ["studyFundingId", "type", "documentId"]
@@ -142,7 +142,7 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/funding/:studyFundingId/:typ
     "type": "object",
     "properties": {
       "studyFundingId": {"type": "string"},
-      "type": {"type": "string", "enum": ["fundingHstExemption"]}
+      "type": {"type": "string", "enum": ["fundingHstExemption", "invoice"]}
     },
     "required": ["studyFundingId", "type"]
   }
@@ -178,6 +178,62 @@ Uploads a document to the specified study funding record.  The document informat
 ### HTTP Request
 
 `POST /upload/funding/:studyFundingId/:type`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | funding | N/A|N/A
+
+## StudyFundingGenerateInvoiceDocuments - <em>Study Funding Generate Invoice Documents</em>
+
+
+```shell
+curl -X PUT "https://ctoregistry.com/api/v1/funding/:studyFundingId/generate-invoice-documents"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/StudyFundingParams",
+    "type": "object",
+    "properties": {"studyFundingId": {"type": "string"}},
+    "required": ["studyFundingId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Processes the study funding and creates invoices for an invoices flagged as requiring new invoices.  This action is also done by the recalculate invoices route
+
+### HTTP Request
+
+`PUT /funding/:studyFundingId/generate-invoice-documents`
 
 
 
@@ -334,13 +390,21 @@ curl "https://ctoregistry.com/api/v1/funding/institution-search/:searchString?"
               "contact": {
                 "properties": {
                   "userId": {"type": ["object", "null"]},
-                  "firstName": {"type": ["string", "null"]},
-                  "lastName": {"type": ["string", "null"]},
+                  "name": {"type": ["string", "null"]},
                   "email": {"type": ["string", "null"]},
-                  "phone": {"type": ["string", "null"]}
+                  "phones": {"type": "array", "items": {"type": "string"}}
                 },
                 "required": []
-              }
+              },
+              "invoiceDisplayValues": {
+                "type": "array",
+                "items": {
+                  "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
+                  "required": ["label", "value"]
+                }
+              },
+              "invoiceCCEmails": {"type": "array", "items": {"type": "string"}},
+              "daysToPay": {"type": "number"}
             },
             "required": []
           }
@@ -399,10 +463,6 @@ curl "https://ctoregistry.com/api/v1/funding/invoices"
       "csv": {"type": "boolean"},
       "payeeIds": {"type": ["string", "array"], "description": "an array of payee institution IDs"},
       "committeeIds": {"type": ["string", "array"], "description": "an array of committee IDs"},
-      "isSendRequired": {
-        "type": "boolean",
-        "description": "set to true to only return invoices that must be sent"
-      },
       "payeeLinked": {
         "type": "string",
         "enum": ["notLinked", "linked", "all"],
@@ -438,12 +498,22 @@ curl "https://ctoregistry.com/api/v1/funding/invoices"
           "id": {"type": "object"},
           "studyFundingId": {"type": "object"},
           "studyId": {"type": "object"},
+          "fundingNumber": {"type": "string"},
           "projectIdNumber": {"type": "number"},
           "feeScheduleId": {"type": "object"},
+          "isVoid": {"type": "boolean"},
           "reb": {
             "type": "object",
             "properties": {"id": {"type": "object"}, "name": {"type": "string"}},
             "required": ["name"]
+          },
+          "institutions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {"id": {"type": "object"}, "name": {"type": "string"}},
+              "required": ["name"]
+            }
           },
           "payee": {
             "id": "StudyFundingPaymentPayee",
@@ -466,25 +536,37 @@ curl "https://ctoregistry.com/api/v1/funding/invoices"
               "contact": {
                 "properties": {
                   "userId": {"type": ["object", "null"]},
-                  "firstName": {"type": ["string", "null"]},
-                  "lastName": {"type": ["string", "null"]},
+                  "name": {"type": ["string", "null"]},
                   "email": {"type": ["string", "null"]},
-                  "phone": {"type": ["string", "null"]}
+                  "phones": {"type": "array", "items": {"type": "string"}}
                 },
                 "required": []
-              }
+              },
+              "invoiceDisplayValues": {
+                "type": "array",
+                "items": {
+                  "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
+                  "required": ["label", "value"]
+                }
+              },
+              "invoiceCCEmails": {"type": "array", "items": {"type": "string"}},
+              "daysToPay": {"type": "number"}
             },
             "required": []
           },
           "invoiceNumber": {"type": "string"},
+          "invoiceShortNumber": {"type": "number"},
           "legacyInvoiceNumber": {"type": "string"},
           "condition": {"type": "string"},
+          "conditionLabel": {"type": "string"},
+          "description": {"type": "string"},
           "value": {"type": ["number", "string", "null"]},
+          "isHstExempt": {"type": "boolean"},
           "subTotal": {"type": "number"},
           "hst": {"type": "number"},
           "total": {"type": "number"},
           "totalPaid": {"type": "number"},
-          "sentDts": {"type": "array", "items": {"type": "date"}},
+          "lastSentDt": {"type": "date"},
           "isSendRequired": {"type": "boolean"},
           "rebPaymentAmount": {"type": "number"},
           "rebPaymentId": {"type": "object"},
@@ -495,13 +577,20 @@ curl "https://ctoregistry.com/api/v1/funding/invoices"
           "id",
           "studyFundingId",
           "studyId",
+          "fundingNumber",
           "projectIdNumber",
           "feeScheduleId",
+          "isVoid",
           "reb",
+          "institutions",
           "payee",
           "invoiceNumber",
+          "invoiceShortNumber",
           "condition",
+          "conditionLabel",
+          "description",
           "value",
+          "isHstExempt",
           "subTotal",
           "hst",
           "total",
@@ -579,11 +668,16 @@ curl "https://ctoregistry.com/api/v1/funding/invoice-search/:searchString?"
           "studyFundingId": {"type": "object"},
           "studyId": {"type": "object"},
           "projectIdNumber": {"type": "number"},
+          "isVoid": {"type": "boolean"},
           "payee": {
             "properties": {"id": {"type": "object"}, "name": {"type": ["string", "null"]}},
             "required": ["name"]
           },
+          "condition": {"type": "string"},
+          "conditionLabel": {"type": "string"},
+          "description": {"type": "string"},
           "invoiceNumber": {"type": "string"},
+          "invoiceShortNumber": {"type": "number"},
           "legacyInvoiceNumber": {"type": "string"},
           "total": {"type": "number"},
           "totalPaid": {"type": "number"},
@@ -596,7 +690,12 @@ curl "https://ctoregistry.com/api/v1/funding/invoice-search/:searchString?"
           "studyId",
           "projectIdNumber",
           "payee",
+          "isVoid",
+          "condition",
+          "conditionLabel",
+          "description",
           "invoiceNumber",
+          "invoiceShortNumber",
           "total",
           "totalPaid",
           "createDt",
@@ -624,6 +723,62 @@ Searches for invoices with the invoice number
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
 system | funding | N/A|N/A
+
+## StudyFundingInvoiceUpdateTotal - <em>Study Funding Update Invoice Total</em>
+
+
+```shell
+curl -X POST "https://ctoregistry.com/api/v1/funding/invoices/:invoiceId/update-total"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {"properties": {"invoiceId": {"type": "string"}}, "required": ["invoiceId"]},
+  "body": {
+    "id": "StudyFundingInvoiceUpdateTotalBody",
+    "type": "object",
+    "properties": {"subTotal": {"type": "number"}, "hst": {"type": "number"}},
+    "required": ["subTotal", "hst"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Updates an invoice total, should be used only be admin and not be used after payments sent
+
+### HTTP Request
+
+`POST /funding/invoices/:invoiceId/update-total`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
 
 ## StudyFundingList - <em>Get Study Fundings</em>
 
@@ -686,8 +841,10 @@ curl "https://ctoregistry.com/api/v1/funding/"
         "properties": {
           "id": {"type": "object"},
           "studyId": {"type": "object"},
+          "fundingNumber": {"type": "string"},
           "projectIdNumber": {"type": "number"},
           "isFeesApplicable": {"type": "boolean"},
+          "isHstExempt": {"type": "boolean"},
           "reb": {
             "type": "object",
             "properties": {"id": {"type": "object"}, "name": {"type": "string"}},
@@ -706,8 +863,10 @@ curl "https://ctoregistry.com/api/v1/funding/"
         "required": [
           "id",
           "studyId",
+          "fundingNumber",
           "projectIdNumber",
           "isFeesApplicable",
+          "isHstExempt",
           "reb",
           "payee",
           "createDt",
@@ -783,12 +942,28 @@ curl -X PUT "https://ctoregistry.com/api/v1/funding/:studyFundingId/payee"
       },
       "contact": {
         "properties": {
-          "firstName": {"type": "string"},
-          "lastName": {"type": "string"},
-          "phone": {"type": "string"},
+          "name": {"type": "string"},
+          "phones": {"type": "array", "items": {"type": "string"}},
           "email": {"type": "string"}
         },
-        "required": ["firstName", "lastName", "phone", "email"]
+        "required": ["email"]
+      },
+      "invoiceDisplayValues": {
+        "type": "array",
+        "description": "if omitted, defaults from the linked institution will be used.",
+        "items": {
+          "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
+          "required": ["label", "value"]
+        }
+      },
+      "invoiceCCEmails": {
+        "type": "array",
+        "description": "if omitted, defaults from the linked institution will be used.",
+        "items": {"type": "string"}
+      },
+      "daysToPay": {
+        "type": "number",
+        "description": "if omitted, defaults from the linked institution will be used."
       }
     },
     "required": ["name"]
@@ -910,10 +1085,6 @@ curl "https://ctoregistry.com/api/v1/funding/payments"
       "search": {"type": "string"},
       "status": {"type": "string"},
       "csv": {"type": "boolean"},
-      "isSendRequired": {
-        "type": "boolean",
-        "description": "set to true to only return invoices that must be sent"
-      },
       "payeeIds": {"type": ["string", "array"], "description": "an array of payee institution IDs"},
       "payeeLinked": {
         "type": "string",
@@ -956,7 +1127,9 @@ curl "https://ctoregistry.com/api/v1/funding/payments"
           "paymentType": {"type": "string", "enum": ["reb", "sponsor", "institution"]},
           "paymentNumber": {"type": "string"},
           "paymentReference": {"type": "string"},
+          "quickBooksId": {"type": "string"},
           "paymentDt": {"type": "date-time"},
+          "isVoid": {"type": "boolean"},
           "totalPayment": {"type": "number"},
           "createDt": {"type": "date"},
           "updateDt": {"type": "date"},
@@ -981,19 +1154,27 @@ curl "https://ctoregistry.com/api/v1/funding/payments"
               "contact": {
                 "properties": {
                   "userId": {"type": ["object", "null"]},
-                  "firstName": {"type": ["string", "null"]},
-                  "lastName": {"type": ["string", "null"]},
+                  "name": {"type": ["string", "null"]},
                   "email": {"type": ["string", "null"]},
-                  "phone": {"type": ["string", "null"]}
+                  "phones": {"type": "array", "items": {"type": "string"}}
                 },
                 "required": []
-              }
+              },
+              "invoiceDisplayValues": {
+                "type": "array",
+                "items": {
+                  "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
+                  "required": ["label", "value"]
+                }
+              },
+              "invoiceCCEmails": {"type": "array", "items": {"type": "string"}},
+              "daysToPay": {"type": "number"}
             },
             "required": []
           },
           "invoicePaymentCount": {"type": "number"}
         },
-        "required": ["id", "paymentNumber", "totalPayment", "invoicePaymentCount"]
+        "required": ["id", "paymentNumber", "totalPayment", "invoicePaymentCount", "isVoid"]
       }
     }
   },
@@ -1056,8 +1237,11 @@ curl "https://ctoregistry.com/api/v1/funding/payments/:paymentId"
         "paymentType": {"type": "string", "enum": ["reb", "sponsor", "institution"]},
         "paymentNumber": {"type": "string"},
         "paymentReference": {"type": "string"},
+        "quickBooksId": {"type": "string"},
         "paymentDt": {"type": "date-time"},
+        "isVoid": {"type": "boolean"},
         "totalPayment": {"type": "number"},
+        "paymentReason": {"type": "string", "enum": ["legacy", "full", "hard", "manual"]},
         "createUserId": {"type": ["object", "null"]},
         "createDt": {"type": "date"},
         "updateDt": {"type": "date"},
@@ -1082,13 +1266,21 @@ curl "https://ctoregistry.com/api/v1/funding/payments/:paymentId"
             "contact": {
               "properties": {
                 "userId": {"type": ["object", "null"]},
-                "firstName": {"type": ["string", "null"]},
-                "lastName": {"type": ["string", "null"]},
+                "name": {"type": ["string", "null"]},
                 "email": {"type": ["string", "null"]},
-                "phone": {"type": ["string", "null"]}
+                "phones": {"type": "array", "items": {"type": "string"}}
               },
               "required": []
-            }
+            },
+            "invoiceDisplayValues": {
+              "type": "array",
+              "items": {
+                "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
+                "required": ["label", "value"]
+              }
+            },
+            "invoiceCCEmails": {"type": "array", "items": {"type": "string"}},
+            "daysToPay": {"type": "number"}
           },
           "required": []
         },
@@ -1100,8 +1292,12 @@ curl "https://ctoregistry.com/api/v1/funding/payments/:paymentId"
               "studyFundingId": {"type": "object"},
               "invoiceId": {"type": "object"},
               "invoiceNumber": {"type": "string"},
+              "invoiceShortNumber": {"type": "number"},
               "condition": {"type": "string"},
+              "conditionLabel": {"type": "string"},
+              "description": {"type": "string"},
               "projectIdNumber": {"type": "number"},
+              "fundingNumber": {"type": "string"},
               "paymentAmount": {"type": "number"},
               "total": {"type": "number"},
               "totalPaid": {"type": "number"}
@@ -1111,9 +1307,50 @@ curl "https://ctoregistry.com/api/v1/funding/payments/:paymentId"
               "studyFundingId",
               "invoiceId",
               "invoiceNumber",
+              "invoiceShortNumber",
+              "condition",
+              "conditionLabel",
+              "description",
               "projectIdNumber",
+              "fundingNumber",
               "paymentAmount"
             ]
+          }
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "actionDt": {"type": "date"},
+              "action": {
+                "type": "string",
+                "enum": [
+                  "void",
+                  "payeeUpdate",
+                  "create",
+                  "updateTotal",
+                  "sendInitial",
+                  "sendReminder",
+                  "sendUpdate",
+                  "document_create",
+                  "document_update",
+                  "institution_add",
+                  "institution_update",
+                  "payment_reb_create",
+                  "payment_reb_update",
+                  "payment_reb_delete",
+                  "payment_institution_create",
+                  "payment_institution_update",
+                  "payment_institution_delete",
+                  "payment_sponsor_create",
+                  "payment_sponsor_update",
+                  "payment_sponsor_delete"
+                ]
+              },
+              "reason": {"type": "string"},
+              "userId": {"type": "object"}
+            },
+            "required": ["actionDt", "action", "reason"]
           }
         }
       },
@@ -1122,8 +1359,11 @@ curl "https://ctoregistry.com/api/v1/funding/payments/:paymentId"
         "paymentType",
         "paymentNumber",
         "totalPayment",
+        "isVoid",
         "createDt",
+        "paymentReason",
         "updateDt",
+        "history",
         "invoicePayments"
       ]
     }
@@ -1169,6 +1409,7 @@ curl -X POST "https://ctoregistry.com/api/v1/funding/payments/:paymentId?"
       "paymentDt": {"type": "date-time"},
       "totalPayment": {"type": "number"},
       "paymentReference": {"type": "string"},
+      "quickBooksId": {"type": "string"},
       "payee": {
         "properties": {
           "institutionId": {"type": "string"},
@@ -1193,8 +1434,7 @@ curl -X POST "https://ctoregistry.com/api/v1/funding/payments/:paymentId?"
           },
           "contact": {
             "properties": {
-              "firstName": {"type": "string"},
-              "lastName": {"type": "string"},
+              "name": {"type": "string"},
               "phone": {"type": "string"},
               "email": {"type": "string"}
             },
@@ -1239,7 +1479,9 @@ curl -X POST "https://ctoregistry.com/api/v1/funding/payments/:paymentId?"
 ```
 
 
-Records or updates a payment.  TO update a payment, pass the paymentId as part of the request
+Records or updates a payment.  To update a payment, pass the paymentId as part of the request.  
+        If any invoices are marked as void, an error is returned
+        If any invoice will be overpaid from the invoice payments, an error is returned
 
 ### HTTP Request
 
@@ -1295,8 +1537,11 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId/payments"
           "paymentType": {"type": "string", "enum": ["reb", "sponsor", "institution"]},
           "paymentNumber": {"type": "string"},
           "paymentReference": {"type": "string"},
+          "quickBooksId": {"type": "string"},
           "paymentDt": {"type": "date-time"},
+          "isVoid": {"type": "boolean"},
           "totalPayment": {"type": "number"},
+          "paymentReason": {"type": "string", "enum": ["legacy", "full", "hard", "manual"]},
           "createUserId": {"type": ["object", "null"]},
           "createDt": {"type": "date"},
           "updateDt": {"type": "date"},
@@ -1321,13 +1566,21 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId/payments"
               "contact": {
                 "properties": {
                   "userId": {"type": ["object", "null"]},
-                  "firstName": {"type": ["string", "null"]},
-                  "lastName": {"type": ["string", "null"]},
+                  "name": {"type": ["string", "null"]},
                   "email": {"type": ["string", "null"]},
-                  "phone": {"type": ["string", "null"]}
+                  "phones": {"type": "array", "items": {"type": "string"}}
                 },
                 "required": []
-              }
+              },
+              "invoiceDisplayValues": {
+                "type": "array",
+                "items": {
+                  "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
+                  "required": ["label", "value"]
+                }
+              },
+              "invoiceCCEmails": {"type": "array", "items": {"type": "string"}},
+              "daysToPay": {"type": "number"}
             },
             "required": []
           },
@@ -1339,8 +1592,12 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId/payments"
                 "studyFundingId": {"type": "object"},
                 "invoiceId": {"type": "object"},
                 "invoiceNumber": {"type": "string"},
+                "invoiceShortNumber": {"type": "number"},
                 "condition": {"type": "string"},
+                "conditionLabel": {"type": "string"},
+                "description": {"type": "string"},
                 "projectIdNumber": {"type": "number"},
+                "fundingNumber": {"type": "string"},
                 "paymentAmount": {"type": "number"},
                 "total": {"type": "number"},
                 "totalPaid": {"type": "number"}
@@ -1350,9 +1607,50 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId/payments"
                 "studyFundingId",
                 "invoiceId",
                 "invoiceNumber",
+                "invoiceShortNumber",
+                "condition",
+                "conditionLabel",
+                "description",
                 "projectIdNumber",
+                "fundingNumber",
                 "paymentAmount"
               ]
+            }
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "actionDt": {"type": "date"},
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "void",
+                    "payeeUpdate",
+                    "create",
+                    "updateTotal",
+                    "sendInitial",
+                    "sendReminder",
+                    "sendUpdate",
+                    "document_create",
+                    "document_update",
+                    "institution_add",
+                    "institution_update",
+                    "payment_reb_create",
+                    "payment_reb_update",
+                    "payment_reb_delete",
+                    "payment_institution_create",
+                    "payment_institution_update",
+                    "payment_institution_delete",
+                    "payment_sponsor_create",
+                    "payment_sponsor_update",
+                    "payment_sponsor_delete"
+                  ]
+                },
+                "reason": {"type": "string"},
+                "userId": {"type": "object"}
+              },
+              "required": ["actionDt", "action", "reason"]
             }
           }
         },
@@ -1361,8 +1659,11 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId/payments"
           "paymentType",
           "paymentNumber",
           "totalPayment",
+          "isVoid",
           "createDt",
+          "paymentReason",
           "updateDt",
+          "history",
           "invoicePayments"
         ]
       }
@@ -1425,6 +1726,7 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
       "properties": {
         "id": {"type": "object"},
         "studyId": {"type": "object"},
+        "fundingNumber": {"type": "string"},
         "projectIdNumber": {"type": "number"},
         "createDt": {"type": "date"},
         "updateDt": {"type": "date"},
@@ -1454,13 +1756,21 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
             "contact": {
               "properties": {
                 "userId": {"type": ["object", "null"]},
-                "firstName": {"type": ["string", "null"]},
-                "lastName": {"type": ["string", "null"]},
+                "name": {"type": ["string", "null"]},
                 "email": {"type": ["string", "null"]},
-                "phone": {"type": ["string", "null"]}
+                "phones": {"type": "array", "items": {"type": "string"}}
               },
               "required": []
-            }
+            },
+            "invoiceDisplayValues": {
+              "type": "array",
+              "items": {
+                "properties": {"label": {"type": "string"}, "value": {"type": "string"}},
+                "required": ["label", "value"]
+              }
+            },
+            "invoiceCCEmails": {"type": "array", "items": {"type": "string"}},
+            "daysToPay": {"type": "number"}
           },
           "required": []
         },
@@ -1468,9 +1778,8 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
           "id": "StudyFundingFees",
           "properties": {
             "feeScheduleId": {"type": "object"},
-            "feeScheduleName": {"type": "string"},
             "isFeesApplicable": {"type": "boolean"},
-            "hst": {"type": "number"},
+            "feeScheduleName": {"type": "string"},
             "isHstExempt": {"type": "boolean"},
             "hstExemptionDocument": {
               "id": "/StudyFundingDocument",
@@ -1485,22 +1794,64 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
               },
               "required": ["id", "originalFilename", "uploadDt", "link", "mimeType", "size"]
             },
+            "invoiceProcessingMethod": {"type": "string"},
             "invoices": {
               "type": "array",
               "items": {
                 "id": "StudyFundingInvoice",
                 "properties": {
                   "id": {"type": "object"},
+                  "feesId": {"type": "object"},
+                  "feesName": {"type": "string"},
+                  "feesDt": {"type": "date"},
+                  "isVoid": {"type": "boolean"},
+                  "isSendRequired": {"type": "boolean"},
+                  "isNewInvoiceDocumentRequired": {"type": "boolean"},
+                  "rebDaysToPayout": {"type": "number"},
+                  "rebPaymentAmount": {"type": "number"},
+                  "rebPaymentId": {"type": "object"},
                   "invoiceNumber": {"type": "string"},
+                  "invoiceShortNumber": {"type": "number"},
                   "legacyInvoiceNumber": {"type": "string"},
                   "condition": {"type": "string"},
+                  "conditionLabel": {"type": "string"},
+                  "description": {"type": "string"},
                   "value": {"type": ["number", "string", "null"]},
+                  "isHstExempt": {"type": "boolean"},
                   "subTotal": {"type": "number"},
                   "hst": {"type": "number"},
                   "total": {"type": "number"},
                   "totalPaid": {"type": "number"},
-                  "isSendRequired": {"type": "boolean"},
-                  "sentDts": {"type": "array", "items": {"type": "date"}},
+                  "lastSentDt": {"type": "date"},
+                  "invoiceDocuments": {
+                    "type": "array",
+                    "items": {
+                      "id": "StudyFundingInvoiceDocument",
+                      "properties": {
+                        "id": {"type": "object"},
+                        "name": {"type": "string"},
+                        "originalFilename": {"type": "string"},
+                        "link": {"type": "string"},
+                        "mimeType": {"type": "string"},
+                        "size": {"type": "number"},
+                        "uploadDt": {"type": "date"},
+                        "sentDts": {"type": "array", "items": {"type": "date"}},
+                        "documentVersion": {"type": "number"},
+                        "isSendRequired": {"type": "boolean"}
+                      },
+                      "required": [
+                        "id",
+                        "originalFilename",
+                        "uploadDt",
+                        "link",
+                        "mimeType",
+                        "size",
+                        "sentDts",
+                        "documentVersion",
+                        "isSendRequired"
+                      ]
+                    }
+                  },
                   "institutions": {
                     "type": "array",
                     "items": {
@@ -1524,20 +1875,66 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
                       "required": ["paymentId", "paymentId"]
                     }
                   },
+                  "history": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "actionDt": {"type": "date"},
+                        "action": {
+                          "type": "string",
+                          "enum": [
+                            "void",
+                            "payeeUpdate",
+                            "create",
+                            "updateTotal",
+                            "sendInitial",
+                            "sendReminder",
+                            "sendUpdate",
+                            "document_create",
+                            "document_update",
+                            "institution_add",
+                            "institution_update",
+                            "payment_reb_create",
+                            "payment_reb_update",
+                            "payment_reb_delete",
+                            "payment_institution_create",
+                            "payment_institution_update",
+                            "payment_institution_delete",
+                            "payment_sponsor_create",
+                            "payment_sponsor_update",
+                            "payment_sponsor_delete"
+                          ]
+                        },
+                        "reason": {"type": "string"},
+                        "userId": {"type": "object"}
+                      },
+                      "required": ["actionDt", "action", "reason"]
+                    }
+                  },
                   "createDt": {"type": "date"},
                   "updateDt": {"type": "date"}
                 },
                 "required": [
                   "id",
+                  "feesId",
+                  "feesName",
+                  "feesDt",
+                  "isVoid",
+                  "isSendRequired",
+                  "isNewInvoiceDocumentRequired",
                   "invoiceNumber",
+                  "invoiceShortNumber",
                   "condition",
+                  "conditionLabel",
+                  "description",
                   "value",
+                  "isHstExempt",
                   "subTotal",
                   "hst",
                   "total",
                   "totalPaid",
                   "institutions",
-                  "isSendRequired",
+                  "history",
                   "createDt",
                   "updateDt"
                 ]
@@ -1549,6 +1946,7 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
             "feeScheduleName",
             "isFeesApplicable",
             "isHstExempt",
+            "invoiceProcessingMethod",
             "invoices"
           ]
         }
@@ -1556,6 +1954,7 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
       "required": [
         "id",
         "studyId",
+        "fundingNumber",
         "projectIdNumber",
         "reb",
         "createDt",
@@ -1586,11 +1985,11 @@ Gets the full information about one study funding document.
 system | admin | N/A|N/A
 system | funding | N/A|N/A
 
-## StudyFundingSaveInvoiceSentDts - <em>Study Funding Save Invoice Sent Dates</em>
+## StudyFundingRecalculateInvoices - <em>Study Funding Recalculate Invoices</em>
 
 
 ```shell
-curl -X POST "https://ctoregistry.com/api/v1/funding/invoices/:invoiceId/record-sent-dates"  
+curl -X PUT "https://ctoregistry.com/api/v1/funding/:studyFundingId/recalculate-invoices"  
   -H "Authorization: {{_JWT_TOKEN_}}"  
   -H "Content-Type: application/json"
 ```
@@ -1599,14 +1998,11 @@ curl -X POST "https://ctoregistry.com/api/v1/funding/invoices/:invoiceId/record-
 
 ```json
 {
-  "params": {"properties": {"invoiceId": {"type": "string"}}, "required": ["invoiceId"]},
-  "body": {
-    "id": "StudyFundingSaveInvoiceSentDtsBody",
+  "params": {
+    "id": "/StudyParams",
     "type": "object",
-    "properties": {
-      "sentDts": {"type": "array", "items": {"type": "string", "format": "date-time"}},
-      "required": ["sentDts"]
-    }
+    "properties": {"studyId": {"type": "string"}},
+    "required": ["studyId"]
   }
 }
 ```
@@ -1629,11 +2025,11 @@ curl -X POST "https://ctoregistry.com/api/v1/funding/invoices/:invoiceId/record-
 ```
 
 
-Records the set of dates that an invoice was sent on
+Processes the study funding to update an missing invoices. Does the same actions that the hourly process does for one study
 
 ### HTTP Request
 
-`POST /funding/invoices/:invoiceId/record-sent-dates`
+`PUT /funding/:studyFundingId/recalculate-invoices`
 
 
 
@@ -1691,6 +2087,127 @@ Records the date that an payment was sent/received on
 ### HTTP Request
 
 `POST /funding/payments/:paymentId/record-sent-date`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | funding | N/A|N/A
+
+## StudyFundingSendInvoice - <em>Study Funding Send Invoice Email</em>
+
+
+```shell
+curl -X POST "https://ctoregistry.com/api/v1/funding/invoices/:invoiceId/send"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {"properties": {"invoiceId": {"type": "string"}}, "required": ["invoiceId"]},
+  "body": {
+    "id": "StudyFundingSendInvoiceRequestBody",
+    "type": "object",
+    "properties": {
+      "sendEmail": {"type": "boolean"},
+      "sentDt": {"type": "string", "format": "date-time"},
+      "invoiceDocumentId": {"type": "string"},
+      "subject": {"type": "string"},
+      "ccMyself": {"type": "boolean"},
+      "extraText": {"type": "string"}
+    },
+    "required": ["invoiceDocumentId", "sendEmail", "subject"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Emails the document version to the payee for the study funding
+
+### HTTP Request
+
+`POST /funding/invoices/:invoiceId/send`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | funding | N/A|N/A
+
+## StudyFundingVoidInvoice - <em>Study Funding Void Invoice</em>
+
+
+```shell
+curl -X PUT "https://ctoregistry.com/api/v1/funding/invoices/:invoiceId/void"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {"properties": {"invoiceId": {"type": "string"}}, "required": ["invoiceId"]},
+  "body": {
+    "id": "StudyFundingVoidInvoiceBody",
+    "type": "object",
+    "properties": {"voidReason": {"type": "string"}},
+    "required": ["voidReason"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Sets an invoice to void status
+
+### HTTP Request
+
+`PUT /funding/invoices/:invoiceId/void`
 
 
 
