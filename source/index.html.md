@@ -9,6 +9,7 @@ toc_footers:
 includes:
   - Admin
   - Committee
+  - Funding
   - Institution
   - QuickSTART
   - Security
