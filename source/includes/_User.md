@@ -1173,6 +1173,9 @@ curl "https://ctoregistry.com/api/v1/user/"
               "properties": {
                 "system": {"type": "string"},
                 "id": {"type": "string"},
+                "systemCreateDt": {"type": "date"},
+                "systemUpdateDt": {"type": "date"},
+                "systemRoles": {"type": "array", "items": {"type": "string"}},
                 "syncDt": {"type": "date"}
               },
               "required": ["system", "id", "syncDt"]
@@ -1580,6 +1583,9 @@ curl "https://ctoregistry.com/api/v1/user/:userId"
             "properties": {
               "system": {"type": "string"},
               "id": {"type": "string"},
+              "systemCreateDt": {"type": "date"},
+              "systemUpdateDt": {"type": "date"},
+              "systemRoles": {"type": "array", "items": {"type": "string"}},
               "syncDt": {"type": "date"}
             },
             "required": ["system", "id", "syncDt"]

@@ -2,6 +2,78 @@
 # Funding
 
 
+## StudyFundingConfigureReminders - <em>Configure Study Funding Reminders</em>
+
+
+```shell
+curl -X PUT "https://ctoregistry.com/api/v1/funding/:studyFundingId/configure-reminders"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "body": {
+    "id": "/StudyFundingRemindersBody",
+    "type": "object",
+    "properties": {
+      "studyReminders": {"type": "boolean"},
+      "invoiceReminders": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {"invoiceId": {"type": "string"}, "reminders": {"type": "boolean"}},
+          "required": ["invoiceId", "reminders"]
+        }
+      }
+    },
+    "required": ["studyReminders"]
+  },
+  "params": {
+    "id": "/StudyFundingRemindersParams",
+    "type": "object",
+    "properties": {"studyFundingId": {"type": "string"}},
+    "required": ["studyFundingId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Updates the study funding and related invoices reminder settings
+
+### HTTP Request
+
+`PUT /funding/:studyFundingId/configure-reminders`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | funding | N/A|N/A
+
 ## StudyFundingDocumentDelete - <em>Delete Study Funding Document</em>
 
 
@@ -1779,6 +1851,7 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
           "properties": {
             "feeScheduleId": {"type": "object"},
             "isFeesApplicable": {"type": "boolean"},
+            "isInvoiceRemindersDisabled": {"type": "boolean"},
             "feeScheduleName": {"type": "string"},
             "isHstExempt": {"type": "boolean"},
             "hstExemptionDocument": {
@@ -1806,6 +1879,8 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
                   "feesDt": {"type": "date"},
                   "isVoid": {"type": "boolean"},
                   "isSendRequired": {"type": "boolean"},
+                  "isInvoiceRemindersDisabled": {"type": "boolean"},
+                  "nextReminderDt": {"type": ["date", "null"]},
                   "isNewInvoiceDocumentRequired": {"type": "boolean"},
                   "rebDaysToPayout": {"type": "number"},
                   "rebPaymentAmount": {"type": "number"},
@@ -1921,6 +1996,8 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
                   "feesDt",
                   "isVoid",
                   "isSendRequired",
+                  "isInvoiceRemindersDisabled",
+                  "nextReminderDt",
                   "isNewInvoiceDocumentRequired",
                   "invoiceNumber",
                   "invoiceShortNumber",
@@ -1945,6 +2022,7 @@ curl "https://ctoregistry.com/api/v1/funding/:studyFundingId"
             "feeScheduleId",
             "feeScheduleName",
             "isFeesApplicable",
+            "isInvoiceRemindersDisabled",
             "isHstExempt",
             "invoiceProcessingMethod",
             "invoices"

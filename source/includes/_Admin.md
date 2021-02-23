@@ -289,6 +289,108 @@ system | support | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 institution | admin | user|N/A
 
+## CacheDocumentDownload - <em>Download Cache Document</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/download/cache/:dir/:fileName"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/CacheDocumentDownloadRequestParams",
+    "type": "object",
+    "properties": {
+      "dir": {"type": "string", "enum": ["system", "stream", "streamBackup", "streamExtractor"]},
+      "fileName": {"type": "string"}
+    },
+    "required": ["dir", "fileName"]
+  },
+  "query": {
+    "id": "/CacheDocumentDownloadRequestQuery",
+    "type": "object",
+    "properties": {"csv": {"type": "boolean"}}
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+undefined
+```
+
+
+Downloads one document from the specified cache directory.
+
+### HTTP Request
+
+`GET /download/cache/:dir/:fileName`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+
+## GetCacheFileList - <em>Cache File List</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/admin/cache/"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Response Schema
+
+```json
+{
+  "id": "/CacheFileListResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cache": {"type": "string"},
+          "files": {"type": "array", "items": {"type": "string"}}
+        },
+        "required": ["cache", "files"]
+      }
+    }
+  },
+  "required": ["data"]
+}
+```
+
+
+Gets the details about the cache files stored in the system
+
+
+### HTTP Request
+
+`GET /admin/cache/`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+
 ## GetEmailLog - <em>Email Log</em>
 
 
