@@ -67,7 +67,7 @@ curl "https://ctoregistry.com/api/v1/committee/unique-name/:name/:committeeId?"
 ```json
 {
   "params": {
-    "id": "/CommitteeUniqueName",
+    "id": "/CommitteeUniqueNameParams",
     "type": "object",
     "properties": {"name": {"type": "string"}, "committeeId": {"type": "string"}},
     "required": ["name"]
@@ -118,7 +118,7 @@ curl "https://ctoregistry.com/api/v1/committee/unique-short-name/:shortName/:com
 ```json
 {
   "params": {
-    "id": "/CommitteeUniqueShortName",
+    "id": "/CommitteeUniqueShortNameParams",
     "type": "object",
     "properties": {"shortName": {"type": "string"}, "committeeId": {"type": "string"}},
     "required": ["shortName"]
@@ -169,7 +169,7 @@ curl "https://ctoregistry.com/api/v1/committee/unique-stream-name/:streamName/:c
 ```json
 {
   "params": {
-    "id": "/CommitteeUniqueStreamName",
+    "id": "/CommitteeUniqueStreamNameParams",
     "type": "object",
     "properties": {"streamName": {"type": "string"}, "committeeId": {"type": "string"}},
     "required": ["streamName"]
@@ -220,7 +220,7 @@ curl -X POST "https://ctoregistry.com/api/v1/committee/"
 ```json
 {
   "body": {
-    "id": "/CommitteeCreation",
+    "id": "/CommitteeCreationBody",
     "type": "object",
     "properties": {
       "code": {"type": "string", "description": "The committee's code"},
@@ -538,7 +538,7 @@ curl -X POST "https://ctoregistry.com/api/v1/committee/:committeeId/members/add"
     "required": ["committeeId"]
   },
   "body": {
-    "id": "/CommitteeMemberCreation",
+    "id": "/CommitteeMemberCreationBody",
     "type": "object",
     "properties": {
       "userId": {
@@ -616,7 +616,7 @@ curl -X POST "https://ctoregistry.com/api/v1/committee/:committeeId/members/edit
     "required": ["committeeId"]
   },
   "body": {
-    "id": "/CommitteeMemberEdit",
+    "id": "/CommitteeMemberEditBody",
     "type": "object",
     "properties": {
       "userId": {
@@ -951,7 +951,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/committee/:committeeId"
 ```json
 {
   "body": {
-    "id": "/CommitteeUpdate",
+    "id": "/CommitteeUpdateBody",
     "type": "object",
     "properties": {
       "code": {"type": "string", "description": "The committee's code"},

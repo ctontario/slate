@@ -175,7 +175,7 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
 ```json
 {
   "body": {
-    "id": "/Institution",
+    "id": "/InstitutionCreationBody",
     "type": "object",
     "properties": {
       "name": {"type": "string", "maxLength": 200, "description": "Institution name"},
@@ -201,7 +201,7 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
       },
       "website": {"type": "string"},
       "address": {
-        "id": "/Address",
+        "id": "/AddressBody",
         "type": "object",
         "properties": {
           "streetAddress": {"type": "string", "description": "Street address"},
@@ -221,7 +221,7 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/"
       "phones": {
         "type": "array",
         "items": {
-          "id": "/Phone",
+          "id": "/PhoneBody",
           "type": "object",
           "properties": {
             "number": {"type": "string", "description": "Phone number"},
@@ -347,7 +347,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/institution/:institutionId/docume
 ```json
 {
   "params": {
-    "id": "/InstitutionDocumentDelete",
+    "id": "/InstitutionDocumentDeleteParams",
     "type": "object",
     "properties": {"institutionId": {"type": "string"}, "documentId": {"type": "string"}},
     "required": ["institutionId", "documentId"]
@@ -405,7 +405,7 @@ curl "https://ctoregistry.com/api/v1/download/institution/:institutionId/documen
 ```json
 {
   "params": {
-    "id": "/InstitutionDocumentDownload",
+    "id": "/InstitutionDocumentDownloadParams",
     "type": "object",
     "properties": {"institutionId": {"type": "string"}, "documentId": {"type": "string"}},
     "required": ["institutionId", "documentId"]
@@ -452,7 +452,7 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/institution/:institutionId"
 ```json
 {
   "body": {
-    "id": "/InstitutionDocumentUpload",
+    "id": "/InstitutionDocumentUploadBody",
     "type": "object",
     "properties": {
       "name": {"type": "string", "description": "The document name"},
@@ -742,7 +742,7 @@ curl "https://ctoregistry.com/api/v1/institution/:institutionId/payee"
         "invoiceCCEmails": {"type": "array", "items": {"type": "string"}},
         "daysToPay": {"type": "number"}
       },
-      "required": []
+      "required": ["name"]
     }
   },
   "required": ["institutionPayee"]
@@ -792,7 +792,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId/payee"
       "institutionId": {"type": "string"},
       "name": {"type": "string"},
       "address": {
-        "id": "/PayeeAddress",
+        "id": "/PayeeAddressBody",
         "type": "object",
         "properties": {
           "streetAddress": {"type": "string", "description": "Street address"},
@@ -1047,13 +1047,13 @@ curl -X POST "https://ctoregistry.com/api/v1/institution/:institutionId/quick-st
 ```json
 {
   "params": {
-    "id": "/InstitutionQuickSTARTApprovalCreationParams",
+    "id": "/InstitutionQuickStartApprovalCreationParams",
     "type": "object",
     "properties": {"institutionId": {"type": "string"}},
     "required": ["institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTApprovalBody",
+    "id": "/QuickStartApprovalBody",
     "type": "object",
     "properties": {
       "userId": {"type": ["string", "null"]},
@@ -1125,7 +1125,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/institution/:institutionId/quick-
 ```json
 {
   "params": {
-    "id": "/InstitutionQuickSTARTApprovalDeleteParams",
+    "id": "/InstitutionQuickStartApprovalDeleteParams",
     "type": "object",
     "properties": {"institutionId": {"type": "string"}, "approvalId": {"type": "string"}},
     "required": ["institutionId", "approvalId"]
@@ -1183,13 +1183,13 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId/quick-sta
 ```json
 {
   "params": {
-    "id": "/InstitutionQuickSTARTApprovalUpdateParams",
+    "id": "/InstitutionQuickStartApprovalUpdateParams",
     "type": "object",
     "properties": {"institutionId": {"type": "string"}, "approvalId": {"type": "string"}},
     "required": ["institutionId", "approvalId"]
   },
   "body": {
-    "id": "/QuickSTARTApprovalBody",
+    "id": "/QuickStartApprovalBody",
     "type": "object",
     "properties": {
       "userId": {"type": ["string", "null"]},
@@ -1546,7 +1546,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
 ```json
 {
   "body": {
-    "id": "/InstitutionUpdate",
+    "id": "/InstitutionUpdateBody",
     "type": "object",
     "properties": {
       "name": {"type": "string", "maxLength": 200, "description": "Institution name"},
@@ -1572,7 +1572,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
       },
       "website": {"type": "string"},
       "address": {
-        "id": "/Address",
+        "id": "/AddressBody",
         "type": "object",
         "properties": {
           "streetAddress": {"type": "string", "description": "Street address"},
@@ -1592,7 +1592,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/institution/:institutionId"
       "phones": {
         "type": "array",
         "items": {
-          "id": "/Phone",
+          "id": "/PhoneBody",
           "type": "object",
           "properties": {
             "number": {"type": "string", "description": "Phone number"},

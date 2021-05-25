@@ -173,14 +173,30 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
     "quickStart": {
       "id": "QuickStartDictionaries",
       "properties": {
-        "status": {"type": "array", "items": {"type": "string"}},
+        "status": {
+          "id": "QuickStartSiteStatusDictionary",
+          "patternProperties": {
+            "^[a-zA-Z_$][\\w$]*$": {
+              "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+              "required": ["code", "label"]
+            }
+          }
+        },
+        "studyTypes": {
+          "id": "QuickStartStudyTypeDictionary",
+          "patternProperties": {
+            "^[a-zA-Z_$][\\w$]*$": {
+              "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+              "required": ["code", "label"]
+            }
+          }
+        },
         "creationProgress": {
           "type": "array",
           "items": {"type": "string", "enum": ["study", "studyDocuments", "contract", "budget"]}
         },
         "site": {
           "properties": {
-            "status": {"type": "array", "items": {"type": "string"}},
             "comments": {
               "id": "QuickStartSiteCommentDictionary",
               "patternProperties": {
@@ -194,13 +210,35 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
               "id": "QuickStartSiteRebEventsDictionary",
               "patternProperties": {
                 "^[a-zA-Z_$][\\w$]*$": {
-                  "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+                  "properties": {
+                    "code": {"type": "string"},
+                    "label": {"type": "string"},
+                    "isAddable": {"type": "boolean"}
+                  },
                   "required": ["code", "label"]
                 }
               }
             },
             "approveAfterEvents": {
               "id": "QuickStartSiteApproveAfterEvents",
+              "patternProperties": {
+                "^[a-zA-Z_$][\\w$]*$": {
+                  "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+                  "required": ["code", "label"]
+                }
+              }
+            },
+            "reviewActions": {
+              "id": "QuickStartSiteReviewActions",
+              "patternProperties": {
+                "^[a-zA-Z_$][\\w$]*$": {
+                  "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+                  "required": ["code", "label"]
+                }
+              }
+            },
+            "roles": {
+              "id": "QuickStartSiteRoles",
               "patternProperties": {
                 "^[a-zA-Z_$][\\w$]*$": {
                   "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
@@ -233,7 +271,32 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
               "required": ["daysToApprove", "contract", "budget"]
             }
           },
-          "required": ["status", "comments", "rebEvents", "approveAfterEvents", "timers"]
+          "required": [
+            "comments",
+            "rebEvents",
+            "reviewActions",
+            "roles",
+            "approveAfterEvents",
+            "timers"
+          ]
+        },
+        "contractStrategies": {
+          "id": "QuickStartContractStrategyDictionary",
+          "patternProperties": {
+            "^[a-zA-Z_$][\\w$]*$": {
+              "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+              "required": ["code", "label"]
+            }
+          }
+        },
+        "preScreenComments": {
+          "id": "QuickStartPreScreenCommentDictionary",
+          "patternProperties": {
+            "^[a-zA-Z_$][\\w$]*$": {
+              "properties": {"code": {"type": "string"}, "label": {"type": "string"}},
+              "required": ["code", "label"]
+            }
+          }
         },
         "approvalTypes": {
           "id": "QuickStartApprovalTypeDictionary",
@@ -246,7 +309,16 @@ curl "https://ctoregistry.com/api/v1/dictionary/system"
         },
         "documentType": {"type": "array", "items": {"type": "string"}}
       },
-      "required": ["status", "creationProgress", "site", "approvalTypes", "documentType"]
+      "required": [
+        "status",
+        "studyTypes",
+        "creationProgress",
+        "site",
+        "contractStrategies",
+        "preScreenComments",
+        "approvalTypes",
+        "documentType"
+      ]
     },
     "document": {
       "id": "DocumentDictionaries",
@@ -414,7 +486,7 @@ curl -X POST "https://ctoregistry.com/api/v1/system/email/event-notification"
           "required": ["index", "type"]
         },
         "attempt": {"type": "string"},
-        "category": {"type": ["string", "array"], "items": {"type": "string"}},
+        "category": {"type": ["string", "array"]},
         "type": {"type": "string"},
         "asm_group_id": {"type": "number"}
       },
@@ -458,7 +530,39 @@ Handles inbound notifications from the email API to parse delivery results. Requ
  
 N/A
 
-## SystemResponseInterfaces - <em>System Documentation</em>
+## SystemRequestInterfaces - <em>System Request Documentation</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/system/request-interfaces"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Response Schema
+
+```json
+undefined
+```
+
+
+
+<aside class="notice">This route is public and does not require authentication</aside>
+
+
+Provides typescript interfaces for all available requests
+
+### HTTP Request
+
+`GET /system/request-interfaces`
+
+
+
+### Authorization
+ 
+N/A
+
+## SystemResponseInterfaces - <em>System Response Documentation</em>
 
 
 ```shell
@@ -478,7 +582,7 @@ undefined
 <aside class="notice">This route is public and does not require authentication</aside>
 
 
-Provides the system documentation of all available routes
+Provides typescript interfaces for all available request responses
 
 ### HTTP Request
 

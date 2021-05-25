@@ -16,7 +16,7 @@ curl -X POST "https://ctoregistry.com/api/v1/security/authentication"
 ```json
 {
   "body": {
-    "id": "/Authentication",
+    "id": "/AuthenticationBody",
     "type": "object",
     "properties": {"username": {"type": "string"}, "password": {"type": "string"}},
     "required": ["username", "password"]

@@ -16,7 +16,7 @@ curl "https://ctoregistry.com/api/v1/visitor/email/unique/:email"
 ```json
 {
   "params": {
-    "id": "/UserUniqueEmail",
+    "id": "/UserUniqueEmailParams",
     "type": "object",
     "properties": {"email": {"type": "string"}, "userId": {"type": "string"}},
     "required": ["email"]
@@ -68,7 +68,7 @@ curl "https://ctoregistry.com/api/v1/visitor/email/unique/:email/:userId"
 ```json
 {
   "params": {
-    "id": "/UserUniqueEmail",
+    "id": "/UserUniqueEmailParams",
     "type": "object",
     "properties": {"email": {"type": "string"}, "userId": {"type": "string"}},
     "required": ["email"]
@@ -120,7 +120,7 @@ curl "https://ctoregistry.com/api/v1/validation/email/:token"
 ```json
 {
   "params": {
-    "id": "/EmailValidation",
+    "id": "/EmailValidationParams",
     "type": "object",
     "properties": {"token": {"type": "string"}},
     "required": ["token"]
@@ -177,7 +177,7 @@ curl "https://ctoregistry.com/api/v1/validation/resend/:userId/:institutionId"
 ```json
 {
   "params": {
-    "id": "/EmailValidationResend",
+    "id": "/EmailValidationResendParams",
     "type": "object",
     "properties": {"userId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["userId", "institutionId"]
@@ -233,7 +233,7 @@ curl "https://ctoregistry.com/api/v1/validation/resend/:username"
 ```json
 {
   "params": {
-    "id": "/EmailValidationResendByUsername",
+    "id": "/EmailValidationResendByUsernameParams",
     "type": "object",
     "properties": {"username": {"type": "string"}},
     "required": ["username"]
@@ -289,7 +289,7 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/password/reset/request"
 ```json
 {
   "body": {
-    "id": "/PasswordResetRequest",
+    "id": "/PasswordResetRequestBody",
     "type": "object",
     "properties": {"email": {"type": "string"}},
     "required": ["email"]
@@ -346,7 +346,7 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/password/reset"
 ```json
 {
   "body": {
-    "id": "/PasswordResetToken",
+    "id": "/PasswordResetTokenBody",
     "type": "object",
     "properties": {"password": {"type": "string"}, "token": {"type": "string"}},
     "required": ["password", "token"]
@@ -403,7 +403,7 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/"
 ```json
 {
   "body": {
-    "id": "/UserCreationByVisitor",
+    "id": "/UserCreationByVisitorBody",
     "type": "object",
     "properties": {
       "username": {"type": "string", "description": "User ID"},
@@ -416,7 +416,7 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/"
         "description": "Title"
       },
       "institution": {
-        "id": "/UserInstitution",
+        "id": "/UserInstitutionBody",
         "type": "object",
         "properties": {
           "code": {"type": "string", "description": "The institution code"},
@@ -426,7 +426,7 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/"
             "description": "Whether the user was indicated as an investigator or not"
           },
           "address": {
-            "id": "/Address",
+            "id": "/AddressBody",
             "type": "object",
             "properties": {
               "streetAddress": {"type": "string", "description": "Street address"},
@@ -447,7 +447,7 @@ curl -X POST "https://ctoregistry.com/api/v1/visitor/"
           "phones": {
             "type": "array",
             "items": {
-              "id": "/Phone",
+              "id": "/PhoneBody",
               "type": "object",
               "properties": {
                 "number": {"type": "string", "description": "Phone number"},
@@ -543,7 +543,7 @@ curl "https://ctoregistry.com/api/v1/visitor/username/unique/:username"
 ```json
 {
   "params": {
-    "id": "/UserUniqueUsername",
+    "id": "/UserUniqueUsernameParams",
     "type": "object",
     "properties": {"username": {"type": "string"}, "currentUsername": {"type": "string"}},
     "required": ["username"]
@@ -595,7 +595,7 @@ curl "https://ctoregistry.com/api/v1/visitor/username/unique/:username/:currentU
 ```json
 {
   "params": {
-    "id": "/UserUniqueUsername",
+    "id": "/UserUniqueUsernameParams",
     "type": "object",
     "properties": {"username": {"type": "string"}, "currentUsername": {"type": "string"}},
     "required": ["username"]

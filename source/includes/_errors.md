@@ -51,10 +51,11 @@ Error Code | HTTP Status Code | Error Type | Description
 <small>23104</small> | <small>400</small> | <small>STUDY_NOT_FOUND</small> | <small>Study not found</small>
 <small>23105</small> | <small>400</small> | <small>QUICKSTART_SITE_NOT_FOUND</small> | <small>QuickSTART site not found</small>
 <small>23106</small> | <small>400</small> | <small>QUICKSTART_SITE_NOT_READY</small> | <small>QuickSTART site not ready</small>
-<small>23301</small> | <small>400</small> | <small>QUICKSTART_CREATION_NOT_COMPLETE</small> | <small>QuickSTART creation data has not been completed.</small>
-<small>23301</small> | <small>400</small> | <small>QUICKSTART_SITE_DUPLICATE</small> | <small>QuickSTART site with institutionId already exists on the specified QuickSTART application</small>
-<small>23201</small> | <small>400</small> | <small>QUICKSTART_FIELD_DUPLICATE</small> | <small>QuickSTART field is already used</small>
-<small>23302</small> | <small>400</small> | <small>QUICKSTART_REVIEW_NOT_COMPLETE</small> | <small>QuickSTART review must be completed before attempting the current action.</small>
+<small>23107</small> | <small>400</small> | <small>QUICKSTART_CREATION_NOT_COMPLETE</small> | <small>QuickSTART creation data has not been completed.</small>
+<small>23108</small> | <small>400</small> | <small>QUICKSTART_SITE_DUPLICATE</small> | <small>QuickSTART site with institutionId already exists on the specified QuickSTART application</small>
+<small>23109</small> | <small>400</small> | <small>QUICKSTART_FIELD_DUPLICATE</small> | <small>QuickSTART field is already used</small>
+<small>23110</small> | <small>400</small> | <small>QUICKSTART_USER_DUPLICATE</small> | <small>QuickSTART user already exists with the same role.</small>
+<small>23111</small> | <small>400</small> | <small>QUICKSTART_REVIEW_NOT_COMPLETE</small> | <small>QuickSTART review must be completed before attempting the current action.</small>
 <small>23303</small> | <small>400</small> | <small>QUICKSTART_REVIEW_NOT_APPLICABLE</small> | <small>The approval has either already been entered, or the approval is awaiting a sponsor response.</small>
 <small>25020</small> | <small>400</small> | <small>ADMIN_VETTING_NOT_SET_FOR_MODERATION</small> | <small>The user institution is not set for moderation</small>
 <small>25050</small> | <small>400</small> | <small>ADMIN_VETTING_CODE_NOT_RECOGNIZED</small> | <small>The vetting code used was not recognized</small>

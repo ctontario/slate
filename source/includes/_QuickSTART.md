@@ -16,7 +16,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteApprovalParams",
+    "id": "/QuickStartSiteApprovalParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -26,7 +26,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
     "required": ["quickStartId", "institutionId", "approvalId"]
   },
   "body": {
-    "id": "/QuickSTARTApprovalBody",
+    "id": "/QuickStartApprovalBody",
     "type": "object",
     "properties": {
       "password": {"type": "string"},
@@ -88,13 +88,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTApprovalBody",
+    "id": "/QuickStartApprovalBody",
     "type": "object",
     "properties": {
       "userId": {"type": ["string", "null"]},
@@ -176,7 +176,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteApprovalDeleteParams",
+    "id": "/QuickStartSiteApprovalDeleteParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -247,7 +247,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteApprovalUpdateParams",
+    "id": "/QuickStartSiteApprovalUpdateParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -257,7 +257,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
     "required": ["quickStartId", "institutionId", "approvalId"]
   },
   "body": {
-    "id": "/QuickSTARTApprovalBody",
+    "id": "/QuickStartApprovalBody",
     "type": "object",
     "properties": {
       "userId": {"type": ["string", "null"]},
@@ -339,7 +339,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
@@ -438,29 +438,39 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/"
 ```json
 {
   "body": {
-    "id": "/QuickSTARTCreationRequestBody",
+    "id": "/QuickStartCreationRequestBody",
     "type": "object",
     "properties": {
       "shortTitle": {"type": "string"},
       "sponsorInstitutionId": {"type": "string"},
-      "sponsorUserIds": {
+      "sponsorUsers": {
         "type": "array",
         "minItems": 1,
         "uniqueItems": true,
-        "items": {"type": "string"}
+        "items": {
+          "type": "object",
+          "properties": {
+            "userId": {"type": "string"},
+            "role": {"type": "string", "enum": ["full", "contract", "budget"]}
+          },
+          "required": ["userId", "role"]
+        }
       },
-      "sponsorContractUserId": {"type": ["string", "null"]},
-      "sponsorBudgetUserId": {"type": ["string", "null"]},
       "croInstitutionId": {"type": ["string", "null"]},
-      "croUserIds": {
+      "croUsers": {
         "type": "array",
         "minItems": 0,
         "uniqueItems": true,
-        "items": {"type": "string"}
+        "items": {
+          "type": "object",
+          "properties": {
+            "userId": {"type": "string"},
+            "role": {"type": "string", "enum": ["full", "contract", "budget"]}
+          },
+          "required": ["userId", "role"]
+        }
       },
-      "croContractUserId": {"type": ["string", "null"]},
-      "croBudgetUserId": {"type": ["string", "null"]},
-      "studyType": {"type": "string"},
+      "studyType": {"type": "string", "enum": ["phase1", "phase2", "phase3", "phase4", "other"]},
       "studyTypeOther": {"type": ["string", "null"]},
       "therapeuticArea": {"type": "string"},
       "isSingleSiteStudy": {"type": "boolean"},
@@ -475,13 +485,9 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/"
     "required": [
       "shortTitle",
       "sponsorInstitutionId",
-      "sponsorUserIds",
-      "sponsorContractUserId",
-      "sponsorBudgetUserId",
+      "sponsorUsers",
       "croInstitutionId",
-      "croUserIds",
-      "croContractUserId",
-      "croBudgetUserId",
+      "croUsers",
       "therapeuticArea",
       "isSingleSiteStudy",
       "studyType",
@@ -540,7 +546,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/documen
 ```json
 {
   "params": {
-    "id": "/QuickSTARTDocumentDelete",
+    "id": "/QuickStartDocumentDeleteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "documentId": {"type": "string"}},
     "required": ["quickStartId", "documentId"]
@@ -603,7 +609,7 @@ curl "https://ctoregistry.com/api/v1/download/quick-start/:quickStartId/document
 ```json
 {
   "params": {
-    "id": "/QuickSTARTDocumentDownload",
+    "id": "/QuickStartDocumentDownloadParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "documentId": {"type": "string"}},
     "required": ["quickStartId", "documentId"]
@@ -652,7 +658,7 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/quick-start/:quickStartId"
 ```json
 {
   "body": {
-    "id": "/QuickSTARTDocumentUpload",
+    "id": "/QuickStartDocumentUploadBody",
     "type": "object",
     "properties": {
       "type": {
@@ -670,7 +676,7 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/quick-start/:quickStartId"
     "required": ["type"]
   },
   "params": {
-    "id": "/QuickSTARTDocumentUploadParams",
+    "id": "/QuickStartDocumentUploadParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}},
     "required": ["quickStartId"]
@@ -746,7 +752,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```json
 {
   "params": {
-    "id": "/QuickSTARTExtraDocumentDeleteParams",
+    "id": "/QuickStartExtraDocumentDeleteParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -816,19 +822,19 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTExtraDocumentBody",
+    "id": "/QuickStartExtraDocumentBody",
     "type": "object",
     "properties": {
       "documentId": {"type": "string"},
       "category": {
         "type": "string",
-        "enum": ["pending", "screen", "review", "active", "paused", "completed"]
+        "enum": ["paused", "pending", "screen", "review", "active", "completed"]
       },
       "type": {"type": "string", "enum": ["budget", "contract", "protocol"]},
       "visibility": {"type": "array", "items": {"type": "string", "enum": ["site", "sponsor"]}},
@@ -897,18 +903,18 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/quick-start/:quickStartId/si
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTExtraDocumentUpload",
+    "id": "/QuickStartExtraDocumentUploadBody",
     "properties": {
       "category": {
         "type": "string",
         "description": "The document type",
-        "enum": ["pending", "screen", "review", "active", "paused", "completed"]
+        "enum": ["paused", "pending", "screen", "review", "active", "completed"]
       },
       "type": {
         "type": "string",
@@ -992,7 +998,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteHistoryDeleteParams",
+    "id": "/QuickStartSiteHistoryDeleteParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -1053,7 +1059,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/"
 ```json
 {
   "query": {
-    "id": "/QuickSTARTListQuery",
+    "id": "/QuickStartListQuery",
     "type": "object",
     "properties": {
       "offset": {"type": "integer", "minimum": 0, "default": 0},
@@ -1153,7 +1159,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
 ```json
 {
   "params": {
-    "id": "/QuickSTARTParams",
+    "id": "/QuickStartParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}},
     "required": ["quickStartId"]
@@ -1277,72 +1283,36 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
     "sponsorUsers": {
       "type": "array",
       "items": {
-        "id": "/UserShortProfile",
+        "type": "object",
+        "id": "/QuickStartSponsorUser",
         "properties": {
-          "id": {"type": "object"},
-          "username": {"type": "string"},
-          "contact": {
-            "type": "object",
+          "user": {
+            "id": "/UserShortProfile",
             "properties": {
-              "firstName": {"type": "string"},
-              "middleName": {"type": "string"},
-              "lastName": {"type": "string"},
-              "title": {
-                "type": "string",
-                "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
-              }
+              "id": {"type": "object"},
+              "username": {"type": "string"},
+              "contact": {
+                "type": "object",
+                "properties": {
+                  "firstName": {"type": "string"},
+                  "middleName": {"type": "string"},
+                  "lastName": {"type": "string"},
+                  "title": {
+                    "type": "string",
+                    "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
+                  }
+                },
+                "required": ["firstName", "lastName", "title"]
+              },
+              "institutionIds": {"type": "array", "items": {"type": "object"}}
             },
-            "required": ["firstName", "lastName", "title"]
+            "required": ["id", "username", "contact", "institutionIds"]
           },
-          "institutionIds": {"type": "array", "items": {"type": "object"}}
+          "role": {"type": "string", "enum": ["full", "contract", "budget"]}
         },
-        "required": ["id", "username", "contact", "institutionIds"]
+        "required": ["user", "role"]
       },
       "minItems": 1
-    },
-    "sponsorContractUser": {
-      "id": "/UserShortProfile",
-      "properties": {
-        "id": {"type": "object"},
-        "username": {"type": "string"},
-        "contact": {
-          "type": "object",
-          "properties": {
-            "firstName": {"type": "string"},
-            "middleName": {"type": "string"},
-            "lastName": {"type": "string"},
-            "title": {
-              "type": "string",
-              "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
-            }
-          },
-          "required": ["firstName", "lastName", "title"]
-        },
-        "institutionIds": {"type": "array", "items": {"type": "object"}}
-      },
-      "required": ["id", "username", "contact", "institutionIds"]
-    },
-    "sponsorBudgetUser": {
-      "id": "/UserShortProfile",
-      "properties": {
-        "id": {"type": "object"},
-        "username": {"type": "string"},
-        "contact": {
-          "type": "object",
-          "properties": {
-            "firstName": {"type": "string"},
-            "middleName": {"type": "string"},
-            "lastName": {"type": "string"},
-            "title": {
-              "type": "string",
-              "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
-            }
-          },
-          "required": ["firstName", "lastName", "title"]
-        },
-        "institutionIds": {"type": "array", "items": {"type": "object"}}
-      },
-      "required": ["id", "username", "contact", "institutionIds"]
     },
     "cro": {
       "type": "object",
@@ -1357,72 +1327,35 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
     "croUsers": {
       "type": "array",
       "items": {
-        "id": "/UserShortProfile",
+        "type": "object",
+        "id": "/QuickStartSponsorUser",
         "properties": {
-          "id": {"type": "object"},
-          "username": {"type": "string"},
-          "contact": {
-            "type": "object",
+          "user": {
+            "id": "/UserShortProfile",
             "properties": {
-              "firstName": {"type": "string"},
-              "middleName": {"type": "string"},
-              "lastName": {"type": "string"},
-              "title": {
-                "type": "string",
-                "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
-              }
+              "id": {"type": "object"},
+              "username": {"type": "string"},
+              "contact": {
+                "type": "object",
+                "properties": {
+                  "firstName": {"type": "string"},
+                  "middleName": {"type": "string"},
+                  "lastName": {"type": "string"},
+                  "title": {
+                    "type": "string",
+                    "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
+                  }
+                },
+                "required": ["firstName", "lastName", "title"]
+              },
+              "institutionIds": {"type": "array", "items": {"type": "object"}}
             },
-            "required": ["firstName", "lastName", "title"]
+            "required": ["id", "username", "contact", "institutionIds"]
           },
-          "institutionIds": {"type": "array", "items": {"type": "object"}}
+          "role": {"type": "string", "enum": ["full", "contract", "budget"]}
         },
-        "required": ["id", "username", "contact", "institutionIds"]
-      },
-      "minItems": 1
-    },
-    "croContractUser": {
-      "id": "/UserShortProfile",
-      "properties": {
-        "id": {"type": "object"},
-        "username": {"type": "string"},
-        "contact": {
-          "type": "object",
-          "properties": {
-            "firstName": {"type": "string"},
-            "middleName": {"type": "string"},
-            "lastName": {"type": "string"},
-            "title": {
-              "type": "string",
-              "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
-            }
-          },
-          "required": ["firstName", "lastName", "title"]
-        },
-        "institutionIds": {"type": "array", "items": {"type": "object"}}
-      },
-      "required": ["id", "username", "contact", "institutionIds"]
-    },
-    "croBudgetUser": {
-      "id": "/UserShortProfile",
-      "properties": {
-        "id": {"type": "object"},
-        "username": {"type": "string"},
-        "contact": {
-          "type": "object",
-          "properties": {
-            "firstName": {"type": "string"},
-            "middleName": {"type": "string"},
-            "lastName": {"type": "string"},
-            "title": {
-              "type": "string",
-              "enum": ["Dr.", "Prof.", "Miss", "Mrs.", "Ms.", "Mr.", "Mx"]
-            }
-          },
-          "required": ["firstName", "lastName", "title"]
-        },
-        "institutionIds": {"type": "array", "items": {"type": "object"}}
-      },
-      "required": ["id", "username", "contact", "institutionIds"]
+        "required": ["user", "role"]
+      }
     }
   },
   "required": ["quickStart", "sponsor", "sponsorUsers"]
@@ -1463,7 +1396,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```json
 {
   "params": {
-    "id": "/QuickSTARTRebEventDeleteParams",
+    "id": "/QuickStartRebEventDeleteParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -1524,13 +1457,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTRebEventBody",
+    "id": "/QuickStartRebEventBody",
     "type": "object",
     "properties": {
       "event": {
@@ -1604,7 +1537,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
@@ -1663,13 +1596,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTSiteAddUserBody",
+    "id": "/QuickStartSiteAddUserBody",
     "type": "object",
     "properties": {
       "userId": {"type": "string"},
@@ -1677,15 +1610,9 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
         "type": "string",
         "description": "The label text to display for the user, only applicable to read-only users"
       },
-      "roles": {
-        "type": "array",
-        "items": {
-          "type": "string",
-          "enum": ["contract", "budget", "investigator", "rc", "readonly"]
-        }
-      }
+      "role": {"type": "string", "enum": ["contract", "budget", "investigator", "rc", "readonly"]}
     },
-    "required": ["userId", "roles"]
+    "required": ["userId", "role"]
   }
 }
 ```
@@ -1708,7 +1635,7 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```
 
 
-Adds a user to a QuickSTART site with the specified roles.  Will update existing users if present.  The site must not be completed
+Adds a user to a QuickSTART site with the specified role. The site must not be completed
 
 ### HTTP Request
 
@@ -1745,7 +1672,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
@@ -1787,6 +1714,75 @@ Marks a QuickSTART Site Pre-Screen as complete by CTO.  The site status must be 
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 
+## QuickSTARTSiteConfigureNotifications - <em>QuickSTART Site Configure Notifications</em>
+
+
+```shell
+curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutionId/configure-notifications"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/QuickStartSiteParams",
+    "type": "object",
+    "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
+    "required": ["quickStartId", "institutionId"]
+  },
+  "body": {
+    "id": "QuickStartSiteNotificationConfigurationBody",
+    "type": "object",
+    "properties": {
+      "siteReviewerReminder": {"type": "boolean"},
+      "siteSponsorReminder": {"type": "boolean"},
+      "siteReviewerDue": {"type": "boolean"},
+      "siteSponsorDue": {"type": "boolean"},
+      "siteCustomApprovalReminder": {"type": "boolean"},
+      "siteCustomApprovalDue": {"type": "boolean"},
+      "statusUpdates": {"type": "array", "items": {"type": "number"}}
+    }
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+{
+  "id": "/ActionResponse",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string"},
+    "action": {"type": "string"},
+    "id": {"type": ["object", "null"]},
+    "result": {"type": ["object", "array", "string"]}
+  },
+  "required": ["status", "action", "id"]
+}
+```
+
+
+Updates an existing QuickSTART Site to disable notifications, set status updates, etc. If the site is completed, an error will be returned
+
+### HTTP Request
+
+`PUT /quick-start/:quickStartId/sites/:institutionId/configure-notifications`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | quickStartAdmin | N/A|N/A
+
 ## QuickSTARTSiteCreation - <em>QuickSTART Site Creation</em>
 
 
@@ -1801,13 +1797,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites"
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteCreationParams",
+    "id": "/QuickStartSiteCreationParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}},
     "required": ["quickStartId"]
   },
   "body": {
-    "id": "/QuickSTARTSiteCreationRequestBody",
+    "id": "/QuickStartSiteCreationRequestBody",
     "type": "object",
     "properties": {
       "institutionId": {"type": "string"},
@@ -1855,74 +1851,6 @@ system | quickStartAdmin | N/A|N/A
 quickStart | sponsor | quickStart|N/A
 institution | quickStartSponsor | quickStart|N/A
 
-## QuickSTARTSiteDisableNotifications - <em>QuickSTART Site Disable Notifications</em>
-
-
-```shell
-curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutionId/disable-notifications"  
-  -H "Authorization: {{_JWT_TOKEN_}}"  
-  -H "Content-Type: application/json"
-```
-
-> Request Schema
-
-```json
-{
-  "params": {
-    "id": "/QuickSTARTSiteParams",
-    "type": "object",
-    "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
-    "required": ["quickStartId", "institutionId"]
-  },
-  "body": {
-    "id": "QuickStartSiteDisabledNotifications",
-    "type": "object",
-    "properties": {
-      "siteReviewerReminder": {"type": "boolean"},
-      "siteSponsorReminder": {"type": "boolean"},
-      "siteReviewerDue": {"type": "boolean"},
-      "siteSponsorDue": {"type": "boolean"},
-      "siteCustomApprovalReminder": {"type": "boolean"},
-      "siteCustomApprovalDue": {"type": "boolean"}
-    }
-  }
-}
-```
-
-
-> Response Schema
-
-```json
-{
-  "id": "/ActionResponse",
-  "type": "object",
-  "properties": {
-    "status": {"type": "string"},
-    "action": {"type": "string"},
-    "id": {"type": ["object", "null"]},
-    "result": {"type": ["object", "array", "string"]}
-  },
-  "required": ["status", "action", "id"]
-}
-```
-
-
-Updates an existing QuickSTART Site to disable notifications. If the site is completed, an error will be returned
-
-### HTTP Request
-
-`PUT /quick-start/:quickStartId/sites/:institutionId/disable-notifications`
-
-
-
-### Authorization
- 
-    
- Scope      | Role       | Auth Source | Restrictions
-------------|------------|-------------|----------------
-system | admin | N/A|N/A
-system | quickStartAdmin | N/A|N/A
-
 ## QuickSTARTSiteDocumentDelete - <em>Delete an QuickSTART Document</em>
 
 
@@ -1937,7 +1865,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```json
 {
   "params": {
-    "id": "/QuickSTARTDocumentDelete",
+    "id": "/QuickStartDocumentDeleteParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -2004,7 +1932,7 @@ curl "https://ctoregistry.com/api/v1/download/quick-start/:quickStartId/sites/:i
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteDocumentDownload",
+    "id": "/QuickStartSiteDocumentDownloadParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -2057,13 +1985,13 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/quick-start/:quickStartId/si
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTSiteDocumentUpload",
+    "id": "/QuickStartSiteDocumentUploadBody",
     "type": "object",
     "properties": {
       "type": {
@@ -2151,7 +2079,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```json
 {
   "params": {
-    "id": "/QuickSTARTPauseEventDeleteParams",
+    "id": "/QuickStartPauseEventDeleteParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -2211,13 +2139,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTPauseEventBody",
+    "id": "/QuickStartPauseEventBody",
     "type": "object",
     "properties": {
       "pauseEventId": {"type": "string"},
@@ -2279,13 +2207,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTPreScreenCommentBody",
+    "id": "/QuickStartPreScreenCommentBody",
     "type": "object",
     "properties": {
       "comment": {"type": "string"},
@@ -2370,7 +2298,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```json
 {
   "params": {
-    "id": "/QuickSTARTPreScreenCommentDeleteParams",
+    "id": "/QuickStartPreScreenCommentDeleteParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -2430,7 +2358,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
@@ -2536,7 +2464,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
@@ -2562,19 +2490,24 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
           "description": "If a stream project id number was set and there is a corresponding study in the system, the document id for the study."
         },
         "institutionId": {"type": "object"},
-        "researchCoordinatorId": {"type": "object"},
-        "principalInvestigatorId": {"type": "object"},
-        "readOnlyUsers": {
+        "users": {
           "type": "array",
           "items": {
-            "id": "QuickStartSiteReadOnlyUser",
-            "properties": {"userId": {"type": "object"}, "label": {"type": "string"}},
-            "required": ["userId"]
+            "type": "object",
+            "properties": {
+              "userId": {"type": "object"},
+              "role": {
+                "type": "string",
+                "enum": ["contract", "budget", "investigator", "rc", "readonly"]
+              },
+              "label": {"type": "string"}
+            },
+            "required": ["userId", "role"]
           }
         },
         "status": {
           "type": "string",
-          "enum": ["pending", "screen", "review", "active", "paused", "completed"]
+          "enum": ["paused", "pending", "screen", "review", "active", "completed"]
         },
         "activeDt": {"type": "date"},
         "useProtocolDefaults": {"type": "boolean"},
@@ -2612,7 +2545,6 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
               "id": "/QuickStartSiteReview",
               "type": "object",
               "properties": {
-                "reviewerUserId": {"type": "object"},
                 "documentSentDt": {"type": "date"},
                 "documentSentUserId": {"type": "object"},
                 "assignedDt": {"type": "date"},
@@ -2631,10 +2563,10 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
                         "enum": [
                           "reviewer_comment",
                           "send_sponsor",
+                          "assign",
                           "sponsor_comment",
                           "send_site",
-                          "sponsor_approve",
-                          "assign"
+                          "sponsor_approve"
                         ]
                       },
                       "comment": {"type": "string"},
@@ -2683,7 +2615,6 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
               "id": "/QuickStartSiteReview",
               "type": "object",
               "properties": {
-                "reviewerUserId": {"type": "object"},
                 "documentSentDt": {"type": "date"},
                 "documentSentUserId": {"type": "object"},
                 "assignedDt": {"type": "date"},
@@ -2702,10 +2633,10 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
                         "enum": [
                           "reviewer_comment",
                           "send_sponsor",
+                          "assign",
                           "sponsor_comment",
                           "send_site",
-                          "sponsor_approve",
-                          "assign"
+                          "sponsor_approve"
                         ]
                       },
                       "comment": {"type": "string"},
@@ -2752,8 +2683,8 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
             }
           }
         },
-        "notificationsDisabled": {
-          "id": "QuickStartSiteDisabledNotifications",
+        "notificationConfiguration": {
+          "id": "QuickStartSiteNotificationConfigurationBody",
           "type": "object",
           "properties": {
             "siteReviewerReminder": {"type": "boolean"},
@@ -2761,7 +2692,8 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
             "siteReviewerDue": {"type": "boolean"},
             "siteSponsorDue": {"type": "boolean"},
             "siteCustomApprovalReminder": {"type": "boolean"},
-            "siteCustomApprovalDue": {"type": "boolean"}
+            "siteCustomApprovalDue": {"type": "boolean"},
+            "statusUpdates": {"type": "array", "items": {"type": "number"}}
           }
         },
         "timers": {
@@ -2861,7 +2793,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
               "type": {"type": "string", "enum": ["budget", "contract", "protocol"]},
               "category": {
                 "type": "string",
-                "enum": ["pending", "screen", "review", "active", "paused", "completed"]
+                "enum": ["paused", "pending", "screen", "review", "active", "completed"]
               },
               "uploadDt": {"type": "date"},
               "link": {"type": "string"},
@@ -2908,6 +2840,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
               },
               "eventDt": {"type": "date"},
               "isDone": {"type": "boolean"},
+              "isDeletable": {"type": "boolean"},
               "comment": {"type": "string"}
             },
             "required": ["id", "event", "isDone"]
@@ -2927,8 +2860,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:institutio
       "required": [
         "id",
         "institutionId",
-        "researchCoordinatorId",
-        "readOnlyUsers",
+        "users",
         "status",
         "useProtocolDefaults",
         "useContractDefaults",
@@ -3077,13 +3009,13 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTSiteRecordSentDtBody",
+    "id": "/QuickStartSiteRecordSentDtBody",
     "type": "object",
     "properties": {
       "type": {"type": "string", "enum": ["budget", "contract", "protocol"]},
@@ -3149,13 +3081,13 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteRemoveUserParams",
+    "id": "/QuickStartSiteRemoveUserParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
       "institutionId": {"type": "string"},
       "userId": {"type": "string"},
-      "role": {"type": "string", "enum": ["readonly"]}
+      "role": {"type": "string", "enum": ["contract", "budget", "investigator", "rc", "readonly"]}
     },
     "required": ["quickStartId", "institutionId", "userId", "role"]
   }
@@ -3180,7 +3112,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:
 ```
 
 
-Removes a Read-Only user from a QuickSTART site.  All other users must be managed through adding and replacing. The site must not be completed
+Removes a user from a QuickSTART site. Restrictions are listed per role.  An error is returned if the final RC is attempted to be removed. The site must not be completed
 
 ### HTTP Request
 
@@ -3197,6 +3129,8 @@ self | N/A | N/A|The user can only specify a role that they currently have.
 system | admin | N/A|N/A
 system | quickStartAdmin | N/A|N/A
 quickStartSite | rc | quickStartSite|N/A
+quickStartSite | contract | quickStartSite|The user can only specify a role that they currently have.
+quickStartSite | budget | quickStartSite|The user can only specify a role that they currently have.
 quickStart | sponsor | quickStart|N/A
 quickStart | sponsor-contract | quickStart|N/A
 quickStart | sponsor-budget | quickStart|N/A
@@ -3219,13 +3153,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTSiteResponseBody",
+    "id": "/QuickStartSiteResponseBody",
     "type": "object",
     "properties": {
       "historyId": {"type": "string"},
@@ -3294,7 +3228,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteRestoreParams",
+    "id": "/QuickStartSiteRestoreParams",
     "type": "object",
     "properties": {
       "quickStartId": {"type": "string"},
@@ -3361,13 +3295,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTSiteReviewBody",
+    "id": "/QuickStartTSiteReviewBody",
     "type": "object",
     "properties": {
       "historyId": {"type": "string"},
@@ -3432,13 +3366,13 @@ curl -X POST "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:in
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "/QuickSTARTSiteCustomDataBody",
+    "id": "/QuickStartSiteCustomDataBody",
     "type": "object",
     "properties": {"label": {"type": "string"}, "value": {"type": ["string", "null"]}},
     "required": ["label"]
@@ -3509,7 +3443,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
@@ -3568,12 +3502,12 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
-  "body": {"id": "/QuickSTARTSiteUpdateBody", "type": "object", "required": []}
+  "body": {"id": "/QuickStartSiteUpdateBody", "type": "object", "required": []}
 }
 ```
 
@@ -3632,13 +3566,13 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites/:ins
 ```json
 {
   "params": {
-    "id": "/QuickSTARTSiteParams",
+    "id": "/QuickStartSiteParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
     "required": ["quickStartId", "institutionId"]
   },
   "body": {
-    "id": "QuickStartSiteTimers",
+    "id": "QuickStartSiteTimersBody",
     "type": "object",
     "properties": {
       "startDt": {"type": "string", "format": "date-time"},
@@ -3713,7 +3647,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites"
 ```json
 {
   "params": {
-    "id": "/QuickSTARTParams",
+    "id": "/QuickStartParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}},
     "required": ["quickStartId"]
@@ -3737,8 +3671,21 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites"
         "properties": {
           "id": {"type": "object"},
           "institutionId": {"type": "object"},
-          "researchCoordinatorId": {"type": "object"},
-          "principalInvestigatorId": {"type": "object"},
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "userId": {"type": "object"},
+                "role": {
+                  "type": "string",
+                  "enum": ["contract", "budget", "investigator", "rc", "readonly"]
+                },
+                "label": {"type": "string"}
+              },
+              "required": ["userId", "role"]
+            }
+          },
           "institution": {
             "id": "/InstitutionShortProfile",
             "type": "object",
@@ -3768,7 +3715,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites"
           },
           "status": {
             "type": "string",
-            "enum": ["pending", "screen", "review", "active", "paused", "completed"]
+            "enum": ["paused", "pending", "screen", "review", "active", "completed"]
           },
           "activeDt": {"type": "date"},
           "timers": {
@@ -3812,7 +3759,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/:quickStartId/sites"
           "institutionId",
           "institution",
           "timers",
-          "researchCoordinatorId",
+          "users",
           "status",
           "createDt",
           "updateDt"
@@ -3858,13 +3805,13 @@ curl -X PUT "https://ctoregistry.com/api/v1/quick-start/:quickStartId"
 ```json
 {
   "params": {
-    "id": "/QuickSTARTUpdateParams",
+    "id": "/QuickStartUpdateParams",
     "type": "object",
     "properties": {"quickStartId": {"type": "string"}},
     "required": ["quickStartId"]
   },
   "body": {
-    "id": "/QuickSTARTUpdateBody",
+    "id": "/QuickStartUpdateBody",
     "type": "object",
     "properties": {
       "quickStartSiteId": {
@@ -3937,7 +3884,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/unique-project-id-number/:proje
 ```json
 {
   "params": {
-    "id": "/QuickSTARTUniqueProjectIdNumberParams",
+    "id": "/QuickStartUniqueProjectIdNumberParams",
     "type": "object",
     "properties": {"projectIdNumber": {"type": "string"}, "quickStartId": {"type": "string"}},
     "required": ["projectIdNumber"]
@@ -3995,7 +3942,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/unique-quick-start-identifier/:
 ```json
 {
   "params": {
-    "id": "/QuickSTARTUniqueQuickStartIdentifierParams",
+    "id": "/QuickStartUniqueQuickStartIdentifierParams",
     "type": "object",
     "properties": {"quickStartIdentifier": {"type": "string"}, "quickStartId": {"type": "string"}},
     "required": ["quickStartIdentifier"]
@@ -4053,7 +4000,7 @@ curl "https://ctoregistry.com/api/v1/quick-start/unique-short-title/:shortTitle/
 ```json
 {
   "params": {
-    "id": "/QuickSTARTUniqueShortTitleParams",
+    "id": "/QuickStartUniqueShortTitleParams",
     "type": "object",
     "properties": {"shortTitle": {"type": "string"}, "quickStartId": {"type": "string"}},
     "required": ["shortTitle"]

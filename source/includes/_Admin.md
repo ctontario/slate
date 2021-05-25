@@ -170,7 +170,7 @@ curl -X POST "https://ctoregistry.com/api/v1/admin/moderation/user/institution"
 ```json
 {
   "body": {
-    "id": "/UserInstitutionModeration",
+    "id": "/UserInstitutionModerationBody",
     "type": "object",
     "properties": {
       "userId": {"type": "string", "description": "User ID"},
@@ -240,7 +240,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/admin/moderation/user/:userId/instit
 ```json
 {
   "params": {
-    "id": "/AdminUserRoleModeration",
+    "id": "/AdminUserRoleModerationParams",
     "type": "object",
     "properties": {
       "userId": {"type": "string"},
@@ -303,7 +303,7 @@ curl "https://ctoregistry.com/api/v1/download/cache/:dir/:fileName"
 ```json
 {
   "params": {
-    "id": "/CacheDocumentDownloadRequestParams",
+    "id": "/CacheDocumentDownloadParams",
     "type": "object",
     "properties": {
       "dir": {"type": "string", "enum": ["system", "stream", "streamBackup", "streamExtractor"]},
@@ -312,7 +312,7 @@ curl "https://ctoregistry.com/api/v1/download/cache/:dir/:fileName"
     "required": ["dir", "fileName"]
   },
   "query": {
-    "id": "/CacheDocumentDownloadRequestQuery",
+    "id": "/CacheDocumentDownloadQuery",
     "type": "object",
     "properties": {"csv": {"type": "boolean"}}
   }
@@ -651,7 +651,7 @@ curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId/issues"
 ```json
 {
   "params": {
-    "id": "/TaskLogIssuesRequest",
+    "id": "/TaskLogIssuesParams",
     "type": "object",
     "properties": {"taskLogId": {"type": "string"}},
     "required": ["taskLogId"]
@@ -811,7 +811,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId/issue
 ```json
 {
   "params": {
-    "id": "/TaskLogIssueUpdateRequest",
+    "id": "/TaskLogIssueUpdateParams",
     "type": "object",
     "properties": {
       "taskLogId": {"type": "string"},
@@ -962,7 +962,7 @@ curl "https://ctoregistry.com/api/v1/admin/sync/taskLogs/:taskLogId"
 ```json
 {
   "params": {
-    "id": "/TaskLogProfileRequest",
+    "id": "/TaskLogProfileParams",
     "type": "object",
     "properties": {"taskLogId": {"type": "string"}},
     "required": ["taskLogId"]

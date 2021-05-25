@@ -16,7 +16,7 @@ curl "https://ctoregistry.com/api/v1/metrics/funding/master"
 ```json
 {
   "query": {
-    "id": "/MetricsFundingMaster",
+    "id": "/MetricsFundingMasterQuery",
     "type": "object",
     "properties": {
       "includeCommitteeIds": {
@@ -170,7 +170,7 @@ curl "https://ctoregistry.com/api/v1/metrics/committee/share"
 ```json
 {
   "query": {
-    "id": "/MetricsCommitteeShare",
+    "id": "/MetricsCommitteeShareQuery",
     "type": "object",
     "properties": {
       "excludeCommitteeIds": {
@@ -255,3 +255,50 @@ Gets the share metrics report used to determine Committee assigned and for overa
 ------------|------------|-------------|----------------
 system | admin | N/A|N/A
 system | support | N/A|N/A
+
+## QuickStartSiteReport - <em>QuickSTART Site Report</em>
+
+
+```shell
+curl "https://ctoregistry.com/api/v1/metrics/quick-start/:quickStartId/sites/:institutionId"  
+  -H "Authorization: {{_JWT_TOKEN_}}"  
+  -H "Content-Type: application/json"
+```
+
+> Request Schema
+
+```json
+{
+  "params": {
+    "id": "/QuickStartSiteParams",
+    "type": "object",
+    "properties": {"quickStartId": {"type": "string"}, "institutionId": {"type": "string"}},
+    "required": ["quickStartId", "institutionId"]
+  }
+}
+```
+
+
+> Response Schema
+
+```json
+undefined
+```
+
+
+gets the Excel report for one QuickSTART site
+
+### HTTP Request
+
+`GET /metrics/quick-start/:quickStartId/sites/:institutionId`
+
+
+
+### Authorization
+ 
+    
+ Scope      | Role       | Auth Source | Restrictions
+------------|------------|-------------|----------------
+system | admin | N/A|N/A
+system | support | N/A|N/A
+system | quickStartAdmin | N/A|N/A

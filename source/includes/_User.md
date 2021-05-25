@@ -16,7 +16,7 @@ curl "https://ctoregistry.com/api/v1/dictionary/institution/:institutionId/user/
 ```json
 {
   "params": {
-    "id": "/SearchAtInstitution",
+    "id": "/SearchAtInstitutionParams",
     "type": "object",
     "properties": {"institutionId": {"type": "string"}, "searchString": {"type": "string"}},
     "required": ["institutionId"]
@@ -129,7 +129,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/"
 ```json
 {
   "body": {
-    "id": "/UserCreation",
+    "id": "/UserCreationBody",
     "type": "object",
     "properties": {
       "username": {"type": "string", "description": "User ID"},
@@ -142,7 +142,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/"
         "description": "Title"
       },
       "institution": {
-        "id": "/UserInstitution",
+        "id": "/UserInstitutionBody",
         "type": "object",
         "properties": {
           "code": {"type": "string", "description": "The institution code"},
@@ -152,7 +152,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/"
             "description": "Whether the user was indicated as an investigator or not"
           },
           "address": {
-            "id": "/Address",
+            "id": "/AddressBody",
             "type": "object",
             "properties": {
               "streetAddress": {"type": "string", "description": "Street address"},
@@ -173,7 +173,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/"
           "phones": {
             "type": "array",
             "items": {
-              "id": "/Phone",
+              "id": "/PhoneBody",
               "type": "object",
               "properties": {
                 "number": {"type": "string", "description": "Phone number"},
@@ -269,7 +269,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/user/:userId/document/:documentId
 ```json
 {
   "params": {
-    "id": "/UserDocumentDelete",
+    "id": "/UserDocumentDeleteParams",
     "type": "object",
     "properties": {"userId": {"type": "string"}, "documentId": {"type": "string"}},
     "required": ["userId", "documentId"]
@@ -328,7 +328,7 @@ curl "https://ctoregistry.com/api/v1/download/user/:userId/document/:documentId"
 ```json
 {
   "params": {
-    "id": "/DownloadDocument",
+    "id": "/UserDocumentDownloadParams",
     "type": "object",
     "properties": {"userId": {"type": "string"}, "documentId": {"type": "string"}},
     "required": ["userId", "documentId"]
@@ -376,7 +376,7 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/user/:userId"
 ```json
 {
   "body": {
-    "id": "/UserDocumentUpload",
+    "id": "/UserDocumentUploadBody",
     "type": "object",
     "properties": {
       "type": {"type": "string", "description": "The document type"},
@@ -394,7 +394,7 @@ curl -X POST "https://ctoregistry.com/api/v1/upload/user/:userId"
     "required": ["type"]
   },
   "params": {
-    "id": "UserDocumentUpdateParams",
+    "id": "UserDocumentUploadParams",
     "type": "object",
     "properties": {"userId": {"type": "string"}},
     "required": ["userId"]
@@ -631,7 +631,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution"
     "required": ["userId"]
   },
   "body": {
-    "id": "/UserInstitution",
+    "id": "/UserInstitutionBody",
     "type": "object",
     "properties": {
       "code": {"type": "string", "description": "The institution code"},
@@ -641,7 +641,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution"
         "description": "Whether the user was indicated as an investigator or not"
       },
       "address": {
-        "id": "/Address",
+        "id": "/AddressBody",
         "type": "object",
         "properties": {
           "streetAddress": {"type": "string", "description": "Street address"},
@@ -662,7 +662,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution"
       "phones": {
         "type": "array",
         "items": {
-          "id": "/Phone",
+          "id": "/PhoneBody",
           "type": "object",
           "properties": {
             "number": {"type": "string", "description": "Phone number"},
@@ -884,7 +884,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:instituti
     "required": ["userId", "institutionId"]
   },
   "body": {
-    "id": "/UserInstitutionRoleCreation",
+    "id": "/UserInstitutionRoleCreationBody",
     "type": "object",
     "properties": {
       "roles": {
@@ -952,7 +952,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/user/:userId/institution/:institu
 ```json
 {
   "params": {
-    "id": "/UserInstitutionRoleDelete",
+    "id": "/UserInstitutionRoleDeleteParams",
     "type": "object",
     "properties": {
       "userId": {"type": "string"},
@@ -1021,13 +1021,13 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:instituti
     "required": ["userId", "institutionId"]
   },
   "body": {
-    "id": "/UserInstitution",
+    "id": "UserInstitutionUpdateBody",
     "type": "object",
     "properties": {
       "code": {"type": "string", "description": "The institution code"},
       "name": {"type": "string", "maxLength": 200, "description": "The institution name"},
       "address": {
-        "id": "/Address",
+        "id": "/AddressBody",
         "type": "object",
         "properties": {
           "streetAddress": {"type": "string", "description": "Street address"},
@@ -1048,7 +1048,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/institution/:instituti
       "phones": {
         "type": "array",
         "items": {
-          "id": "/Phone",
+          "id": "/PhoneBody",
           "type": "object",
           "properties": {
             "number": {"type": "string", "description": "Phone number"},
@@ -1278,7 +1278,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/password/update"
 ```json
 {
   "body": {
-    "id": "/UserPasswordUpdate",
+    "id": "/UserPasswordUpdateBody",
     "type": "object",
     "properties": {
       "userId": {"type": "string", "description": "User ID"},
@@ -1346,7 +1346,7 @@ curl -X POST "https://ctoregistry.com/api/v1/user/:userId/privileges"
     "required": ["userId"]
   },
   "body": {
-    "id": "/UserPrivilegeCreation",
+    "id": "/UserPrivilegeCreationBody",
     "type": "object",
     "properties": {
       "scope": {
@@ -1419,7 +1419,7 @@ curl -X DELETE "https://ctoregistry.com/api/v1/user/:userId/privileges/:privileg
 ```json
 {
   "params": {
-    "id": "/UserPrivilegeDelete",
+    "id": "/UserPrivilegeDeleteParams",
     "type": "object",
     "properties": {"userId": {"type": "string"}, "privilegeId": {"type": "string"}},
     "required": ["userId", "privilegeId"]
@@ -1754,7 +1754,7 @@ curl -X PUT "https://ctoregistry.com/api/v1/user/:userId/profile"
 ```json
 {
   "body": {
-    "id": "/UserProfileUpdate",
+    "id": "/UserProfileUpdateBody",
     "type": "object",
     "properties": {
       "username": {"type": "string", "description": "Username"},
